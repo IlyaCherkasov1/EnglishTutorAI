@@ -1,0 +1,14 @@
+C:\Projects\EnglishTutorAI\EnglishTutorAI\bin\Debug\net8.0\EnglishTutorAI.exe
+C:\Projects\EnglishTutorAI\EnglishTutorAI\bin\Debug\net8.0\EnglishTutorAI.deps.json
+C:\Projects\EnglishTutorAI\EnglishTutorAI\bin\Debug\net8.0\EnglishTutorAI.runtimeconfig.json
+C:\Projects\EnglishTutorAI\EnglishTutorAI\bin\Debug\net8.0\EnglishTutorAI.dll
+C:\Projects\EnglishTutorAI\EnglishTutorAI\bin\Debug\net8.0\EnglishTutorAI.pdb
+C:\Projects\EnglishTutorAI\EnglishTutorAI\obj\Debug\net8.0\EnglishTutorAI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\EnglishTutorAI\EnglishTutorAI\obj\Debug\net8.0\EnglishTutorAI.AssemblyInfoInputs.cache
+C:\Projects\EnglishTutorAI\EnglishTutorAI\obj\Debug\net8.0\EnglishTutorAI.AssemblyInfo.cs
+C:\Projects\EnglishTutorAI\EnglishTutorAI\obj\Debug\net8.0\EnglishTutorAI.csproj.CoreCompileInputs.cache
+C:\Projects\EnglishTutorAI\EnglishTutorAI\obj\Debug\net8.0\EnglishTutorAI.dll
+C:\Projects\EnglishTutorAI\EnglishTutorAI\obj\Debug\net8.0\refint\EnglishTutorAI.dll
+C:\Projects\EnglishTutorAI\EnglishTutorAI\obj\Debug\net8.0\EnglishTutorAI.pdb
+C:\Projects\EnglishTutorAI\EnglishTutorAI\obj\Debug\net8.0\EnglishTutorAI.genruntimeconfig.cache
+C:\Projects\EnglishTutorAI\EnglishTutorAI\obj\Debug\net8.0\ref\EnglishTutorAI.dll
