@@ -1,3 +1,9 @@
+# Rider
+.idea/
+*.sln.iml
+*.sln.DotSettings.user
+*.sln.DotSettings
+
 .DS_*
 *.log
 logs
