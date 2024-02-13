@@ -55,7 +55,7 @@ bld/
 ScaffoldingReadMe.txt
 
 # Node.js dependencies
-frontend/note-modules
+Frontend/node-modules
 
 # React build output
 build/
