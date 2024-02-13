@@ -31,15 +31,31 @@ bld/
 *.userosscache
 *.sln.ide
 
+# Rider
+.idea/
+*.sln.iml
+*.sln.DotSettings.user
+*.sln.DotSettings
+
 # Visual Studio Code files
 .vscode/
 *.code-workspace
+
+# WebStorm
+.idea/
+*.iml
+*.ipr
+*.iws
+*.idea/workspace.xml
+*.idea/tasks.xml
+*.idea/dictionaries
+*.idea/shelf
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
 
 # Node.js dependencies
-node_modules/
+frontend/note-modules
 
 # React build output
 build/
@@ -54,9 +70,9 @@ yarn-error.log
 # Jest coverage
 coverage/
 
-# macOS
-.DS_Store
-
 # Windows
 Thumbs.db
 ehthumbs.db
+
+# Ant Design
+dist/
