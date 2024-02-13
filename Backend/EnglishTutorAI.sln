@@ -1,6 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A4592D61-054F-4FA1-808E-338920BADE4C}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnglishTutorAI.Infrastructure", "EnglishTutorAI.Infrastructure\EnglishTutorAI.Infrastructure.csproj", "{05FD7892-90AB-47B1-A236-48D26DAA8B41}"
 EndProject
