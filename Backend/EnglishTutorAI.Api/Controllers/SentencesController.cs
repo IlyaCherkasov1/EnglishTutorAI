@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EnglishTutorAI.Api.Controllers;
 
 [ApiController]
+[ApiRoute]
 public class SentencesController : ControllerBase
 {
     private readonly IMediator _mediator;

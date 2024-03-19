@@ -1,0 +1,3 @@
+{
+  "template": "translate the phrase '{phrase}' into russian and generate 5 example sentences including this phrase, including its Russian translation."
+}
