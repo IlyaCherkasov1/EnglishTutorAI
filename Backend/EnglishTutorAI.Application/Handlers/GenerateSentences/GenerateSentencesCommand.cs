@@ -2,12 +2,12 @@
 
 namespace EnglishTutorAI.Application.Handlers.GenerateSentences;
 
-public class GenerateSentencesCommand : IRequest
+public class GenerateSentencesCommand : IRequest<string>
 {
-    public string Phrase { get; }
+    public string Text { get; }
 
-    public GenerateSentencesCommand(string phrase)
+    public GenerateSentencesCommand(string text)
     {
-        Phrase = phrase;
+        Text = text;
     }
 }

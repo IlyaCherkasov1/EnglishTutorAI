@@ -1,5 +1,6 @@
 ﻿using EnglishTutorAI.Application.Configurations;
 using EnglishTutorAI.Application.Interfaces;
+using EnglishTutorAI.Application.Models;
 using Microsoft.Extensions.Options;
 using OpenAI_API;
 using OpenAI_API.Chat;
@@ -8,35 +9,41 @@ namespace EnglishTutorAI.Application.Services
 {
     public class OpenAiService : IOpenAiService
     {
+        private const string Placeholder = "{Text}";
+        private const string TemplateKey = "template";
+
         private readonly OpenAiConfig _openAiConfig;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IPromptTemplateService _promptTemplateService;
-        private readonly IElevenLabsService _elevenLabsService;
 
         public OpenAiService(
             IOptionsMonitor<OpenAiConfig> openAiConfig,
             IHttpClientFactory httpClientFactory,
-            IPromptTemplateService promptTemplateService,
-            IElevenLabsService elevenLabsService)
+            IPromptTemplateService promptTemplateService)
         {
             _openAiConfig = openAiConfig.CurrentValue;
             _httpClientFactory = httpClientFactory;
             _promptTemplateService = promptTemplateService;
-            _elevenLabsService = elevenLabsService;
         }
 
-        public async Task GenerateSentences(string phrase)
+        public async Task<string> GenerateSentences(string text)
         {
             var api = new OpenAIAPI(_openAiConfig.Key) { HttpClientFactory = _httpClientFactory };
-            var prompt = await _promptTemplateService.GetFormattedPromptAsync(phrase);
+            var prompt = await _promptTemplateService.GetFormattedPromptAsync(new PromptParameters
+            {
+                Placeholder = Placeholder,
+                Text = text,
+                TemplateKey = TemplateKey,
+            });
 
             var chatRequest = new ChatRequest
             {
                 Messages = new List<ChatMessage> { new(ChatMessageRole.User, prompt) },
             };
 
-            var generatedText = (await api.Chat.CreateChatCompletionAsync(chatRequest)).ToString();
-            await _elevenLabsService.GenerateSpeechAsync(generatedText);
+            var completionResult = await api.Chat.CreateChatCompletionAsync(chatRequest);
+
+            return completionResult.ToString();
         }
     }
 }

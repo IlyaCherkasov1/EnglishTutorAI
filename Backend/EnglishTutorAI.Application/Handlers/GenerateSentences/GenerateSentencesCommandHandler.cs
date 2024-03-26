@@ -3,7 +3,7 @@ using MediatR;
 
 namespace EnglishTutorAI.Application.Handlers.GenerateSentences;
 
-public class GenerateSentencesCommandHandler : IRequestHandler<GenerateSentencesCommand>
+public class GenerateSentencesCommandHandler : IRequestHandler<GenerateSentencesCommand, string>
 {
     private readonly IOpenAiService _openAiService;
 
@@ -12,8 +12,8 @@ public class GenerateSentencesCommandHandler : IRequestHandler<GenerateSentences
         _openAiService = openAiService;
     }
 
-    public async Task Handle(GenerateSentencesCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(GenerateSentencesCommand request, CancellationToken cancellationToken)
     {
-        await _openAiService.GenerateSentences(request.Phrase);
+        return await _openAiService.GenerateSentences(request.Text);
     }
 }

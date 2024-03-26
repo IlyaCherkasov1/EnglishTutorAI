@@ -13,15 +13,15 @@ public class TextGenerationController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public TextGenerationController(IMediator mediator, IOpenAiService openAiService)
+    public TextGenerationController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
     [HttpPost(Routes.Assistant.GenerateSentences)]
-    public async Task<IActionResult> GenerateSentences(string phrase)
+    public async Task<IActionResult> GenerateSentences(string text)
     {
-        await _mediator.Send(new GenerateSentencesCommand(phrase));
-        return Ok();
+        var result = await _mediator.Send(new GenerateSentencesCommand(text));
+        return Ok(result);
     }
 }

@@ -2,5 +2,5 @@
 
 public interface IOpenAiService
 {
-    Task GenerateSentences(string phrase);
+    Task<string> GenerateSentences(string text);
 }

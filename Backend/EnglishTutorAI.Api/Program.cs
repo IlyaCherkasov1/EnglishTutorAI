@@ -16,14 +16,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.Configure<OpenAiConfig>(builder.Configuration.GetSection(nameof(OpenAiConfig)));
 builder.Services.Configure<ProxyConfig>(builder.Configuration.GetSection(nameof(ProxyConfig)));
-builder.Services.Configure<ElevenLabsConfig>(builder.Configuration.GetSection(nameof(ElevenLabsConfig)));
 builder.Services.AddScoped<ISentenceRetrieverService, SentenceRetrieverService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 builder.Services.AddSingleton<IHttpClientFactory, ConfigurableProxyHttpClientFactory>();
 builder.Services.AddScoped<IPromptTemplateService, PromptTemplateService>();
-builder.Services.AddScoped<IElevenLabsService, ElevenLabsService>();
 
 builder.Services.AddApplicationDependencies();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
