@@ -1,7 +1,6 @@
 ﻿using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Controllers.Attributes;
 using EnglishTutorAI.Application.Handlers.GenerateSentences;
-using EnglishTutorAI.Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,9 +18,9 @@ public class TextGenerationController : ControllerBase
     }
 
     [HttpPost(Routes.Assistant.GenerateSentences)]
-    public async Task<IActionResult> GenerateSentences(string text)
+    public async Task<IActionResult> GenerateChatCompletionCommand(string text)
     {
-        var result = await _mediator.Send(new GenerateSentencesCommand(text));
+        var result = await _mediator.Send(new GenerateChatCompletionCommand(text));
         return Ok(result);
     }
 }

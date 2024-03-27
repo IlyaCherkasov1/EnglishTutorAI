@@ -26,7 +26,7 @@ namespace EnglishTutorAI.Application.Services
             _promptTemplateService = promptTemplateService;
         }
 
-        public async Task<string> GenerateSentences(string text)
+        public async Task<string> GenerateChatCompletion(string text)
         {
             var api = new OpenAIAPI(_openAiConfig.Key) { HttpClientFactory = _httpClientFactory };
             var prompt = await _promptTemplateService.GetFormattedPromptAsync(new PromptParameters

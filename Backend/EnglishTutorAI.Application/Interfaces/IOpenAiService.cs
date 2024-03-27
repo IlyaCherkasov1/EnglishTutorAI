@@ -2,5 +2,5 @@
 
 public interface IOpenAiService
 {
-    Task<string> GenerateSentences(string text);
+    Task<string> GenerateChatCompletion(string text);
 }
