@@ -17,7 +17,7 @@ public class TextGenerationController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpPost(Routes.Assistant.GenerateSentences)]
+    [HttpPost(Routes.Assistant.GenerateChatCompletion)]
     public async Task<IActionResult> GenerateChatCompletionCommand(string text)
     {
         var result = await _mediator.Send(new GenerateChatCompletionCommand(text));

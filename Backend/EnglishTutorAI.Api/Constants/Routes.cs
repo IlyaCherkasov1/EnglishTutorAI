@@ -11,6 +11,6 @@ public class Routes
 
     public static class Assistant
     {
-        public const string GenerateSentences = "generate-sentences";
+        public const string GenerateChatCompletion = "generate-chat-completion";
     }
 }
