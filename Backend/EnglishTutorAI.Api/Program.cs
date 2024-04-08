@@ -1,6 +1,7 @@
 using EnglishTutorAI.Application;
 using EnglishTutorAI.Application.Configurations;
 using EnglishTutorAI.Application.Interfaces;
+using EnglishTutorAI.Application.Profiles;
 using EnglishTutorAI.Application.Services;
 using EnglishTutorAI.Application.Services.Sentences;
 using EnglishTutorAI.Infrastructure;
@@ -22,6 +23,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 builder.Services.AddSingleton<IHttpClientFactory, ConfigurableProxyHttpClientFactory>();
 builder.Services.AddScoped<IPromptTemplateService, PromptTemplateService>();
+builder.Services.AddScoped<IStoryRetrieverService, StoryRetrieverService>();
 
 builder.Services.AddApplicationDependencies();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -29,7 +31,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(ApplicationDbContext)));
 });
 
+builder.Services.AddAutoMapper(typeof(ApplicationMappingProfile));
 var app = builder.Build();
+
+app.UseCors(
+    options => options.WithOrigins(builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()!)
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 
 app.UseRouting();
 app.MapControllers();
