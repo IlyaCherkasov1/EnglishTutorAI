@@ -24,6 +24,7 @@ builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 builder.Services.AddSingleton<IHttpClientFactory, ConfigurableProxyHttpClientFactory>();
 builder.Services.AddScoped<IPromptTemplateService, PromptTemplateService>();
 builder.Services.AddScoped<IStoryRetrieverService, StoryRetrieverService>();
+builder.Services.AddScoped<IStoryCounterService, StoryCounterService>();
 
 builder.Services.AddApplicationDependencies();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

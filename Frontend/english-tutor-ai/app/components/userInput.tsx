@@ -10,8 +10,8 @@ const UserInput = (props: Props) => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        var response = await GenerateChatCompletion(sentence);
-        props.setCorrection(response)
+        const response = await GenerateChatCompletion(sentence);
+        props.setCorrection(response);
     };
 
     return (

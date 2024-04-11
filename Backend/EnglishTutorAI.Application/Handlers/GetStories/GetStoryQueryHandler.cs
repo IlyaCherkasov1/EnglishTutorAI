@@ -18,7 +18,7 @@ public class GetStoryQueryHandler : IRequestHandler<GetStoryQuery, StoryResponse
 
     public async Task<StoryResponse> Handle(GetStoryQuery request, CancellationToken cancellationToken)
     {
-        var story = await _storyRetrieverService.GetStory();
+        var story = await _storyRetrieverService.GetStoryByIndex(request.Index);
 
         return _mapper.Map<StoryResponse>(story);
     }

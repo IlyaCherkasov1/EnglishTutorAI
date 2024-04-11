@@ -1,6 +1,7 @@
 ﻿using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Controllers.Attributes;
 using EnglishTutorAI.Application.Handlers.GetStories;
+using EnglishTutorAI.Application.Handlers.GetStoryCount;
 using EnglishTutorAI.Application.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +19,15 @@ public class StoryController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet(Routes.Story.GetStory)]
-    public Task<StoryResponse> GetStory()
+    [HttpGet(Routes.Story.GetStoryByIndex)]
+    public Task<StoryResponse> GetStory(int index)
     {
-        return _mediator.Send(new GetStoryQuery());
+        return _mediator.Send(new GetStoryQuery(index));
+    }
+
+    [HttpGet(Routes.Story.Count)]
+    public Task<int> GetStoryCount()
+    {
+        return _mediator.Send(new GetStoryCountQuery());
     }
 }

@@ -1,4 +1,5 @@
 ﻿using EnglishTutorAI.Application.Interfaces;
+using EnglishTutorAI.Application.Specifications;
 using EnglishTutorAI.Domain.Entities;
 
 namespace EnglishTutorAI.Application.Services;
@@ -12,8 +13,15 @@ public class StoryRetrieverService : IStoryRetrieverService
         _storyRepository = storyRepository;
     }
 
-    public Task<Story> GetStory()
+    public async Task<Story> GetStoryByIndex(int index)
     {
-        return _storyRepository.GetById(Guid.Parse("bd4b1c36-c6f3-4464-bc41-4591b7579b60"));
+        var storyCount = await _storyRepository.Count();
+
+        if (index >= 0 && index < storyCount)
+        {
+            return (await _storyRepository.GetByIndex(index, new StoryByIndexSpecification()))!;
+        }
+
+        throw new IndexOutOfRangeException("Index is out of range.");
     }
 }

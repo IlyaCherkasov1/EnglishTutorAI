@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using EnglishTutorAI.Application.Specifications;
+using EnglishTutorAI.Application.Specifications.Configurations;
 using EnglishTutorAI.Application.Specifications.ImplicitFilters;
 using EnglishTutorAI.Domain.Entities;
 using EnglishTutorAI.Domain.Extensions;

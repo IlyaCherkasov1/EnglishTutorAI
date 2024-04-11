@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 using EnglishTutorAI.Application.Models.Common;
 using EnglishTutorAI.Domain.Entities;
 
-namespace EnglishTutorAI.Application.Specifications;
+namespace EnglishTutorAI.Application.Specifications.Configurations;
 
 public interface ISpecification<T>
     where T : Entity

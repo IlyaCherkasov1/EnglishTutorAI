@@ -1,5 +1,7 @@
+using System.Linq.Expressions;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Specifications;
+using EnglishTutorAI.Application.Specifications.Configurations;
 using EnglishTutorAI.Application.Specifications.ImplicitFilters;
 using EnglishTutorAI.Domain.Entities;
 using EnglishTutorAI.Domain.Exceptions;
@@ -97,6 +99,13 @@ public class Repository<T> : IRepository<T>
         IQueryable<T> queryable = await ApplySpecification(new Specification<T>());
 
         return await queryable.CountAsync();
+    }
+
+    public async Task<T?> GetByIndex(int index, ISpecification<T> specification)
+    {
+        IQueryable<T> queryable = await ApplySpecification(specification);
+
+        return await queryable.Skip(index).FirstOrDefaultAsync();
     }
 
     public async Task<T> Add(T entity)
