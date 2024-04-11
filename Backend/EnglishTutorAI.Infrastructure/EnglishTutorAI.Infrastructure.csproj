@@ -7,10 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Data\Contexts\" />
-      <Folder Include="Data\Migrations\" />
-      <Folder Include="Data\Repositories\" />
-      <Folder Include="Entities\" />
+      <Folder Include="Migrations\" />
+      <Folder Include="Specification\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -21,6 +19,10 @@
       </PackageReference>
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\EnglishTutorAI.Application\EnglishTutorAI.Application.csproj" />
     </ItemGroup>
 
 </Project>
