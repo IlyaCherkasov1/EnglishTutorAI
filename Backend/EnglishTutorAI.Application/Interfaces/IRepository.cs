@@ -1,4 +1,6 @@
+using System.Linq.Expressions;
 using EnglishTutorAI.Application.Specifications;
+using EnglishTutorAI.Application.Specifications.Configurations;
 using EnglishTutorAI.Domain.Entities;
 
 namespace EnglishTutorAI.Application.Interfaces;
@@ -24,4 +26,8 @@ public interface IRepository<T> where T : Entity
     Task DeleteById(Guid id);
 
     Task Delete(T entity);
+
+    Task<int> Count();
+
+    public Task<T?> GetByIndex(int index, ISpecification<T> specification);
 }

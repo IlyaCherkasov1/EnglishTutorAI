@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using EnglishTutorAI.Domain.Enums;
 
-namespace EnglishTutorAI.Application.Specifications;
+namespace EnglishTutorAI.Application.Specifications.Configurations;
 
 public class OrderRule<T>
 {

@@ -11,7 +11,9 @@ public class Routes
 
     public static class Story
     {
-        public const string GetStory = "get-story";
+        public const string GetStoryByIndex = "get-story-by-index/{index}";
+
+        public const string Count = "count";
     }
 
     public static class Assistant

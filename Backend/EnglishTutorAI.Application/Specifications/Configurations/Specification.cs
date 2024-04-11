@@ -5,7 +5,7 @@ using EnglishTutorAI.Domain.Enums;
 using EnglishTutorAI.Domain.Extensions;
 using EnglishTutorAI.Domain.Interfaces;
 
-namespace EnglishTutorAI.Application.Specifications;
+namespace EnglishTutorAI.Application.Specifications.Configurations;
 
 public class Specification<T> : ISpecification<T>
     where T : Entity

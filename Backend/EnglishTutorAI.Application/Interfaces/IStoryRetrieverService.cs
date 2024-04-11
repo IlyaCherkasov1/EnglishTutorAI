@@ -5,5 +5,5 @@ namespace EnglishTutorAI.Application.Interfaces;
 
 public interface IStoryRetrieverService
 {
-    Task<Story> GetStory();
+    Task<Story> GetStoryByIndex(int index);
 }
