@@ -3,7 +3,9 @@ using EnglishTutorAI.Domain.Entities;
 
 namespace EnglishTutorAI.Application.Interfaces;
 
-public interface IStoryRetrieverService
+public interface IStoryService
 {
     Task<Story> GetStoryByIndex(int index);
+
+    Task AddStory(StoryCreationRequest creationRequest);
 }

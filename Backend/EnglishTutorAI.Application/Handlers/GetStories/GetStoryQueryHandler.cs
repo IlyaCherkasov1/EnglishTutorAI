@@ -7,18 +7,18 @@ namespace EnglishTutorAI.Application.Handlers.GetStories;
 
 public class GetStoryQueryHandler : IRequestHandler<GetStoryQuery, StoryResponse>
 {
-    private readonly IStoryRetrieverService _storyRetrieverService;
+    private readonly IStoryService _storyService;
     private readonly IMapper _mapper;
 
-    public GetStoryQueryHandler(IStoryRetrieverService storyRetrieverService, IMapper mapper)
+    public GetStoryQueryHandler(IStoryService storyRetrieverService, IMapper mapper)
     {
-        _storyRetrieverService = storyRetrieverService;
+        _storyService = storyRetrieverService;
         _mapper = mapper;
     }
 
     public async Task<StoryResponse> Handle(GetStoryQuery request, CancellationToken cancellationToken)
     {
-        var story = await _storyRetrieverService.GetStoryByIndex(request.Index);
+        var story = await _storyService.GetStoryByIndex(request.Index);
 
         return _mapper.Map<StoryResponse>(story);
     }

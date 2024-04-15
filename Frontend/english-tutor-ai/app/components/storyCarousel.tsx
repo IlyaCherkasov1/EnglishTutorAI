@@ -1,10 +1,11 @@
 'use client'
 
 import {useEffect, useState} from "react";
-import {GetStoryCount} from "@/app/api/story/storyApi";
+import {getStoryCount} from "@/app/api/story/storyApi";
 import {SetGenericStateType} from "@/app/core/helpers/genericStateHelper";
 
 interface Props{
+    storyTitle: string;
     storyContent: string;
     currentStoryIndex: number;
     setCurrentStoryIndex: SetGenericStateType<number>;
@@ -15,7 +16,7 @@ export default function StoryCarousel(props: Props) {
 
     useEffect(() => {
         const fetchStoryCount = async () => {
-            const response = await GetStoryCount();
+            const response = await getStoryCount();
             setStoryCount(response);
         };
 
@@ -33,8 +34,9 @@ export default function StoryCarousel(props: Props) {
     return (
         <div id="story-container">
             <div className="story-carousel">
+                <p id="storyTitle"><b>Title: { props.storyTitle }</b></p>
                 <div className="story">
-                    <p id="story">{props.storyContent}</p>
+                    <p id="story">{ props.storyContent }</p>
                 </div>
                 <button onClick={ goToPreviousStory }>{ '<' }</button>
                 <button onClick={ goToNextStory }>{ '>' }</button>

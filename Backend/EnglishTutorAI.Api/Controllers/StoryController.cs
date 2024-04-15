@@ -1,5 +1,6 @@
 ﻿using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Controllers.Attributes;
+using EnglishTutorAI.Application.Handlers.AddStory;
 using EnglishTutorAI.Application.Handlers.GetStories;
 using EnglishTutorAI.Application.Handlers.GetStoryCount;
 using EnglishTutorAI.Application.Models;
@@ -29,5 +30,11 @@ public class StoryController : ControllerBase
     public Task<int> GetStoryCount()
     {
         return _mediator.Send(new GetStoryCountQuery());
+    }
+
+    [HttpPost(Routes.Story.AddStory)]
+    public Task AddStory(StoryCreationRequest request)
+    {
+        return _mediator.Send(new AddStoryCommand(request));
     }
 }

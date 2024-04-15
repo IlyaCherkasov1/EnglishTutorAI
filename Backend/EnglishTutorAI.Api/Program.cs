@@ -23,7 +23,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 builder.Services.AddSingleton<IHttpClientFactory, ConfigurableProxyHttpClientFactory>();
 builder.Services.AddScoped<IPromptTemplateService, PromptTemplateService>();
-builder.Services.AddScoped<IStoryRetrieverService, StoryRetrieverService>();
+builder.Services.AddScoped<IStoryService, StoryService>();
 builder.Services.AddScoped<IStoryCounterService, StoryCounterService>();
 
 builder.Services.AddApplicationDependencies();
