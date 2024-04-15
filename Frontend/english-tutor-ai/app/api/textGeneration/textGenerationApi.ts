@@ -1,6 +1,8 @@
+import {RequestMethod} from "@/app/core/enum/requestMethod";
+
 export const GenerateChatCompletion = async (text: string) => {
     const response = await fetch('https://localhost:7008/api/TextGeneration/generate-chat-completion', {
-        method: 'POST',
+        method: RequestMethod.POST,
         headers: {
             'Content-Type': 'application/json',
         },
