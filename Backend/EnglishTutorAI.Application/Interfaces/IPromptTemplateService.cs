@@ -4,5 +4,5 @@ namespace EnglishTutorAI.Application.Interfaces;
 
 public interface IPromptTemplateService
 {
-    Task<string> GetFormattedPromptAsync(PromptParameters parameters);
+    Task<string> GetFormattedPromptAsync(Dictionary<string, string> placeholderValues, string templateKey);
 }

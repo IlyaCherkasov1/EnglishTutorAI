@@ -1,13 +1,14 @@
-﻿using MediatR;
+﻿using EnglishTutorAI.Application.Models.TextGeneration;
+using MediatR;
 
 namespace EnglishTutorAI.Application.Handlers.GenerateSentences;
 
 public class GenerateChatCompletionCommand : IRequest<string>
 {
-    public string Text { get; }
-
-    public GenerateChatCompletionCommand(string text)
+    public GenerateChatCompletionCommand(TextGenerationRequest request)
     {
-        Text = text;
+        TextGenerationRequest = request;
     }
+
+    public TextGenerationRequest TextGenerationRequest { get; }
 }

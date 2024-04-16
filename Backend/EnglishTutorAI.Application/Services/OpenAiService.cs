@@ -1,6 +1,8 @@
 ﻿using EnglishTutorAI.Application.Configurations;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models;
+using EnglishTutorAI.Application.Models.TextGeneration;
+using EnglishTutorAI.Domain.Extensions;
 using Microsoft.Extensions.Options;
 using OpenAI_API;
 using OpenAI_API.Chat;
@@ -9,7 +11,8 @@ namespace EnglishTutorAI.Application.Services
 {
     public class OpenAiService : IOpenAiService
     {
-        private const string Placeholder = "{Text}";
+        private const string TranslatedTextPlaceholder = "{TranslatedText}";
+        private const string OriginalTextPlaceholder = "{OriginalText}";
         private const string TemplateKey = "template";
 
         private readonly OpenAiConfig _openAiConfig;
@@ -26,15 +29,22 @@ namespace EnglishTutorAI.Application.Services
             _promptTemplateService = promptTemplateService;
         }
 
-        public async Task<string> GenerateChatCompletion(string text)
+        public async Task<string> GenerateChatCompletion(TextGenerationRequest request)
         {
             var api = new OpenAIAPI(_openAiConfig.Key) { HttpClientFactory = _httpClientFactory };
-            var prompt = await _promptTemplateService.GetFormattedPromptAsync(new PromptParameters
+
+            if (string.IsNullOrEmpty(request.OriginalText) || string.IsNullOrEmpty(request.TranslatedText))
             {
-                Placeholder = Placeholder,
-                Text = text,
-                TemplateKey = TemplateKey,
-            });
+                throw new ArgumentException("Text cannot be null or empty.");
+            }
+
+            var prompt = await _promptTemplateService.GetFormattedPromptAsync(
+                new Dictionary<string, string>
+                {
+                    { TranslatedTextPlaceholder, request.TranslatedText },
+                    { OriginalTextPlaceholder, request.OriginalText }
+                },
+                TemplateKey);
 
             var chatRequest = new ChatRequest
             {

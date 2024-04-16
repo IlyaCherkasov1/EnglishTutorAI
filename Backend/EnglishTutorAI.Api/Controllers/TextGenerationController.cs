@@ -21,7 +21,8 @@ public class TextGenerationController : ControllerBase
     [HttpPost(Routes.Assistant.GenerateChatCompletion)]
     public async Task<IActionResult> GenerateChatCompletionCommand(TextGenerationRequest request)
     {
-        var result = await _mediator.Send(new GenerateChatCompletionCommand(request.Text));
+        var result = await _mediator.Send(new GenerateChatCompletionCommand(request));
+
         return Ok(result);
     }
 }
