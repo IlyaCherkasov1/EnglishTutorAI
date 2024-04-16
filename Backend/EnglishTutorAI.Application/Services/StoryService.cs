@@ -32,7 +32,6 @@ public class StoryService : IStoryService
         {
             Title = creationRequest.Title,
             Content = creationRequest.Content,
-            CreatedAt = DateTime.UtcNow,
         };
 
         await _storyRepository.Add(story);
