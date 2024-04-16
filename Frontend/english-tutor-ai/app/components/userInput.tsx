@@ -1,4 +1,4 @@
-import {GenerateChatCompletion} from "@/app/api/textGeneration/textGenerationApi";
+import {generateChatCompletion} from "@/app/api/textGeneration/textGenerationApi";
 import {FormEvent, useState} from "react";
 
 interface Props {
@@ -10,7 +10,7 @@ const UserInput = (props: Props) => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const response = await GenerateChatCompletion(sentence);
+        const response = await generateChatCompletion(sentence);
         props.setCorrection(response);
     };
 
