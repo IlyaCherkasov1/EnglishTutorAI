@@ -1,6 +1,8 @@
-﻿namespace EnglishTutorAI.Domain.Entities;
+﻿using EnglishTutorAI.Domain.Interfaces;
 
-public class Story : Entity
+namespace EnglishTutorAI.Domain.Entities;
+
+public class Story : Entity, IHasCreatedAt
 {
     public string? Title { get; set; }
 
