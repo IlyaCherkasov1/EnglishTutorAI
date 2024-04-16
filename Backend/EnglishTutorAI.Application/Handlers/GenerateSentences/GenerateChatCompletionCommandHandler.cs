@@ -14,6 +14,6 @@ public class GenerateChatCompletionCommandHandler : IRequestHandler<GenerateChat
 
     public async Task<string> Handle(GenerateChatCompletionCommand request, CancellationToken cancellationToken)
     {
-        return await _openAiService.GenerateChatCompletion(request.Text);
+        return await _openAiService.GenerateChatCompletion(request.TextGenerationRequest);
     }
 }

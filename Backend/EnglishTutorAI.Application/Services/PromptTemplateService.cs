@@ -7,16 +7,18 @@ namespace EnglishTutorAI.Application.Services;
 public class PromptTemplateService : IPromptTemplateService
 {
     private const string PromptPath = "prompt.json";
-    public async Task<string> GetFormattedPromptAsync(PromptParameters parameters)
+
+    public async Task<string> GetFormattedPromptAsync(Dictionary<string, string> placeholderValues, string templateKey)
     {
         var promptTemplate = await File.ReadAllTextAsync(PromptPath);
         var promptData = JsonConvert.DeserializeObject<Dictionary<string, string>>(promptTemplate);
+        var result = string.Empty;
 
-        if (promptData != null && promptData.TryGetValue(parameters.TemplateKey!, out var template))
+        if (promptData == null || !promptData.TryGetValue(templateKey, out var template))
         {
-            return template.Replace(parameters.Placeholder!, parameters.Text);
+            return result;
         }
 
-        throw new FileNotFoundException("The prompt template could not be found or is invalid.");
+        return placeholderValues.Aggregate(template, (current, value) => current.Replace(value.Key, value.Value));
     }
 }

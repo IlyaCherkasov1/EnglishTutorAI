@@ -29,7 +29,7 @@ export default function Home() {
                     storyContent={storyContent}
                     currentStoryIndex={currentStoryIndex}
                     setCurrentStoryIndex={setCurrentStoryIndex} />
-                <UserInput setCorrection={setCorrection}/>
+                <UserInput setCorrection={setCorrection} storyContent={storyContent} />
                 <div id="correction">
                     <p id="correction-text">{ correction }</p>
                     <p id="correction-feedback">Feedback</p>

@@ -1,3 +1,3 @@
 {
-  "template": "correct grammar mistakes in this text. Text: {Text}"
+  "template": "Correct any grammar mistakes in this translated text: '{TranslatedText}', which is based on the original text: '{OriginalText}'."
 }
