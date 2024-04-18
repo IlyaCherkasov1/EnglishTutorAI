@@ -1,4 +1,5 @@
-﻿using EnglishTutorAI.Api.Constants;
+﻿using AutoMapper;
+using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Controllers.Attributes;
 using EnglishTutorAI.Application.Handlers.AddStory;
 using EnglishTutorAI.Application.Handlers.GetStories;
