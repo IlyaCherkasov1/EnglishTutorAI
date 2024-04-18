@@ -15,12 +15,10 @@ namespace EnglishTutorAI.Api.Controllers;
 public class StoryController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly IMapper _mapper;
 
-    public StoryController(IMediator mediator, IMapper mapper)
+    public StoryController(IMediator mediator)
     {
         _mediator = mediator;
-        _mapper = mapper;
     }
 
     [HttpGet(Routes.Story.GetStoryByIndex)]
@@ -38,6 +36,6 @@ public class StoryController : ControllerBase
     [HttpPost(Routes.Story.AddStory)]
     public Task AddStory(StoryCreationRequest request)
     {
-        return _mediator.Send(new AddStoryCommand(_mapper.Map<StoryCreationRequest>(request)));
+        return _mediator.Send(new AddStoryCommand(request));
     }
 }
