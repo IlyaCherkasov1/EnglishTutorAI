@@ -2,8 +2,8 @@ using EnglishTutorAI.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
 builder.Services.InstallServicesInAssembly(builder.Configuration);
+builder.Configuration.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
 
 var app = builder.Build();
 
