@@ -18,23 +18,22 @@ public class TrimStringInputFormatter : TextInputFormatter
 
     public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
     {
-        using (var reader = new StreamReader(
-                   context.HttpContext.Request.Body,
-                   encoding,
-                   detectEncodingFromByteOrderMarks: true,
-                   bufferSize: 1024,
-                   leaveOpen: true))
+        using var reader = new StreamReader(
+            context.HttpContext.Request.Body,
+            encoding,
+            detectEncodingFromByteOrderMarks: true,
+            bufferSize: 1024,
+            leaveOpen: true);
+
+        var json = await reader.ReadToEndAsync();
+        var jsonObject = JObject.Parse(json);
+
+        foreach (var prop in jsonObject.Properties().Where(p => p.Value.Type == JTokenType.String))
         {
-            var json = await reader.ReadToEndAsync();
-            var jsonObject = JObject.Parse(json);
-
-            foreach (var prop in jsonObject.Properties().Where(p => p.Value.Type == JTokenType.String))
-            {
-                jsonObject[prop.Name] = Regex.Replace(prop.Value.ToString().Trim(), @"\s+", " ");
-            }
-
-            var deserialized = JsonConvert.DeserializeObject(jsonObject.ToString(), context.ModelType);
-            return await InputFormatterResult.SuccessAsync(deserialized);
+            jsonObject[prop.Name] = Regex.Replace(prop.Value.ToString().Trim(), @"\s+", " ");
         }
+
+        var deserialized = JsonConvert.DeserializeObject(jsonObject.ToString(), context.ModelType);
+        return await InputFormatterResult.SuccessAsync(deserialized);
     }
 }
