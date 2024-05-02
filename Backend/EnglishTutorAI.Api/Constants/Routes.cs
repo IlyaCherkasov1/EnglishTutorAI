@@ -9,6 +9,15 @@ public class Routes
         public const string GetSentence = "get-sentence";
     }
 
+    public static class Story
+    {
+        public const string GetStoryByIndex = "get-story-by-index/{index}";
+
+        public const string Count = "count";
+
+        public const string AddStory = "add-story";
+    }
+
     public static class Assistant
     {
         public const string GenerateChatCompletion = "generate-chat-completion";

@@ -38,7 +38,27 @@ namespace EnglishTutorAI.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sentences");
+                    b.ToTable("Sentences", (string)null);
+                });
+
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.Stories", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Stories", (string)null);
                 });
 #pragma warning restore 612, 618
         }

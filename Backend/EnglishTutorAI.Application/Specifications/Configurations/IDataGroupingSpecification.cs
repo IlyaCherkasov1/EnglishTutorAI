@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using EnglishTutorAI.Domain.Entities;
 
-namespace EnglishTutorAI.Application.Specifications;
+namespace EnglishTutorAI.Application.Specifications.Configurations;
 
 public interface IDataGroupingSpecification<TSource, TKey, TResult> : ISpecification<TSource>
     where TSource : Entity
