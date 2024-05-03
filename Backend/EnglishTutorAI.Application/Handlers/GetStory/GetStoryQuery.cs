@@ -1,7 +1,7 @@
 ﻿using EnglishTutorAI.Application.Models;
 using MediatR;
 
-namespace EnglishTutorAI.Application.Handlers.GetStories;
+namespace EnglishTutorAI.Application.Handlers.GetStory;
 
 public class GetStoryQuery : IRequest<StoryResponse>
 {

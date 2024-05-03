@@ -16,6 +16,8 @@ public class Routes
         public const string Count = "count";
 
         public const string AddStory = "add-story";
+
+        public const string GetStories = "get-stories";
     }
 
     public static class Assistant
