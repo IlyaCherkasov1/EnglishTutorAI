@@ -2,7 +2,7 @@
 
 namespace EnglishTutorAI.Domain.Entities;
 
-public class Story : Entity, IHasCreatedAt
+public class Document : Entity, IHasCreatedAt
 {
     public string? Title { get; set; }
 

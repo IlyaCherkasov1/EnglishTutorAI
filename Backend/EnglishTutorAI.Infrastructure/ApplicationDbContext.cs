@@ -6,5 +6,5 @@ namespace EnglishTutorAI.Infrastructure;
 public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<Sentence> Sentences { get; set; }
-    public DbSet<Story> Stories { get; set; }
+    public DbSet<Document> Documents { get; set; }
 }

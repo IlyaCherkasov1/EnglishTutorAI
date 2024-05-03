@@ -1,7 +1,6 @@
 ﻿using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Controllers.Attributes;
 using EnglishTutorAI.Application.Handlers;
-using EnglishTutorAI.Application.Handlers.GetStoryCount;
 using EnglishTutorAI.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

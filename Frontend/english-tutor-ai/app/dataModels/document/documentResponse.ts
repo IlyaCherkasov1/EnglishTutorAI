@@ -1,4 +1,4 @@
-export interface StoryResponse {
+export interface DocumentResponse {
     id: string;
     title: string;
     content: string;

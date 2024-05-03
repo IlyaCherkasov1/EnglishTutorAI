@@ -3,9 +3,9 @@ using EnglishTutorAI.Domain.Entities;
 
 namespace EnglishTutorAI.Application.Specifications;
 
-public class StoryByIndexSpecification : Specification<Story>
+public class DocumentByIndexSpecification : Specification<Document>
 {
-    public StoryByIndexSpecification()
+    public DocumentByIndexSpecification()
     {
         ApplyOrderBy(s => s.CreatedAt);
     }

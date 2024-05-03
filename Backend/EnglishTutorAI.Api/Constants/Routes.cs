@@ -9,15 +9,15 @@ public class Routes
         public const string GetSentence = "get-sentence";
     }
 
-    public static class Story
+    public static class Document
     {
-        public const string GetStoryByIndex = "get-story-by-index/{index}";
+        public const string GetDocumentByIndex = "get-document-by-index/{index}";
 
         public const string Count = "count";
 
-        public const string AddStory = "add-story";
+        public const string AddDocument = "add-document";
 
-        public const string GetStories = "get-stories";
+        public const string GetDocument = "get-documents";
     }
 
     public static class Assistant
