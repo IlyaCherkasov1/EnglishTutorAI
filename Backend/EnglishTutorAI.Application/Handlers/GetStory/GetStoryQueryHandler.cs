@@ -3,22 +3,22 @@ using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models;
 using MediatR;
 
-namespace EnglishTutorAI.Application.Handlers.GetStories;
+namespace EnglishTutorAI.Application.Handlers.GetStory;
 
 public class GetStoryQueryHandler : IRequestHandler<GetStoryQuery, StoryResponse>
 {
-    private readonly IStoryService _storyService;
+    private readonly IStoryRetrievalService _storyRetrievalService;
     private readonly IMapper _mapper;
 
-    public GetStoryQueryHandler(IStoryService storyRetrieverService, IMapper mapper)
+    public GetStoryQueryHandler(IMapper mapper, IStoryRetrievalService storyRetrievalService)
     {
-        _storyService = storyRetrieverService;
         _mapper = mapper;
+        _storyRetrievalService = storyRetrievalService;
     }
 
     public async Task<StoryResponse> Handle(GetStoryQuery request, CancellationToken cancellationToken)
     {
-        var story = await _storyService.GetStoryByIndex(request.Index);
+        var story = await _storyRetrievalService.GetStoryByIndex(request.Index);
 
         return _mapper.Map<StoryResponse>(story);
     }

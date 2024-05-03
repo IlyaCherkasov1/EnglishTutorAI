@@ -17,7 +17,8 @@ public class DependencyRegistrationsInstaller : IServiceInstaller
         services.AddScoped<IOpenAiService, OpenAiService>();
         services.AddSingleton<IHttpClientFactory, ConfigurableProxyHttpClientFactory>();
         services.AddScoped<IPromptTemplateService, PromptTemplateService>();
-        services.AddScoped<IStoryService, StoryService>();
+        services.AddScoped<IStoryCreationService, StoryCreationCreationService>();
         services.AddScoped<IStoryCounterService, StoryCounterService>();
+        services.AddScoped<IStoryRetrievalService, StoryRetrievalService>();
     }
 }

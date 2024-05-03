@@ -1,46 +1,62 @@
 'use client'
 
-import UserInput from "@/app/components/userInput";
 import {useEffect, useState} from "react";
-import {getStoryByIndex, getStoryCount} from "@/app/api/story/storyApi";
-import StoryCarousel from "@/app/components/storyCarousel";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import FolderIcon from '@mui/icons-material/Folder';
+import DeleteIcon from '@mui/icons-material/Delete';
+import {getAllStories} from "@/app/api/story/storyApi";
+import {StoryListItem} from "@/app/dataModels/story/storyListItem";
+import {formatDateToISO} from "@/app/core/helpers/dateHelpers";
+import {Box} from "@mui/material";
 
 export default function Home() {
-    const [correction, setCorrection] = useState('');
-    const [storyContent, setStoryContent] = useState('');
-    const [storyTitle, setStoryTitle] = useState('');
-    const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
+    const [allStories, setAllStories] = useState<StoryListItem[]>([]);
 
     useEffect(() => {
-        const fetchStoryByIndex = async () => {
-            const response = await getStoryByIndex(currentStoryIndex);
-            setStoryTitle(response.title);
-            setStoryContent(response.content);
+        const fetchStories = async () => {
+            const response = await getAllStories();
+            setAllStories(response);
         }
 
-        fetchStoryByIndex().catch(console.error);
-    }, [currentStoryIndex])
+        fetchStories().catch(console.error);
+    }, []);
 
     return (
         <>
             <main>
-                <StoryCarousel
-                    storyTitle={storyTitle}
-                    storyContent={storyContent}
-                    currentStoryIndex={currentStoryIndex}
-                    setCurrentStoryIndex={setCurrentStoryIndex} />
-                <UserInput setCorrection={setCorrection} storyContent={storyContent} />
-                <div id="correction">
-                    <p id="correction-text">{ correction }</p>
-                    <p id="correction-feedback">Feedback</p>
-                </div>
-                <div id="translation">
-                    <p id="translation-text">AIs Translation:</p>
-                </div>
+                <Box sx={{ backgroundColor: (theme) => theme.palette.background.default }}>
+                    <List>
+                        {allStories ? (
+                            allStories.map(story => (
+                                <ListItem
+                                    key={story.title}
+                                    secondaryAction={
+                                        <IconButton edge="end" aria-label="delete">
+                                            <DeleteIcon/>
+                                        </IconButton>
+                                    }>
+                                    <ListItemAvatar>
+                                        <Avatar>
+                                            <FolderIcon/>
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={story.title}
+                                        secondary={formatDateToISO(story.createdAt)}/>
+                                </ListItem>))
+                        ) : (
+                            <ListItem>
+                                <ListItemText primary="Loading..."/>
+                            </ListItem>
+                        )}
+                    </List>
+                </Box>
             </main>
-            <footer>
-                <p>English Learning Assistant 2024</p>
-            </footer>
         </>
     );
 }

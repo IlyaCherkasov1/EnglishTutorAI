@@ -5,18 +5,18 @@ namespace EnglishTutorAI.Application.Handlers.AddStory;
 
 public class AddStoryCommandHandler : IRequestHandler<AddStoryCommand>
 {
-    private readonly IStoryService _storyService;
+    private readonly IStoryCreationService _storyCreationService;
     private readonly IUnitOfWork _unitOfWork;
 
-    public AddStoryCommandHandler(IStoryService storyService, IUnitOfWork unitOfWork)
+    public AddStoryCommandHandler(IStoryCreationService storyCreationService, IUnitOfWork unitOfWork)
     {
-        _storyService = storyService;
+        _storyCreationService = storyCreationService;
         _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(AddStoryCommand request, CancellationToken cancellationToken)
     {
-        await _storyService.AddStory(request.CreationRequest);
+        await _storyCreationService.AddStory(request.CreationRequest);
         await _unitOfWork.Commit();
     }
 }

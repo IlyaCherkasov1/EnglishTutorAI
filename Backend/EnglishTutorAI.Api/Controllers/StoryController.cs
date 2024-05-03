@@ -3,6 +3,7 @@ using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Controllers.Attributes;
 using EnglishTutorAI.Application.Handlers.AddStory;
 using EnglishTutorAI.Application.Handlers.GetStories;
+using EnglishTutorAI.Application.Handlers.GetStory;
 using EnglishTutorAI.Application.Handlers.GetStoryCount;
 using EnglishTutorAI.Application.Models;
 using MediatR;
@@ -37,5 +38,11 @@ public class StoryController : ControllerBase
     public Task AddStory(StoryCreationRequest request)
     {
         return _mediator.Send(new AddStoryCommand(request));
+    }
+
+    [HttpGet(Routes.Story.GetStories)]
+    public Task<IReadOnlyList<StoryListItem>> Get()
+    {
+        return _mediator.Send(new GetStoriesQuery());
     }
 }
