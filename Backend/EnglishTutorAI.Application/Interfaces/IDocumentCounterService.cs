@@ -1,6 +1,6 @@
 ﻿namespace EnglishTutorAI.Application.Interfaces;
 
-public interface IStoryCounterService
+public interface IDocumentCounterService
 {
     Task<int> Get();
 }

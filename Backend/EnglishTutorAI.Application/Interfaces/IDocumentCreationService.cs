@@ -3,7 +3,7 @@ using EnglishTutorAI.Domain.Entities;
 
 namespace EnglishTutorAI.Application.Interfaces;
 
-public interface IStoryCreationService
+public interface IDocumentCreationService
 {
-    Task AddStory(StoryCreationRequest creationRequest);
+    Task AddDocument(DocumentCreationRequest creationRequest);
 }

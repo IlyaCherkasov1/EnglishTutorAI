@@ -3,7 +3,7 @@ import {FormEvent, useState} from "react";
 
 interface Props {
     setCorrection: (value: string) => void;
-    storyContent: string;
+    documentContent: string;
 }
 
 const UserInput = (props: Props) => {
@@ -12,7 +12,7 @@ const UserInput = (props: Props) => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const response = await generateChatCompletion({
-            originalText: props.storyContent,
+            originalText: props.documentContent,
             translatedText: sentence,
         });
         props.setCorrection(response);

@@ -9,21 +9,21 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {getAllStories} from "@/app/api/story/storyApi";
-import {StoryListItem} from "@/app/dataModels/story/storyListItem";
+import {getAllDocuments} from "@/app/api/document/documentApi";
+import {DocumentListItem} from "@/app/dataModels/document/documentListItem";
 import {formatDateToISO} from "@/app/core/helpers/dateHelpers";
 import {Box} from "@mui/material";
 
 export default function Home() {
-    const [allStories, setAllStories] = useState<StoryListItem[]>([]);
+    const [allDocuments, setAllDocuments] = useState<DocumentListItem[]>([]);
 
     useEffect(() => {
-        const fetchStories = async () => {
-            const response = await getAllStories();
-            setAllStories(response);
+        const fetchDocuments = async () => {
+            const response = await getAllDocuments();
+            setAllDocuments(response);
         }
 
-        fetchStories().catch(console.error);
+        fetchDocuments().catch(console.error);
     }, []);
 
     return (
@@ -31,10 +31,10 @@ export default function Home() {
             <main>
                 <Box sx={{ backgroundColor: (theme) => theme.palette.background.default }}>
                     <List>
-                        {allStories ? (
-                            allStories.map(story => (
+                        {allDocuments ? (
+                            allDocuments.map(document => (
                                 <ListItem
-                                    key={story.title}
+                                    key={document.title}
                                     secondaryAction={
                                         <IconButton edge="end" aria-label="delete">
                                             <DeleteIcon/>
@@ -46,8 +46,8 @@ export default function Home() {
                                         </Avatar>
                                     </ListItemAvatar>
                                     <ListItemText
-                                        primary={story.title}
-                                        secondary={formatDateToISO(story.createdAt)}/>
+                                        primary={document.title}
+                                        secondary={formatDateToISO(document.createdAt)}/>
                                 </ListItem>))
                         ) : (
                             <ListItem>
