@@ -18,6 +18,8 @@ public class Routes
         public const string AddDocument = "add-document";
 
         public const string GetDocument = "get-documents";
+
+        public const string GetDocumentDetails = "get-document-details/{id}";
     }
 
     public static class Assistant

@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using EnglishTutorAI.Api.Constants;
+﻿using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Controllers.Attributes;
 using EnglishTutorAI.Application.Handlers.AddDocument;
 using EnglishTutorAI.Application.Handlers.GetDocument;
 using EnglishTutorAI.Application.Handlers.GetDocumentCount;
+using EnglishTutorAI.Application.Handlers.GetDocumentDetails;
 using EnglishTutorAI.Application.Handlers.GetDocuments;
 using EnglishTutorAI.Application.Models;
 using MediatR;
@@ -23,7 +23,7 @@ public class DocumentController : ControllerBase
     }
 
     [HttpGet(Routes.Document.GetDocumentByIndex)]
-    public Task<DocumentResponse> GetDocument(int index)
+    public Task<DocumentResponse> GetDocumentByIndex(int index)
     {
         return _mediator.Send(new GetDocumentQuery(index));
     }
@@ -44,5 +44,11 @@ public class DocumentController : ControllerBase
     public Task<IReadOnlyList<DocumentListItem>> Get()
     {
         return _mediator.Send(new GetDocumentsQuery());
+    }
+
+    [HttpGet(Routes.Document.GetDocumentDetails)]
+    public Task<DocumentResponse> GetDocumentDetails(Guid id)
+    {
+        return _mediator.Send(new GetDocumentDetailsQuery(id));
     }
 }

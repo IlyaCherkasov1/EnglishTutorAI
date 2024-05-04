@@ -12,7 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {getAllDocuments} from "@/app/api/document/documentApi";
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem";
 import {formatDateToISO} from "@/app/core/helpers/dateHelpers";
-import {Box} from "@mui/material";
+import {Box, Link} from "@mui/material";
 
 export default function Home() {
     const [allDocuments, setAllDocuments] = useState<DocumentListItem[]>([]);
@@ -33,22 +33,24 @@ export default function Home() {
                     <List>
                         {allDocuments ? (
                             allDocuments.map(document => (
-                                <ListItem
-                                    key={document.title}
-                                    secondaryAction={
-                                        <IconButton edge="end" aria-label="delete">
-                                            <DeleteIcon/>
-                                        </IconButton>
-                                    }>
-                                    <ListItemAvatar>
-                                        <Avatar>
-                                            <FolderIcon/>
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary={document.title}
-                                        secondary={formatDateToISO(document.createdAt)}/>
-                                </ListItem>))
+                                <Link href={`/documents/${document.id}`} key={document.id} underline="none">
+                                    <ListItem
+                                        key={document.id}
+                                        secondaryAction={
+                                            <IconButton edge="end" aria-label="delete">
+                                                <DeleteIcon/>
+                                            </IconButton>
+                                        }>
+                                        <ListItemAvatar>
+                                            <Avatar>
+                                                <FolderIcon/>
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primary={document.title}
+                                            secondary={formatDateToISO(document.createdAt)}/>
+                                    </ListItem>
+                                </Link>))
                         ) : (
                             <ListItem>
                                 <ListItemText primary="Loading..."/>
