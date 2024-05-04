@@ -2,6 +2,7 @@ import {DocumentResponse} from "@/app/dataModels/document/documentResponse";
 import {RequestMethod} from "@/app/core/enum/requestMethod";
 import {DocumentCreationRequest} from "@/app/dataModels/document/documentCreationRequest";
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem";
+import exp from "node:constants";
 
 export const getDocumentByIndex = async ( index: number): Promise<DocumentResponse> => {
     const response = await fetch(`https://localhost:7008/api/Document/get-document-by-index/${index}`, {
@@ -29,6 +30,14 @@ export const addDocument = async (request: DocumentCreationRequest ) => {
 
 export const getAllDocuments = async (): Promise<DocumentListItem[]> => {
     const response = await fetch(`https://localhost:7008/api/Document/get-documents`, {
+        method: RequestMethod.GET,
+    })
+
+    return response.json();
+}
+
+export const getDocumentDetails = async(id: string): Promise<DocumentResponse> =>{
+    const response = await fetch(`https://localhost:7008/api/Document/get-document-details/${id}`, {
         method: RequestMethod.GET,
     })
 

@@ -9,12 +9,10 @@ namespace EnglishTutorAI.Application.Services;
 public class DocumentRetrievalService : IDocumentRetrievalService
 {
     private readonly IRepository<Document> _documentRepository;
-    private readonly IMapper _mapper;
 
-    public DocumentRetrievalService(IRepository<Document> documentRepository, IMapper mapper)
+    public DocumentRetrievalService(IRepository<Document> documentRepository)
     {
         _documentRepository = documentRepository;
-        _mapper = mapper;
     }
 
     public async Task<Document> GetDocumentByIndex(int index)
@@ -29,8 +27,13 @@ public class DocumentRetrievalService : IDocumentRetrievalService
         throw new IndexOutOfRangeException("Index is out of range.");
     }
 
-    public async Task<IReadOnlyList<DocumentListItem>> GetAllDocuments()
+    public Task<Document> GetDocumentById(Guid id)
     {
-        return _mapper.Map<IReadOnlyList<DocumentListItem>>(await _documentRepository.ListAll());
+        return _documentRepository.GetById(id);
+    }
+
+    public Task<IReadOnlyList<Document>> GetAllDocuments()
+    {
+        return _documentRepository.ListAll();
     }
 }
