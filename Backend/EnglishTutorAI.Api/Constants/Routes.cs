@@ -20,6 +20,8 @@ public class Routes
         public const string GetDocument = "get-documents";
 
         public const string GetDocumentDetails = "get-document-details/{id}";
+
+        public const string SplitDocumentContent = "split-document-content";
     }
 
     public static class Assistant

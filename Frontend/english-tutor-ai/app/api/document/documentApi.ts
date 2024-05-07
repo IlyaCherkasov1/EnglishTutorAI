@@ -3,6 +3,7 @@ import {RequestMethod} from "@/app/core/enum/requestMethod";
 import {DocumentCreationRequest} from "@/app/dataModels/document/documentCreationRequest";
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem";
 import exp from "node:constants";
+import {SplitDocumentContentRequest} from "@/app/dataModels/splitDocumentContentRequest";
 
 export const getDocumentByIndex = async ( index: number): Promise<DocumentResponse> => {
     const response = await fetch(`https://localhost:7008/api/Document/get-document-by-index/${index}`, {
@@ -39,6 +40,18 @@ export const getAllDocuments = async (): Promise<DocumentListItem[]> => {
 export const getDocumentDetails = async(id: string): Promise<DocumentResponse> =>{
     const response = await fetch(`https://localhost:7008/api/Document/get-document-details/${id}`, {
         method: RequestMethod.GET,
+    })
+
+    return response.json();
+}
+
+export const splitDocumentContent = async (request: SplitDocumentContentRequest): Promise<string[]> => {
+    const response = await fetch('https://localhost:7008/api/Document/split-document-content', {
+        method: RequestMethod.POST,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(request),
     })
 
     return response.json();
