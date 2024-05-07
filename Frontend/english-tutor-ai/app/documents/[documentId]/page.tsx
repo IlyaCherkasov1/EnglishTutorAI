@@ -8,7 +8,7 @@ import Box from '@mui/material/Box/Box';
 import Button from '@mui/material/Button';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Grid from '@mui/material/Grid/Grid';
-import DocumentContentHighlighter from "@/app/components/DocumentContentHighlighter";
+import DocumentContentHighlighter from "@/app/components/documentContentHighlighter";
 
 const DocumentDetails = ({ params }: { params: { documentId: string } }) => {
     const [document, setDocument] = useState<DocumentResponse>()

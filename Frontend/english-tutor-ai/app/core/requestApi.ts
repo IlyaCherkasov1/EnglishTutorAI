@@ -67,7 +67,7 @@ export const httpGet = async <TResult>(options: RequestOptions<void>): Promise<T
     return performRequest("GET", options);
 }
 
-export const httpPost = async <TRequest, TResult = void>(options: RequestOptions<TRequest>): Promise<TResult> => {
+export const httpPost = async <TRequest, TResult = void | string>(options: RequestOptions<TRequest>): Promise<TResult> => {
     return performRequest<TRequest, TResult>("POST", options);
 }
 
