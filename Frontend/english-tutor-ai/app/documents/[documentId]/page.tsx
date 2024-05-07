@@ -1,27 +1,33 @@
 'use client'
 
 import React, {useEffect, useState} from 'react';
-import {getDocumentDetails} from "@/app/api/document/documentApi";
+import {getDocumentDetails, splitDocumentContent} from "@/app/api/document/documentApi";
 import {DocumentResponse} from "@/app/dataModels/document/documentResponse";
 import Typography from '@mui/material/Typography/Typography';
 import Box from '@mui/material/Box/Box';
-import {Textarea} from "@/app/components/textarea-autosize/textArea";
 import Button from '@mui/material/Button';
-import SendIcon from '@mui/icons-material/Send';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Grid from '@mui/material/Grid/Grid';
+import DocumentContentHighlighter from "@/app/components/DocumentContentHighlighter";
 
 const DocumentDetails = ({ params }: { params: { documentId: string } }) => {
     const [document, setDocument] = useState<DocumentResponse>()
+    const [sentences, setSentences] = useState<string[]>([]);
 
     useEffect(() => {
-        const fetchDocument = async () => {
-            const response = await getDocumentDetails(params.documentId);
-            setDocument(response);
-        }
-
-        fetchDocument().catch(console.error);
+        getDocumentDetails(params.documentId)
+            .then((data) => setDocument(data))
+            .catch(console.error)
     }, []);
+
+
+    useEffect(() => {
+        if (document?.content) {
+            splitDocumentContent({ text: document.content})
+                .then((data) => setSentences(data))
+                .catch(console.error);
+        }
+    }, [document]);
 
     const goBack = () => {
         window.history.back()
@@ -44,15 +50,11 @@ const DocumentDetails = ({ params }: { params: { documentId: string } }) => {
                     </Typography>
                 </Grid>
             </Grid>
-            <Typography sx={{ maxWidth: '80%' }} variant="body2" gutterBottom>
-                {document.content}
-            </Typography>
-            <Textarea sx={{ width: '80%' }} aria-label="minimum height" minRows={1} placeholder="Enter your text here..."/>
-            <Box sx={{ width: '80%', display: 'flex' }}>
-                <Button sx={{ marginLeft: 'auto' }} variant="contained" endIcon={<SendIcon/>}>
-                    Send
-                </Button>
-            </Box>
+            {sentences.length > 0 ? (
+                <DocumentContentHighlighter sentences={sentences} />
+            ) : (
+                <p>Loading text...</p>
+            )}
         </Box>
     ) : (
         <div>Loading..</div>
