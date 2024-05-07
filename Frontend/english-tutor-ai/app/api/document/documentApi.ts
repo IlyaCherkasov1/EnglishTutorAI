@@ -1,58 +1,37 @@
 import {DocumentResponse} from "@/app/dataModels/document/documentResponse";
-import {RequestMethod} from "@/app/core/enum/requestMethod";
 import {DocumentCreationRequest} from "@/app/dataModels/document/documentCreationRequest";
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem";
-import exp from "node:constants";
 import {SplitDocumentContentRequest} from "@/app/dataModels/splitDocumentContentRequest";
+import {httpGet, httpPost} from "@/app/core/requestApi";
+
+const documentsResource = "document";
 
 export const getDocumentByIndex = async ( index: number): Promise<DocumentResponse> => {
-    const response = await fetch(`https://localhost:7008/api/Document/get-document-by-index/${index}`, {
-        method: RequestMethod.GET,
-    })
-
-   return response.json();
+    return httpGet({ url: `${documentsResource}/count/get-document-by-index/${index}` })
 }
 
 export const getDocumentCount = async (): Promise<number> => {
-    const response = await fetch("https://localhost:7008/api/Document/count", {
-        method: RequestMethod.GET
-    })
-
-    return response.json();
+    return httpGet({ url: `${documentsResource}/count` })
 }
 
 export const addDocument = async (request: DocumentCreationRequest ) => {
-    await fetch("https://localhost:7008/api/Document/add-document", {
-        method: RequestMethod.POST,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(request),
-    })
+    return httpPost({
+        url: `${documentsResource}/add-document`,
+        body: request,
+    });
 }
 
 export const getAllDocuments = async (): Promise<DocumentListItem[]> => {
-    const response = await fetch(`https://localhost:7008/api/Document/get-documents`, {
-        method: RequestMethod.GET,
-    })
-
-    return response.json();
+    return httpGet({ url: `${documentsResource}/get-documents` })
 }
 
-export const getDocumentDetails = async(id: string): Promise<DocumentResponse> =>{
-    const response = await fetch(`https://localhost:7008/api/Document/get-document-details/${id}`, {
-        method: RequestMethod.GET,
-    })
-
-    return response.json();
+export const getDocumentDetails = async (id: string): Promise<DocumentResponse> => {
+    return httpGet({ url: `${documentsResource}/get-document-details/${id}` })
 }
 
 export const splitDocumentContent = async (request: SplitDocumentContentRequest): Promise<string[]> => {
-    const response = await fetch('https://localhost:7008/api/Document/split-document-content', {
-        method: RequestMethod.POST,
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(request),
-    })
-
-    return response.json();
+    return httpPost({
+        url: `${documentsResource}/split-document-content`,
+        body: request,
+    });
 }
