@@ -12,7 +12,7 @@ const contentTypes = {
     json: "application/json",
 };
 
-function getBody<T>(options: RequestOptions<T>) {
+const getBody = <T>(options: RequestOptions<T>) => {
     if (!options || !options.body) {
         return undefined;
     }
@@ -24,7 +24,7 @@ function getBody<T>(options: RequestOptions<T>) {
     return JSON.stringify(options.body);
 }
 
-function getContentTypeHeader<T>(options?: RequestOptions<T>): { "Content-Type": string } | {} {
+const getContentTypeHeader = <T>(options?: RequestOptions<T>): { "Content-Type": string } | {} => {
     if (options === null || options === undefined) {
         return { "Content-Type": contentTypes.plainText };
     }
@@ -36,7 +36,7 @@ function getContentTypeHeader<T>(options?: RequestOptions<T>): { "Content-Type":
     };
 }
 
-async function handleResponse(response: Response): Promise<any> {
+const handleResponse = async (response: Response): Promise<any> => {
     if (!response.ok) {
         throw new Error("error on performing API request")
     }
@@ -45,10 +45,10 @@ async function handleResponse(response: Response): Promise<any> {
     return text ? JSON.parse(text) : {};
 }
 
-async function performRequest<TRequest, TResult>(
+const performRequest = async <TRequest, TResult>(
     method: HttpRequestMethod,
     options: RequestOptions<TRequest>
-): Promise<TResult> {
+): Promise<TResult> => {
         const response = await fetch(`${apiRootUrl}/${options.url}`, {
             method,
             body: getBody(options),
@@ -63,22 +63,22 @@ async function performRequest<TRequest, TResult>(
 }
 
 
-export async function httpGet<TResult>(options: RequestOptions<void>): Promise<TResult> {
+export const httpGet = async <TResult>(options: RequestOptions<void>): Promise<TResult> => {
     return performRequest("GET", options);
 }
 
-export async function httpPost<TRequest, TResult = void>(options: RequestOptions<TRequest>): Promise<TResult> {
+export const httpPost = async <TRequest, TResult = void>(options: RequestOptions<TRequest>): Promise<TResult> => {
     return performRequest<TRequest, TResult>("POST", options);
 }
 
-export async function httpPut<TRequest, TResult = void>(options: RequestOptions<TRequest>): Promise<TResult> {
+export const httpPut = async <TRequest, TResult = void>(options: RequestOptions<TRequest>): Promise<TResult> => {
     return performRequest<TRequest, TResult>("PUT", options);
 }
 
-export async function httpDelete<TResult = void>(options: RequestOptions<void>): Promise<TResult> {
+export const httpDelete  = async <TResult = void>(options: RequestOptions<void>): Promise<TResult> => {
     return performRequest("DELETE", options);
 }
 
-export async function httpPatch<TRequest, TResult = void>(options: RequestOptions<TRequest>): Promise<TResult> {
+export const httpPatch = async <TRequest, TResult = void>(options: RequestOptions<TRequest>): Promise<TResult> => {
     return performRequest<TRequest, TResult>("PATCH", options);
 }
