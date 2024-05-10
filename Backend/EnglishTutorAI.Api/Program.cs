@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.InstallServicesInAssembly(builder.Configuration);
 builder.Configuration.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
+builder.Services.AddCors();
 
 var app = builder.Build();
 
