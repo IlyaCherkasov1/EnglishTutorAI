@@ -1,64 +1,8 @@
-'use client'
-
-import {useEffect, useState} from "react";
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemText from '@mui/material/ListItemText';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import FolderIcon from '@mui/icons-material/Folder';
-import DeleteIcon from '@mui/icons-material/Delete';
 import {getAllDocuments} from "@/app/api/document/documentApi";
-import {DocumentListItem} from "@/app/dataModels/document/documentListItem";
-import {formatDateToISO} from "@/app/core/helpers/dateHelpers";
-import {Box, Link} from "@mui/material";
+import {DocumentsList} from "@/app/components/document/documentsList";
 
-export default function Home() {
-    const [allDocuments, setAllDocuments] = useState<DocumentListItem[]>([]);
+export default async function Home() {
+    const allDocuments = await getAllDocuments();
 
-    useEffect(() => {
-        const fetchDocuments = async () => {
-            const response = await getAllDocuments();
-            setAllDocuments(response);
-        }
-
-        fetchDocuments().catch(console.error);
-    }, []);
-
-    return (
-        <>
-            <main>
-                <Box sx={{ backgroundColor: (theme) => theme.palette.background.default }}>
-                    <List>
-                        {allDocuments ? (
-                            allDocuments.map(document => (
-                                <Link href={`/documents/${document.id}`} key={document.id} underline="none">
-                                    <ListItem
-                                        key={document.id}
-                                        secondaryAction={
-                                            <IconButton edge="end" aria-label="delete">
-                                                <DeleteIcon/>
-                                            </IconButton>
-                                        }>
-                                        <ListItemAvatar>
-                                            <Avatar>
-                                                <FolderIcon/>
-                                            </Avatar>
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                            primary={document.title}
-                                            secondary={formatDateToISO(document.createdAt)}/>
-                                    </ListItem>
-                                </Link>))
-                        ) : (
-                            <ListItem>
-                                <ListItemText primary="Loading..."/>
-                            </ListItem>
-                        )}
-                    </List>
-                </Box>
-            </main>
-        </>
-    );
+    return <DocumentsList allDocuments={allDocuments} />
 }
