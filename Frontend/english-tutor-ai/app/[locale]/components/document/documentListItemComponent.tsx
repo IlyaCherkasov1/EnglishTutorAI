@@ -32,7 +32,6 @@ export const DocumentListItemComponent = (props: Props) => {
                     primary={props.document.title}
                     secondary={formatDateToISO(props.document.createdAt)}/>
             </ListItem>
-
         </>
     );
 };
