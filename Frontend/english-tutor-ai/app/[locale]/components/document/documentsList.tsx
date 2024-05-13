@@ -7,12 +7,15 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem";
 import {DocumentListItemComponent} from "@/app/[locale]/components/document/documentListItemComponent";
+import {useI18n} from "@/app/locales/client";
 
 interface Props {
     allDocuments: DocumentListItem[];
 }
 
-export  const DocumentsList = (props: Props) => {
+export const DocumentsList = (props: Props) => {
+    const t = useI18n()
+
     return (
         <main>
             <Box sx={{ backgroundColor: (theme) => theme.palette.background.default }}>
@@ -24,7 +27,7 @@ export  const DocumentsList = (props: Props) => {
                             </Link>))
                     ) : (
                         <ListItem>
-                            <ListItemText primary=""/>
+                            <ListItemText primary={t('loading')}/>
                         </ListItem>
                     )}
                 </List>

@@ -11,7 +11,7 @@ export default async function RootLayout({ children, params: { locale } }: Reado
 }>) {
 
     return (
-        <html>
+        <html lang={locale}>
         <body>
         <AppRouterCacheProvider>
             <ThemeProvider theme={theme}>
