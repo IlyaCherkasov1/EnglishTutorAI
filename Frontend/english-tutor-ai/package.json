@@ -9,20 +9,27 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "^5.0.13",
+    "@formatjs/intl-localematcher": "^0.5.4",
     "@mui/icons-material": "^5.15.16",
     "@mui/material": "^5.15.16",
+    "@mui/material-nextjs": "^5.15.11",
     "dayjs": "^1.11.11",
-    "next": "14.1.0",
+    "negotiator": "^0.6.3",
+    "next": "^14.2.3",
+    "next-google-fonts": "^2.2.0",
+    "next-international": "^1.2.4",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/negotiator": "^0.6.3",
     "@types/node": "20.11.30",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^18.2.71",
+    "@types/react-dom": "^18.2.22",
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
     "typescript": "5.4.3"

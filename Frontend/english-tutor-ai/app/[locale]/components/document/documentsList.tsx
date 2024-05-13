@@ -6,13 +6,13 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem";
-import {DocumentListItemComponent} from "@/app/components/document/documentListItemComponent";
+import {DocumentListItemComponent} from "@/app/[locale]/components/document/documentListItemComponent";
 
 interface Props {
     allDocuments: DocumentListItem[];
 }
 
-export const DocumentsList = (props: Props) => {
+export  const DocumentsList = (props: Props) => {
     return (
         <main>
             <Box sx={{ backgroundColor: (theme) => theme.palette.background.default }}>
@@ -24,7 +24,7 @@ export const DocumentsList = (props: Props) => {
                             </Link>))
                     ) : (
                         <ListItem>
-                            <ListItemText primary="Loading..."/>
+                            <ListItemText primary=""/>
                         </ListItem>
                     )}
                 </List>

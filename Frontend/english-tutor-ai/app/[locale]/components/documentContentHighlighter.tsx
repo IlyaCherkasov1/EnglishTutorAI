@@ -4,9 +4,10 @@ import React, {useState} from 'react';
 import {Button, Typography} from '@mui/material';
 import SendIcon from "@mui/icons-material/Send";
 import Box from '@mui/material/Box/Box';
-import {Textarea} from "@/app/components/textarea-autosize/textArea";
+import {Textarea} from "@/app/[locale]/components/textarea-autosize/textArea";
 import {generateChatCompletion} from "@/app/api/textGeneration/textGenerationApi";
-import DocumentCorrectionOutput from "@/app/components/documentCorrectionOutput";
+import DocumentCorrectionOutput from "@/app/[locale]/components/documentCorrectionOutput";
+import {useI18n} from "@/app/locales/client";
 
 interface Props {
     sentences: string[];
@@ -18,6 +19,7 @@ const DocumentContentHighlighter = (props: Props) => {
     const [translatedText, setTranslatedText] = useState('');
     const [correctedText, setCorrectedText] = useState('');
     const [isCorrected, setIsCorrected] = useState(false);
+    const t = useI18n()
 
     const checkSentence = async (sentence: string): Promise<void> => {
         const response = await generateChatCompletion({
@@ -55,16 +57,16 @@ const DocumentContentHighlighter = (props: Props) => {
                       minRows={1}
                       onChange={(e) => setTextAreaValue(e.target.value)}
                       value={textAreaValue}
-                      placeholder="Enter your text here..."/>
+                      placeholder={t('enterYourText')}/>
             <Box sx={{ width: '100%', display: 'flex' }}>
                 <Button sx={{ marginLeft: 'auto' }}
                         onClick={() => checkSentence(props.sentences[currentLine])}
                         variant="contained" endIcon={<SendIcon/>}>
-                    Send
+                    {t('send')}
                 </Button>
             </Box>
             {isCorrected ? (
-                <DocumentCorrectionOutput correctedText={correctedText} translatedText={translatedText}/>
+                <DocumentCorrectionOutput correctedText={correctedText} translatedText={translatedText} />
             ) : (<> </>)
             }
         </Box>
