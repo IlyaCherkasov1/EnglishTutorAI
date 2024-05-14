@@ -22,26 +22,7 @@ namespace EnglishTutorAI.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.Sentence", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CorrectedSentence")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("OriginalSentence")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Sentences", (string)null);
-                });
-
-            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.Stories", b =>
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.Document", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -58,7 +39,26 @@ namespace EnglishTutorAI.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stories", (string)null);
+                    b.ToTable("Documents");
+                });
+
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.Sentence", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CorrectedSentence")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("OriginalSentence")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sentences");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,6 +8,7 @@ public class ApplicationMappingProfile : Profile
 {
     public ApplicationMappingProfile()
     {
-        CreateMap<Story, StoryResponse>();
+        CreateMap<Document, DocumentResponse>();
+        CreateMap<Document, DocumentListItem>();
     }
 }
