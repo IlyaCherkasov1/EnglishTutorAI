@@ -3,10 +3,11 @@ export default {
     "title": "Заголовок",
     "documentContent": "Содержимое документа",
     "back": "Назад",
-    "enterYourText": "Введите ваш текст здесь...",
+    "enterYourText": "Введите ваш текст...",
     "correctedText": "Исправленный текст",
     "yourTranslation": "Ваш перевод",
     "askAI": "спросить ИИ",
     "send": "отправить",
-    "loading": "Загрузка..."
+    "loading": "Загрузка...",
+    "addingDocumentStatus": "Добавление документа...",
 } as const

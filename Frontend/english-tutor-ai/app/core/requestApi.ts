@@ -5,7 +5,7 @@ export interface RequestOptions<T> {
     body?: T;
 }
 
-export const apiRootUrl = "https://localhost:7008/api";
+export const apiRootUrl = process.env.LOCAL_API_URL;
 
 const contentTypes = {
     plainText: "text/plain",
