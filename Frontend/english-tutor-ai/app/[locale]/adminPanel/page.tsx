@@ -1,25 +1,28 @@
 'use client'
 
-import {useState} from "react";
-import {addDocument} from "@/app/api/document/documentApi";
+import {SubmitButton} from "@/app/[locale]/components/buttons/submitButton";
 import {useI18n} from "@/app/locales/client";
+import React, {useRef} from "react";
+import {Textarea} from "@/app/[locale]/components/textarea-autosize/textArea";
+import {TextField} from "@mui/material";
+import Typography from '@mui/material/Typography/Typography';
+import {addDocumentAction} from "@/app/actions/actions";
 
 export default function AdminPanel() {
-    const [title, setTitle] = useState ( '' );
-    const [content, setContent] = useState ( '' );
-    const t = useI18n()
-
-    const handleOnClick = async() => {
-        await addDocument({title: title, content: content})
-    }
+    const t = useI18n();
+    const formRef = useRef<HTMLFormElement>(null);
 
     return (
-        <>
-            <p>{t('title')}</p>
-            <input id="document-title" onChange={(e) => setTitle(e.target.value)} />
-            <p>{t('documentContent')}</p>
-            <textarea id="document-input" onChange={( e ) => setContent(e.target.value)} />
-            <button onClick={handleOnClick} id="submit-btn">{t('add')}</button>
-        </>
+        <form ref={formRef} action={async (formData) => {
+            await addDocumentAction(formData);
+            formRef.current?.reset();
+        }}>
+            <Typography>{t('title')}</Typography>
+            <TextField sx={{ width: '20%' }} name="document-title" label="Required" variant="outlined" required />
+            <Typography>{t('documentContent')}</Typography>
+            <Textarea name="document-input" sx={{ width: '70%', marginBottom: 2 }}
+                      aria-label="minimum height" minRows={1} required />
+            <SubmitButton />
+        </form>
     )
 }

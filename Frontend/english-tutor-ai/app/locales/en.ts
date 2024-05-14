@@ -3,10 +3,11 @@ export default {
     "title": "Title",
     "documentContent": "Document Content",
     "back": "Back",
-    "enterYourText": "Enter your text here...",
+    "enterYourText": "Write your text...",
     "correctedText": "Corrected text",
     "yourTranslation": "Your translation",
     "askAI": "ask AI",
     "send": "send",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "addingDocumentStatus": "adding document...",
 } as const

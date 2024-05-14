@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Button, Typography} from '@mui/material';
 import SendIcon from "@mui/icons-material/Send";
 import Box from '@mui/material/Box/Box';
@@ -15,25 +15,26 @@ interface Props {
 
 const DocumentContentHighlighter = (props: Props) => {
     const [currentLine, setCurrentLine] = useState(0);
-    const [textAreaValue, setTextAreaValue] = useState('');
     const [translatedText, setTranslatedText] = useState('');
     const [correctedText, setCorrectedText] = useState('');
     const [isCorrected, setIsCorrected] = useState(false);
     const t = useI18n()
+    const formRef = useRef<HTMLFormElement>(null);
 
-    const checkSentence = async (sentence: string): Promise<void> => {
+    const checkSentence = async (formData: FormData): Promise<void> => {
+        const translatedText = formData.get('textarea-value') as string;
+
         const response = await generateChatCompletion({
-            originalText: sentence,
-            translatedText: textAreaValue,
+            originalText: props.sentences[currentLine],
+            translatedText: translatedText,
         })
 
+        setTranslatedText(translatedText);
         setStates(response);
     }
 
     const setStates = (response: string) => {
         setCorrectedText(response);
-        setTranslatedText(textAreaValue);
-        setTextAreaValue('');
         setCurrentLine((prevLine) => prevLine + 1)
         setIsCorrected(true);
     };
@@ -52,19 +53,21 @@ const DocumentContentHighlighter = (props: Props) => {
                     {line}
                 </Typography>
             ))}
-            <Textarea sx={{ width: '100%' }}
-                      aria-label="minimum height"
-                      minRows={1}
-                      onChange={(e) => setTextAreaValue(e.target.value)}
-                      value={textAreaValue}
-                      placeholder={t('enterYourText')}/>
-            <Box sx={{ width: '100%', display: 'flex' }}>
-                <Button sx={{ marginLeft: 'auto' }}
-                        onClick={() => checkSentence(props.sentences[currentLine])}
-                        variant="contained" endIcon={<SendIcon/>}>
-                    {t('send')}
-                </Button>
-            </Box>
+            <form ref={formRef} action={async (formData) => {
+                await checkSentence(formData);
+                formRef.current?.reset();
+            }}>
+                <Textarea sx={{ width: '100%' }}
+                          name="textarea-value"
+                          aria-label="minimum height"
+                          minRows={1}
+                          placeholder={t('enterYourText')}/>
+                <Box sx={{ width: '100%', display: 'flex' }}>
+                    <Button sx={{ marginLeft: 'auto' }} type="submit" variant="contained" endIcon={<SendIcon/>}>
+                        {t('send')}
+                    </Button>
+                </Box>
+            </form>
             {isCorrected ? (
                 <DocumentCorrectionOutput correctedText={correctedText} translatedText={translatedText} />
             ) : (<> </>)
