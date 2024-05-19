@@ -5,7 +5,7 @@ export interface RequestOptions<T> {
     body?: T;
 }
 
-export const apiRootUrl = process.env.LOCAL_API_URL;
+export const apiRootUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL;
 
 const contentTypes = {
     plainText: "text/plain",

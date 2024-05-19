@@ -1,12 +1,10 @@
 'use client'
 
-import {SubmitButton} from "@/app/[locale]/components/buttons/submitButton";
-import {useI18n} from "@/app/locales/client";
 import React, {useRef} from "react";
-import {Textarea} from "@/app/[locale]/components/textarea-autosize/textArea";
-import {TextField} from "@mui/material";
-import Typography from '@mui/material/Typography/Typography';
+import {SubmitButton} from "@/app/components/component/buttons/submitButton";
+import {useI18n} from "@/app/locales/client";
 import {addDocumentAction} from "@/app/actions/actions";
+import {Textarea} from "@/app/components/ui/textarea";
 
 export default function AdminPanel() {
     const t = useI18n();
@@ -16,13 +14,18 @@ export default function AdminPanel() {
         <form ref={formRef} action={async (formData) => {
             await addDocumentAction(formData);
             formRef.current?.reset();
-        }}>
-            <Typography>{t('title')}</Typography>
-            <TextField sx={{ width: '20%' }} name="document-title" label="Required" variant="outlined" required />
-            <Typography>{t('documentContent')}</Typography>
-            <Textarea name="document-input" sx={{ width: '70%', marginBottom: 2 }}
-                      aria-label="minimum height" minRows={1} required />
-            <SubmitButton />
+        }} className="space-y-4">
+            <div className="mb-2 text-lg font-medium">{t('title')}</div>
+            <input
+                type="text"
+                name="document-title"
+                placeholder="Required"
+                required
+                className="block w-1/5 p-2 border border-gray-300 rounded"
+            />
+            <div className="mb-2 text-lg font-medium">{t('documentContent')}</div>
+            <Textarea name="document-input" required />
+            <SubmitButton/>
         </form>
-    )
+    );
 }
