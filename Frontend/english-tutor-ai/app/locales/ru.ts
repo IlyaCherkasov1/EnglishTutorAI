@@ -10,4 +10,5 @@ export default {
     "send": "отправить",
     "loading": "Загрузка...",
     "addingDocumentStatus": "Добавление документа...",
+    "translationSuccessMessage": "Отлично! Ваш перевод правильный.",
 } as const
