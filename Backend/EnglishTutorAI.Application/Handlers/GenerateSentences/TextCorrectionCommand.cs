@@ -3,9 +3,9 @@ using MediatR;
 
 namespace EnglishTutorAI.Application.Handlers.GenerateSentences;
 
-public class GenerateChatCompletionCommand : IRequest<string>
+public class TextCorrectionCommand : IRequest<(bool IsCorrected, string CorrectedText)>
 {
-    public GenerateChatCompletionCommand(TextGenerationRequest request)
+    public TextCorrectionCommand(TextGenerationRequest request)
     {
         TextGenerationRequest = request;
     }

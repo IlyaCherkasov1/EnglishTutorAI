@@ -9,7 +9,7 @@ using OpenAI_API.Chat;
 
 namespace EnglishTutorAI.Application.Services
 {
-    public class OpenAiService : IOpenAiService
+    public class TextCorrectionService : ITextCorrectionService
     {
         private const string TranslatedTextPlaceholder = "{TranslatedText}";
         private const string OriginalTextPlaceholder = "{OriginalText}";
@@ -19,7 +19,7 @@ namespace EnglishTutorAI.Application.Services
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IPromptTemplateService _promptTemplateService;
 
-        public OpenAiService(
+        public TextCorrectionService(
             IOptionsMonitor<OpenAiConfig> openAiConfig,
             IHttpClientFactory httpClientFactory,
             IPromptTemplateService promptTemplateService)
@@ -29,10 +29,20 @@ namespace EnglishTutorAI.Application.Services
             _promptTemplateService = promptTemplateService;
         }
 
-        public async Task<string> GenerateChatCompletion(TextGenerationRequest request)
+        public async Task<(bool IsCorrected, string CorrectedText)> Correct(
+            TextGenerationRequest request)
         {
             var api = new OpenAIAPI(_openAiConfig.Key) { HttpClientFactory = _httpClientFactory };
+            var chatRequest = await GenerateChatRequest(request);
 
+            var correctedText = (await api.Chat.CreateChatCompletionAsync(chatRequest)).ToString();
+            var isCorrected = !correctedText.Equals(request.TranslatedText, StringComparison.OrdinalIgnoreCase);
+
+            return (isCorrected, correctedText);
+        }
+
+        private async Task<ChatRequest> GenerateChatRequest(TextGenerationRequest request)
+        {
             if (string.IsNullOrEmpty(request.OriginalText) || string.IsNullOrEmpty(request.TranslatedText))
             {
                 throw new ArgumentException("Text cannot be null or empty.");
@@ -51,9 +61,7 @@ namespace EnglishTutorAI.Application.Services
                 Messages = new List<ChatMessage> { new(ChatMessageRole.User, prompt) },
             };
 
-            var completionResult = await api.Chat.CreateChatCompletionAsync(chatRequest);
-
-            return completionResult.ToString();
+            return chatRequest;
         }
     }
 }

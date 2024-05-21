@@ -19,10 +19,10 @@ public class TextGenerationController : ControllerBase
     }
 
     [HttpPost(Routes.Assistant.GenerateChatCompletion)]
-    public async Task<IActionResult> GenerateChatCompletionCommand(TextGenerationRequest request)
+    public async Task<IActionResult> CorrectText(TextGenerationRequest request)
     {
-        var result = await _mediator.Send(new GenerateChatCompletionCommand(request));
+        var (isCorrected, correctedText) = await _mediator.Send(new TextCorrectionCommand(request));
 
-        return Ok(result);
+        return Ok(new { IsCorrected = isCorrected, CorrectedText = correctedText });
     }
 }

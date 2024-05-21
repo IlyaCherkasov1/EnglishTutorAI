@@ -1,3 +1,3 @@
 {
-  "template": "Correct any grammar mistakes and make this text sound more natural, where possible: '{TranslatedText}', based on the original text: '{OriginalText}'."
+  "template": "Check the following text for grammar mistakes  and correct them if there are any, and make this text sound more natural where possible: '{TranslatedText}', based on the original text: '{OriginalText}' If there are no mistakes, just return the sentence as is: '{TranslatedText}'."
 }

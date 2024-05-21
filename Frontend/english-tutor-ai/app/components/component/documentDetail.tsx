@@ -2,10 +2,11 @@
 
 import React, {useRef, useState} from "react";
 import {useI18n} from "@/app/locales/client";
-import {generateChatCompletion} from "@/app/api/textGeneration/textGenerationApi";
 import {Button} from "@/app/components/ui/button";
 import DocumentCorrectionOutput from "@/app/components/component/document/documentCorrectionOutput";
 import {Textarea} from "@/app/components/ui/textarea";
+import {handleCorrection} from "@/app/actions/actions";
+import ChatBotToggle from "@/app/components/component/chatBotToggle";
 
 interface Props {
     documentTitle: string;
@@ -14,29 +15,26 @@ interface Props {
 
 export function DocumentDetail(props: Props) {
     const [currentLine, setCurrentLine] = useState(0);
-    const [translatedText, setTranslatedText] = useState('');
     const [correctedText, setCorrectedText] = useState('');
     const [isCorrected, setIsCorrected] = useState(false);
+    const [isDisplayResponse, setIsDisplayResponse] = useState(false);
+
     const t = useI18n()
     const formRef = useRef<HTMLFormElement>(null);
 
-    const checkSentence = async (formData: FormData): Promise<void> => {
-        const translatedText = formData.get('textarea-value') as string;
+    const handleFormAction = async (formData: FormData) => {
+        const { isCorrected, correctedText } = await handleCorrection(formData, props.sentences[currentLine]);
 
-        const response = await generateChatCompletion({
-            originalText: props.sentences[currentLine],
-            translatedText: translatedText,
-        })
+        if (isCorrected) {
+            setCorrectedText(correctedText);
+        } else {
+            setCurrentLine((prevLine) => prevLine + 1)
+            formRef.current?.reset();
+        }
 
-        setTranslatedText(translatedText);
-        setStates(response);
+        setIsCorrected(isCorrected);
+        setIsDisplayResponse(true);
     }
-
-    const setStates = (response: string) => {
-        setCorrectedText(response);
-        setCurrentLine((prevLine) => prevLine + 1)
-        setIsCorrected(true);
-    };
 
     return (
         <div>
@@ -52,20 +50,17 @@ export function DocumentDetail(props: Props) {
                             </span>
                         ))}
                     </div>
-                    <form ref={formRef} className="flex flex-col  mb-4" action={async (formData) => {
-                        await checkSentence(formData);
-                        formRef.current?.reset();
-                    }}>
+                    <form ref={formRef} className="flex flex-col  mb-4" action={handleFormAction}>
                         <Textarea name="textarea-value" placeholder={t('enterYourText')}/>
                         <div className="flex justify-end mt-2">
                             <Button type="submit">SEND</Button>
                         </div>
                     </form>
-                    {isCorrected ? (
-                        <DocumentCorrectionOutput correctedText={correctedText} translatedText={translatedText}/>
-                    ) : (<> </>)
+                    {isDisplayResponse ?
+                        <DocumentCorrectionOutput correctedText={correctedText} isCorrected={isCorrected}/> : <></>
                     }
                 </div>
+                <ChatBotToggle/>
             </div>
         </div>
     )
