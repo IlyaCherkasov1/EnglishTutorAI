@@ -26,6 +26,6 @@ public class Routes
 
     public static class Assistant
     {
-        public const string GenerateChatCompletion = "generate-chat-completion";
+        public const string GenerateChatCompletion = "correct-text";
     }
 }
