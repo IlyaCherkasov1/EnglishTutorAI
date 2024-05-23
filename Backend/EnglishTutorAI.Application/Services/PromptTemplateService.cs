@@ -1,5 +1,4 @@
 ﻿using EnglishTutorAI.Application.Interfaces;
-using EnglishTutorAI.Application.Models;
 using Newtonsoft.Json;
 
 namespace EnglishTutorAI.Application.Services;

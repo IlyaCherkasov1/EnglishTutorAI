@@ -1,7 +1,7 @@
 'use server'
 
 import {addDocument} from "@/app/api/document/documentApi";
-import {correctText} from "@/app/api/textGeneration/textGenerationApi";
+import {correctText} from "@/app/api/languageModel/languageModelApi";
 
 export const addDocumentAction = async (formData: FormData) => {
     const title = formData.get('document-title') as string;
