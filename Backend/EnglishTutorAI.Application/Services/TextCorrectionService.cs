@@ -1,11 +1,10 @@
 ﻿using EnglishTutorAI.Application.Configurations;
 using EnglishTutorAI.Application.Interfaces;
-using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Models.TextGeneration;
-using EnglishTutorAI.Domain.Extensions;
 using Microsoft.Extensions.Options;
-using OpenAI_API;
-using OpenAI_API.Chat;
+using OpenAI;
+using OpenAI.Chat;
+using OpenAI.Models;
 
 namespace EnglishTutorAI.Application.Services
 {
@@ -32,10 +31,12 @@ namespace EnglishTutorAI.Application.Services
         public async Task<(bool IsCorrected, string CorrectedText)> Correct(
             TextGenerationRequest request)
         {
-            var api = new OpenAIAPI(_openAiConfig.Key) { HttpClientFactory = _httpClientFactory };
+            using var customHttpClient = _httpClientFactory.CreateClient();
+            var api = new OpenAIClient(_openAiConfig.Key, client: customHttpClient);
+
             var chatRequest = await GenerateChatRequest(request);
 
-            var correctedText = (await api.Chat.CreateChatCompletionAsync(chatRequest)).ToString();
+            var correctedText = (await api.ChatEndpoint.GetCompletionAsync(chatRequest)).ToString();
             var isCorrected = !correctedText.Equals(request.TranslatedText, StringComparison.OrdinalIgnoreCase);
 
             return (isCorrected, correctedText);
@@ -56,10 +57,8 @@ namespace EnglishTutorAI.Application.Services
                 },
                 TemplateKey);
 
-            var chatRequest = new ChatRequest
-            {
-                Messages = new List<ChatMessage> { new(ChatMessageRole.User, prompt) },
-            };
+            var messages = new List<Message> { new(Role.User, prompt) };
+            var chatRequest = new ChatRequest(messages, Model.GPT3_5_Turbo);
 
             return chatRequest;
         }

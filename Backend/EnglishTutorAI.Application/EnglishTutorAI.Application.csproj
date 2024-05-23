@@ -8,9 +8,11 @@
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="13.0.1" />
-      <PackageReference Include="ElevenLabs-DotNet" Version="2.1.1" />
       <PackageReference Include="MediatR" Version="12.2.0" />
-      <PackageReference Include="OpenAI" Version="1.11.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <Reference Include="OpenAI-DotNet">
+            <HintPath>libs\OpenAI-DotNet.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>
@@ -23,6 +25,9 @@
       </Reference>
       <Reference Include="Microsoft.AspNetCore.Mvc.Core">
         <HintPath>..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.2\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.Extensions.Http">
+        <HintPath>..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.4\Microsoft.Extensions.Http.dll</HintPath>
       </Reference>
     </ItemGroup>
 

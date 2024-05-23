@@ -21,5 +21,7 @@ public class DependencyRegistrationsInstaller : IServiceInstaller
         services.AddScoped<IDocumentCounterService, DocumentCounterService>();
         services.AddScoped<IDocumentRetrievalService, DocumentRetrievalService>();
         services.AddScoped<ISentenceSplitterService, SentenceSplitterService>();
+        services.AddSingleton<IAssistantClient, AssistantClient>();
+        services.AddSingleton<IAssistantService, AssistantService>();
     }
 }
