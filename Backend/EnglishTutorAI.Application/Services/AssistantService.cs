@@ -1,4 +1,6 @@
-﻿using EnglishTutorAI.Application.Interfaces;
+﻿using EnglishTutorAI.Application.Configurations;
+using EnglishTutorAI.Application.Interfaces;
+using Microsoft.Extensions.Options;
 using OpenAI.Assistants;
 using OpenAI.Threads;
 
@@ -10,15 +12,17 @@ public class AssistantService : IAssistantService
     private string? _currentThreadId;
     private AssistantResponse? _currentAssistant;
     private const string ErrorMessage = "Something went wrong...";
+    private readonly string _assistantId;
 
-    public AssistantService(IAssistantClient assistantClient)
+    public AssistantService(IOptionsMonitor<OpenAiConfig> openAiConfig, IAssistantClient assistantClient)
     {
         _assistantClient = assistantClient;
+        _assistantId = openAiConfig.CurrentValue.EnglishTutorAssistantId!;
     }
 
     public async Task<string> StartConversation(string message)
     {
-        _currentAssistant ??= await _assistantClient.RetrieveAssistant();
+        _currentAssistant ??= await _assistantClient.RetrieveAssistant(_assistantId);
 
         if (string.IsNullOrEmpty(_currentThreadId))
         {

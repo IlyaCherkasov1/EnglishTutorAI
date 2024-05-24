@@ -1,66 +1,75 @@
-﻿using EnglishTutorAI.Application.Configurations;
-using EnglishTutorAI.Application.Interfaces;
-using EnglishTutorAI.Application.Models.TextGeneration;
-using Microsoft.Extensions.Options;
-using OpenAI;
-using OpenAI.Chat;
-using OpenAI.Models;
+﻿    using EnglishTutorAI.Application.Configurations;
+    using EnglishTutorAI.Application.Interfaces;
+    using EnglishTutorAI.Application.Models.TextGeneration;
+    using Microsoft.Extensions.Options;
+    using OpenAI.Assistants;
+    using OpenAI.Threads;
 
-namespace EnglishTutorAI.Application.Services
-{
-    public class TextCorrectionService : ITextCorrectionService
+    namespace EnglishTutorAI.Application.Services
     {
-        private const string TranslatedTextPlaceholder = "{TranslatedText}";
-        private const string OriginalTextPlaceholder = "{OriginalText}";
-        private const string TemplateKey = "template";
-
-        private readonly OpenAiConfig _openAiConfig;
-        private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IPromptTemplateService _promptTemplateService;
-
-        public TextCorrectionService(
-            IOptionsMonitor<OpenAiConfig> openAiConfig,
-            IHttpClientFactory httpClientFactory,
-            IPromptTemplateService promptTemplateService)
+        public class TextCorrectionService : ITextCorrectionService
         {
-            _openAiConfig = openAiConfig.CurrentValue;
-            _httpClientFactory = httpClientFactory;
-            _promptTemplateService = promptTemplateService;
-        }
+            private const string TranslatedTextPlaceholder = "{TranslatedText}";
+            private const string OriginalTextPlaceholder = "{OriginalText}";
+            private const string TemplateKey = "template";
 
-        public async Task<(bool IsCorrected, string CorrectedText)> Correct(
-            TextGenerationRequest request)
-        {
-            using var customHttpClient = _httpClientFactory.CreateClient();
-            var api = new OpenAIClient(_openAiConfig.Key, client: customHttpClient);
+            private readonly IMessageGenerationService _messageGenerationService;
+            private readonly IAssistantClient _assistantClient;
+            private AssistantResponse? _currentAssistant;
+            private readonly string _assistantId;
+            private string? _currentThreadId;
 
-            var chatRequest = await GenerateChatRequest(request);
-
-            var correctedText = (await api.ChatEndpoint.GetCompletionAsync(chatRequest)).ToString();
-            var isCorrected = !correctedText.Equals(request.TranslatedText, StringComparison.OrdinalIgnoreCase);
-
-            return (isCorrected, correctedText);
-        }
-
-        private async Task<ChatRequest> GenerateChatRequest(TextGenerationRequest request)
-        {
-            if (string.IsNullOrEmpty(request.OriginalText) || string.IsNullOrEmpty(request.TranslatedText))
+            public TextCorrectionService(
+                IOptionsMonitor<OpenAiConfig> openAiConfig,
+                IMessageGenerationService messageGenerationService,
+                IAssistantClient assistantClient)
             {
-                throw new ArgumentException("Text cannot be null or empty.");
+                _messageGenerationService = messageGenerationService;
+                _assistantClient = assistantClient;
+                _assistantId = openAiConfig.CurrentValue.EnglishFixerAssistantId!;
             }
 
-            var prompt = await _promptTemplateService.GetFormattedPromptAsync(
-                new Dictionary<string, string>
+            public async Task<(bool IsCorrected, string CorrectedText)> Correct(TextGenerationRequest request)
+            {
+                _currentAssistant ??= await _assistantClient.RetrieveAssistant(_assistantId);
+
+                if (string.IsNullOrEmpty(_currentThreadId))
                 {
-                    { TranslatedTextPlaceholder, request.TranslatedText },
-                    { OriginalTextPlaceholder, request.OriginalText }
-                },
-                TemplateKey);
+                    var thread = await _assistantClient.CreateThread();
+                    _currentThreadId = thread.Id;
+                }
 
-            var messages = new List<Message> { new(Role.User, prompt) };
-            var chatRequest = new ChatRequest(messages, Model.GPT3_5_Turbo);
+                var message = await GenerateMessage(request);
+                await _assistantClient.AddMessageToThread(_currentThreadId, message);
+                var runResponse = await _assistantClient.CreateRunRequest(_currentAssistant.Id,  _currentThreadId);
 
-            return chatRequest;
+                if (runResponse.Status != RunStatus.Completed)
+                {
+                    throw new InvalidOperationException("The text correction run did not complete successfully.");
+                }
+
+                var correctedText = await _assistantClient.GetLastMessage(runResponse);
+                var isCorrected = !correctedText.Equals(request.TranslatedText, StringComparison.OrdinalIgnoreCase);
+
+                return (isCorrected, correctedText);
+            }
+
+            private async Task<string> GenerateMessage(TextGenerationRequest request)
+            {
+                if (string.IsNullOrEmpty(request.OriginalText) || string.IsNullOrEmpty(request.TranslatedText))
+                {
+                    throw new ArgumentException("Text cannot be null or empty.");
+                }
+
+                var message = await _messageGenerationService.Generate(
+                    new Dictionary<string, string>
+                    {
+                        { TranslatedTextPlaceholder, request.TranslatedText },
+                        { OriginalTextPlaceholder, request.OriginalText }
+                    },
+                    TemplateKey);
+
+                return message;
+            }
         }
     }
-}
