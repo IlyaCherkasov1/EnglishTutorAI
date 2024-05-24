@@ -14,9 +14,9 @@ public class DependencyRegistrationsInstaller : IServiceInstaller
         services.AddScoped<ISentenceRetrieverService, SentenceRetrieverService>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-        services.AddScoped<ITextCorrectionService, TextCorrectionService>();
+        services.AddSingleton<ITextCorrectionService, TextCorrectionService>();
         services.AddSingleton<IHttpClientFactory, ConfigurableProxyHttpClientFactory>();
-        services.AddScoped<IPromptTemplateService, PromptTemplateService>();
+        services.AddSingleton<IMessageGenerationService, MessageGenerationService>();
         services.AddScoped<IDocumentCreationService, DocumentCreationCreationService>();
         services.AddScoped<IDocumentCounterService, DocumentCounterService>();
         services.AddScoped<IDocumentRetrievalService, DocumentRetrievalService>();

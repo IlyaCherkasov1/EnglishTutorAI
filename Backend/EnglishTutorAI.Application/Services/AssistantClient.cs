@@ -13,18 +13,16 @@ namespace EnglishTutorAI.Application.Services;
 public class AssistantClient : IAssistantClient
 {
     private readonly OpenAIClient _api;
-    private readonly string _assistantId;
 
     public AssistantClient(IOptionsMonitor<OpenAiConfig> openAiConfig, IHttpClientFactory httpClientFactory)
     {
         var customHttpClient = httpClientFactory.CreateClient();
         _api = new OpenAIClient(openAiConfig.CurrentValue.Key, client: customHttpClient);
-        _assistantId = openAiConfig.CurrentValue.EnglishTutorAssistantId!;
     }
 
-    public async Task<AssistantResponse> RetrieveAssistant()
+    public async Task<AssistantResponse> RetrieveAssistant(string assistantId)
     {
-        var assistant = await _api.AssistantsEndpoint.RetrieveAssistantAsync(_assistantId);
+        var assistant = await _api.AssistantsEndpoint.RetrieveAssistantAsync(assistantId);
 
         return assistant;
     }
@@ -46,6 +44,7 @@ public class AssistantClient : IAssistantClient
     {
         var createRunRequest = new CreateRunRequest(assistantId);
         var run = await _api.ThreadsEndpoint.CreateRunAsync(threadId, createRunRequest);
+
         return await run.WaitForStatusChangeAsync();
     }
 
