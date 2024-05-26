@@ -32,8 +32,4 @@
       </Reference>
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="Interfaces\IAssistantService.cs" />
-    </ItemGroup>
-
 </Project>
