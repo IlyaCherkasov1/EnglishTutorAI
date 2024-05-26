@@ -15,33 +15,20 @@
 
             private readonly IMessageGenerationService _messageGenerationService;
             private readonly IAssistantClient _assistantClient;
-            private AssistantResponse? _currentAssistant;
-            private readonly string _assistantId;
-            private string? _currentThreadId;
 
             public TextCorrectionService(
-                IOptionsMonitor<OpenAiConfig> openAiConfig,
                 IMessageGenerationService messageGenerationService,
                 IAssistantClient assistantClient)
             {
                 _messageGenerationService = messageGenerationService;
                 _assistantClient = assistantClient;
-                _assistantId = openAiConfig.CurrentValue.EnglishFixerAssistantId!;
             }
 
             public async Task<(bool IsCorrected, string CorrectedText)> Correct(TextGenerationRequest request)
             {
-                _currentAssistant ??= await _assistantClient.RetrieveAssistant(_assistantId);
-
-                if (string.IsNullOrEmpty(_currentThreadId))
-                {
-                    var thread = await _assistantClient.CreateThread();
-                    _currentThreadId = thread.Id;
-                }
-
                 var message = await GenerateMessage(request);
-                await _assistantClient.AddMessageToThread(_currentThreadId, message);
-                var runResponse = await _assistantClient.CreateRunRequest(_currentAssistant.Id,  _currentThreadId);
+                await _assistantClient.AddMessageToThread(request.ThreadId, message);
+                var runResponse = await _assistantClient.CreateRunRequest(request.AssistantId,  request.ThreadId);
 
                 if (runResponse.Status != RunStatus.Completed)
                 {

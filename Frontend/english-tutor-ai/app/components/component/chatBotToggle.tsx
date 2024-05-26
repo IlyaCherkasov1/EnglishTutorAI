@@ -3,8 +3,13 @@ import {Button} from "@/app/components/ui/button";
 import {MessageCircle} from "lucide-react";
 import {ChatBot} from "@/app/components/component/chatBot";
 import {useI18n} from "@/app/locales/client";
+import {CreateAssistantResponse} from "@/app/dataModels/languageModel/createAssistantResponse";
 
-const ChatBotToggle = () => {
+export interface Props {
+    createAssistantResponse: CreateAssistantResponse;
+}
+
+const ChatBotToggle = (props: Props) => {
     const t = useI18n()
     const [isChatBotVisible, setIsChatBotVisible] = useState(false);
 
@@ -20,7 +25,7 @@ const ChatBotToggle = () => {
                     {t('askAI')}
                 </Button>
             </div>
-            {isChatBotVisible && <ChatBot/>})
+            {isChatBotVisible && <ChatBot createAssistantResponse={props.createAssistantResponse} />})
         </>
     )
 };

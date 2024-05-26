@@ -1,15 +1,20 @@
 import { Input } from "@/app/components/ui/input"
 import { Button } from "@/app/components/ui/button"
-import {ArrowUp, Bot, MessageCircle, User} from "lucide-react";
+import {ArrowUp, Bot} from "lucide-react";
 import React, {useRef, useState} from "react";
 import {sendMessage} from "@/app/api/languageModel/languageModelApi";
+import {CreateAssistantResponse} from "@/app/dataModels/languageModel/createAssistantResponse";
+
+interface Props {
+  createAssistantResponse: CreateAssistantResponse;
+}
 
 type Message = {
   sender: 'User' | 'Assistant',
   text: string,
 };
 
-export const ChatBot = () => {
+export const ChatBot = (props: Props) => {
   const [messages, setMessages] = useState<Message[]>([]);
 
   const handleOnClick = async (formData: FormData) => {
@@ -17,8 +22,14 @@ export const ChatBot = () => {
     const userMessage: Message = { sender: 'User', text: inputValue };
     setMessages([...messages, userMessage]);
 
-    const botResponse = await sendMessage({ message: inputValue })
-    const botMessage: Message = { sender: 'Assistant', text: botResponse };
+    const assistantResponse = await sendMessage(
+        {
+          message: inputValue,
+          threadId: props.createAssistantResponse.threadId,
+          assistantId: props.createAssistantResponse.assistantId,
+        });
+
+    const botMessage: Message = { sender: 'Assistant', text: assistantResponse };
     setMessages(prevMessages => [...prevMessages, botMessage]);
     formRef.current?.reset();
   }
