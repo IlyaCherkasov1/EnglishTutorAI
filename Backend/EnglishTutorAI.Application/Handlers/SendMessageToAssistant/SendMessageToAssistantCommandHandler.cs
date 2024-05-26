@@ -5,15 +5,15 @@ namespace EnglishTutorAI.Application.Handlers.SendMessageToAssistant;
 
 public class SendMessageToAssistantCommandHandler : IRequestHandler<SendMessageToAssistantCommand, string>
 {
-    private readonly IAssistantService _assistantService;
+    private readonly ISendAssistantMessageService _sendAssistantMessageService;
 
-    public SendMessageToAssistantCommandHandler(IAssistantService assistantService)
+    public SendMessageToAssistantCommandHandler(ISendAssistantMessageService sendAssistantMessageService)
     {
-        _assistantService = assistantService;
+        _sendAssistantMessageService = sendAssistantMessageService;
     }
 
     public Task<string> Handle(SendMessageToAssistantCommand request, CancellationToken cancellationToken)
     {
-        return _assistantService.StartConversation(request.SendMessageRequest.Message);
+        return _sendAssistantMessageService.SendMessageAndRun(request.SendMessageRequest);
     }
 }

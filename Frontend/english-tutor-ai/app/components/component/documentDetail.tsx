@@ -1,12 +1,14 @@
 'use client'
 
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {useI18n} from "@/app/locales/client";
 import {Button} from "@/app/components/ui/button";
 import DocumentCorrectionOutput from "@/app/components/component/document/documentCorrectionOutput";
 import {Textarea} from "@/app/components/ui/textarea";
 import {handleCorrection} from "@/app/actions/actions";
 import ChatBotToggle from "@/app/components/component/chatBotToggle";
+import {createAssistant} from "@/app/api/languageModel/languageModelApi";
+import {CreateAssistantResponse} from "@/app/dataModels/languageModel/createAssistantResponse";
 
 interface Props {
     documentTitle: string;
@@ -18,12 +20,27 @@ export function DocumentDetail(props: Props) {
     const [correctedText, setCorrectedText] = useState('');
     const [isCorrected, setIsCorrected] = useState(false);
     const [isDisplayResponse, setIsDisplayResponse] = useState(false);
+    const [createAssistantResponse, setCreateAssistantResponse] = useState<CreateAssistantResponse>();
+
+    useEffect(() => {
+        createAssistant()
+            .then(setCreateAssistantResponse)
+            .catch(console.error);
+    }, []);
 
     const t = useI18n()
     const formRef = useRef<HTMLFormElement>(null);
 
     const handleFormAction = async (formData: FormData) => {
-        const { isCorrected, correctedText } = await handleCorrection(formData, props.sentences[currentLine]);
+        if (!createAssistantResponse) {
+            return;
+        }
+
+        const { isCorrected, correctedText } = await handleCorrection({
+            formData,
+            currentLine: props.sentences[currentLine],
+            createAssistantResponse,
+        });
 
         if (isCorrected) {
             setCorrectedText(correctedText);
@@ -60,7 +77,9 @@ export function DocumentDetail(props: Props) {
                         <DocumentCorrectionOutput correctedText={correctedText} isCorrected={isCorrected}/> : <></>
                     }
                 </div>
-                <ChatBotToggle/>
+                {createAssistantResponse ?
+                    <ChatBotToggle createAssistantResponse={createAssistantResponse}/> : <></>
+                }
             </div>
         </div>
     )

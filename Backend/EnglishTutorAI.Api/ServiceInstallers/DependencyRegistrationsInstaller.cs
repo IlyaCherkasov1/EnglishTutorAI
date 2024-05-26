@@ -14,14 +14,15 @@ public class DependencyRegistrationsInstaller : IServiceInstaller
         services.AddScoped<ISentenceRetrieverService, SentenceRetrieverService>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-        services.AddSingleton<ITextCorrectionService, TextCorrectionService>();
+        services.AddScoped<ITextCorrectionService, TextCorrectionService>();
         services.AddSingleton<IHttpClientFactory, ConfigurableProxyHttpClientFactory>();
-        services.AddSingleton<IMessageGenerationService, MessageGenerationService>();
+        services.AddScoped<IMessageGenerationService, MessageGenerationService>();
         services.AddScoped<IDocumentCreationService, DocumentCreationCreationService>();
         services.AddScoped<IDocumentCounterService, DocumentCounterService>();
         services.AddScoped<IDocumentRetrievalService, DocumentRetrievalService>();
         services.AddScoped<ISentenceSplitterService, SentenceSplitterService>();
-        services.AddSingleton<IAssistantClient, AssistantClient>();
-        services.AddSingleton<IAssistantService, AssistantService>();
+        services.AddScoped<IAssistantClient, AssistantClient>();
+        services.AddScoped<ISendAssistantMessageService, SendAssistantMessageService>();
+        services.AddScoped<IAssistanceCreationService, AssistanceCreationService>();
     }
 }
