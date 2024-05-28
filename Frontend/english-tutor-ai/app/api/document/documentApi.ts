@@ -3,6 +3,7 @@ import {DocumentCreationRequest} from "@/app/dataModels/document/documentCreatio
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem";
 import {SplitDocumentContentRequest} from "@/app/dataModels/splitDocumentContentRequest";
 import {httpGet, httpPost} from "@/app/core/requestApi";
+import {SaveCurrentLineRequest} from "@/app/dataModels/document/saveCurrentLineRequest";
 
 const documentsResource = "document";
 
@@ -26,7 +27,7 @@ export const getAllDocuments = async (): Promise<DocumentListItem[]> => {
 }
 
 export const getDocumentDetails = async (id: string): Promise<DocumentResponse> => {
-    return httpGet({ url: `${documentsResource}/get-document-details/${id}` })
+    return httpGet({ url: `${documentsResource}/get-document-details/${id}`, noCache: true })
 }
 
 export const splitDocumentContent = async (request: SplitDocumentContentRequest): Promise<string[]> => {
@@ -34,4 +35,11 @@ export const splitDocumentContent = async (request: SplitDocumentContentRequest)
         url: `${documentsResource}/split-document-content`,
         body: request,
     });
+}
+
+export const saveCurrentLine = async (request: SaveCurrentLineRequest): Promise<void> =>{
+    return httpPost({
+        url: `${documentsResource}/save-current-line`,
+        body: request,
+    })
 }

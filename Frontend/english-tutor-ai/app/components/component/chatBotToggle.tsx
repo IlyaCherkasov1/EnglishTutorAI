@@ -3,10 +3,10 @@ import {Button} from "@/app/components/ui/button";
 import {MessageCircle} from "lucide-react";
 import {ChatBot} from "@/app/components/component/chatBot";
 import {useI18n} from "@/app/locales/client";
-import {CreateAssistantResponse} from "@/app/dataModels/languageModel/createAssistantResponse";
+import {ThreadCreationResponse} from "@/app/dataModels/languageModel/threadCreationResponse";
 
 export interface Props {
-    createAssistantResponse: CreateAssistantResponse;
+    createAssistantResponse: ThreadCreationResponse;
 }
 
 const ChatBotToggle = (props: Props) => {
