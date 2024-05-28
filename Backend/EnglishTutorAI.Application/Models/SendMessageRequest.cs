@@ -1,6 +1,6 @@
 ﻿namespace EnglishTutorAI.Application.Models;
 
-public class SendMessageRequest : CreateAssistantResponse
+public class SendMessageRequest : ThreadCreationResponse
 {
     public string? Message { get; set; }
 }

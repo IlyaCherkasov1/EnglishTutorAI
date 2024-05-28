@@ -6,6 +6,7 @@ using EnglishTutorAI.Application.Handlers.GetDocument;
 using EnglishTutorAI.Application.Handlers.GetDocumentCount;
 using EnglishTutorAI.Application.Handlers.GetDocumentDetails;
 using EnglishTutorAI.Application.Handlers.GetDocuments;
+using EnglishTutorAI.Application.Handlers.SaveProgress;
 using EnglishTutorAI.Application.Handlers.SplitSentences;
 using EnglishTutorAI.Application.Models;
 using MediatR;
@@ -58,5 +59,11 @@ public class DocumentController : ControllerBase
     public Task<List<string>> SplitDocumentContent(SplitDocumentContentRequest request)
     {
         return _mediator.Send(new SplitSentencesQuery(request.Text!));
+    }
+
+    [HttpPost(Routes.Document.SaveCurrentLine)]
+    public Task SaveCurrentLine(SaveCurrentLineRequest request)
+    {
+        return _mediator.Send(new SaveCurrentLineCommand(request));
     }
 }

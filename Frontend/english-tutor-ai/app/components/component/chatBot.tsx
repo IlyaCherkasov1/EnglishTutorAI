@@ -3,10 +3,10 @@ import { Button } from "@/app/components/ui/button"
 import {ArrowUp, Bot} from "lucide-react";
 import React, {useRef, useState} from "react";
 import {sendMessage} from "@/app/api/languageModel/languageModelApi";
-import {CreateAssistantResponse} from "@/app/dataModels/languageModel/createAssistantResponse";
+import {ThreadCreationResponse} from "@/app/dataModels/languageModel/threadCreationResponse";
 
 interface Props {
-  createAssistantResponse: CreateAssistantResponse;
+  createAssistantResponse: ThreadCreationResponse;
 }
 
 type Message = {

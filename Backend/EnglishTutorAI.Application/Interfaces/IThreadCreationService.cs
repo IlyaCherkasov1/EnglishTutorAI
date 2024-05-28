@@ -2,7 +2,7 @@
 
 namespace EnglishTutorAI.Application.Interfaces;
 
-public interface IAssistanceCreationService
+public interface IThreadCreationService
 {
-    Task<CreateAssistantResponse> Create();
+    Task<ThreadCreationResponse> Create(Guid documentId);
 }

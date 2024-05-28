@@ -30,9 +30,9 @@ public class LanguageModelController : ControllerBase
     }
 
     [HttpPost(Routes.Assistant.Create)]
-    public async Task<CreateAssistantResponse> CreateAssistance()
+    public async Task<ThreadCreationResponse> CreateThread(Guid documentId)
     {
-        return await _mediator.Send(new CreateAssistanceCommand());
+        return await _mediator.Send(new ThreadCreationCommand(documentId));
     }
 
     [HttpPost(Routes.Assistant.SendMessage)]

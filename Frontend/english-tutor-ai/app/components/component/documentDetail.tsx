@@ -7,26 +7,30 @@ import DocumentCorrectionOutput from "@/app/components/component/document/docume
 import {Textarea} from "@/app/components/ui/textarea";
 import {handleCorrection} from "@/app/actions/actions";
 import ChatBotToggle from "@/app/components/component/chatBotToggle";
-import {createAssistant} from "@/app/api/languageModel/languageModelApi";
-import {CreateAssistantResponse} from "@/app/dataModels/languageModel/createAssistantResponse";
+import {createThread} from "@/app/api/languageModel/languageModelApi";
+import {ThreadCreationResponse} from "@/app/dataModels/languageModel/threadCreationResponse";
+import {saveCurrentLine} from "@/app/api/document/documentApi";
+import {DocumentResponse} from "@/app/dataModels/document/documentResponse";
 
 interface Props {
-    documentTitle: string;
+    document: DocumentResponse;
     sentences: string[];
 }
 
 export function DocumentDetail(props: Props) {
-    const [currentLine, setCurrentLine] = useState(0);
+    const [currentLine, setCurrentLine] = useState(props.document.currentLine | 0);
     const [correctedText, setCorrectedText] = useState('');
     const [isCorrected, setIsCorrected] = useState(false);
     const [isDisplayResponse, setIsDisplayResponse] = useState(false);
-    const [createAssistantResponse, setCreateAssistantResponse] = useState<CreateAssistantResponse>();
+    const [createAssistantResponse, setCreateAssistantResponse] = useState<ThreadCreationResponse>();
 
     useEffect(() => {
-        createAssistant()
-            .then(setCreateAssistantResponse)
+        createThread(props.document.id)
+            .then(response => {
+                setCreateAssistantResponse(response);
+            })
             .catch(console.error);
-    }, []);
+    }, [props.document]);
 
     const t = useI18n()
     const formRef = useRef<HTMLFormElement>(null);
@@ -46,6 +50,7 @@ export function DocumentDetail(props: Props) {
             setCorrectedText(correctedText);
         } else {
             setCurrentLine((prevLine) => prevLine + 1)
+            await saveCurrentLine({ currentLine: currentLine + 1, documentId: props.document.id });
             formRef.current?.reset();
         }
 
@@ -57,7 +62,7 @@ export function DocumentDetail(props: Props) {
         <div>
             <div className="flex-1 overflow-auto">
                 <div className="max-w-4xl mx-auto p-4">
-                    <h1 className="text-3xl font-bold mb-6">{props.documentTitle}</h1>
+                    <h1 className="text-3xl font-bold mb-6">{props.document.title}</h1>
                     <div className="bg-gray-100 p-4 rounded-md mb-4">
                         {props.sentences.map((line, index) => (
                             <span

@@ -1,7 +1,7 @@
 import {TextGenerationRequest} from "@/app/dataModels/languageModel/textGenerationRequest";
 import {httpPost} from "@/app/core/requestApi";
 import {SendMessageRequest} from "@/app/dataModels/languageModel/sendMessageRequest";
-import {CreateAssistantResponse} from "@/app/dataModels/languageModel/createAssistantResponse";
+import {ThreadCreationResponse} from "@/app/dataModels/languageModel/threadCreationResponse";
 
 const resources = 'LanguageModel';
 
@@ -13,9 +13,9 @@ export const correctText = async (textGenerationRequest: TextGenerationRequest)
     });
 }
 
-export const createAssistant = async (): Promise<CreateAssistantResponse> => {
+export const createThread = async (documentId: string): Promise<ThreadCreationResponse> => {
     return httpPost({
-        url: `${resources}/create-assistant`
+        url: `${resources}/create-thread/${documentId}`
     })
 }
 

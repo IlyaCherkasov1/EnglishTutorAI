@@ -15,7 +15,7 @@ const DocumentDetails = async ({ params }: { params: { documentId: string } }) =
                 <BackButton/>
             </div>
             {sentences.length > 0 ? (
-                <DocumentDetail documentTitle={document.title} sentences={sentences}/>
+                <DocumentDetail document={document} sentences={sentences}/>
             ) : (
                 <p>{t('loading')}</p>
             )}

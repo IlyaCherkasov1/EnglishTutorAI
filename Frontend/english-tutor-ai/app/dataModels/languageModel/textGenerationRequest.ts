@@ -1,6 +1,6 @@
-import {CreateAssistantResponse} from "@/app/dataModels/languageModel/createAssistantResponse";
+import {ThreadCreationResponse} from "@/app/dataModels/languageModel/threadCreationResponse";
 
-export interface TextGenerationRequest extends CreateAssistantResponse {
+export interface TextGenerationRequest extends ThreadCreationResponse {
     originalText: string,
     translatedText: string,
 }

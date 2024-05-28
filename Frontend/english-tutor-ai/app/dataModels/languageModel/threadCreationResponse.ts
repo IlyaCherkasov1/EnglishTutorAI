@@ -1,4 +1,4 @@
-﻿export interface CreateAssistantResponse {
+﻿export interface ThreadCreationResponse {
     assistantId: string;
     threadId: string;
 }

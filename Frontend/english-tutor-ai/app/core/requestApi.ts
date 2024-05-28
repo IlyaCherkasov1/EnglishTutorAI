@@ -1,8 +1,11 @@
+import {cache} from "browserslist";
+
 export type HttpRequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 export interface RequestOptions<T> {
     url: string;
     body?: T;
+    noCache?: boolean;
 }
 
 export const apiRootUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL;
@@ -49,7 +52,7 @@ const performRequest = async <TRequest, TResult>(
     method: HttpRequestMethod,
     options: RequestOptions<TRequest>
 ): Promise<TResult> => {
-        const response = await fetch(`${apiRootUrl}/${options.url}`, {
+        const response = await fetch(`${apiRootUrl}/${options.url}`,  {
             method,
             body: getBody(options),
             credentials: "same-origin",
@@ -57,6 +60,7 @@ const performRequest = async <TRequest, TResult>(
                 Accept: contentTypes.json,
                 ...getContentTypeHeader(options),
             },
+            cache: options.noCache ? "no-cache" : "force-cache",
         });
 
     return await handleResponse(response);
