@@ -16,6 +16,7 @@ public interface ISpecification<T>
     List<IncludeModel<T, object>> Includes { get; }
 
     List<string> IncludeStrings { get; }
+    List<OrderRule<T>> OrderRules { get; }
 
     int Take { get; }
 

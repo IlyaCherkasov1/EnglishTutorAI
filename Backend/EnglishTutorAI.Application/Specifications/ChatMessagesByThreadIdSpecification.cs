@@ -9,6 +9,6 @@ public class ChatMessagesByThreadIdSpecification : Specification<ChatMessage>
     public ChatMessagesByThreadIdSpecification(string threadId)
         : base(c => c.ThreadId == threadId)
     {
-        ApplyOrderByDescending(c => c.CreatedAt);
+        ApplyOrderBy(c => c.CreatedAt);
     }
 }
