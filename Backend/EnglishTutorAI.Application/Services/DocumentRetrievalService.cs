@@ -32,8 +32,8 @@ public class DocumentRetrievalService : IDocumentRetrievalService
         return _documentRepository.GetById(id);
     }
 
-    public Task<IReadOnlyList<Document>> GetAllDocuments()
+    public async Task<IReadOnlyList<Document>> GetAllDocuments()
     {
-        return _documentRepository.ListAll();
+        return await _documentRepository.List(new DocumentListByCreatedAtSpecification());
     }
 }
