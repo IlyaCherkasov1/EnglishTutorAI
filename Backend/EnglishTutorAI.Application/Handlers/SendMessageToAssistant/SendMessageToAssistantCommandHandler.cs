@@ -6,14 +6,21 @@ namespace EnglishTutorAI.Application.Handlers.SendMessageToAssistant;
 public class SendMessageToAssistantCommandHandler : IRequestHandler<SendMessageToAssistantCommand, string>
 {
     private readonly ISendAssistantMessageService _sendAssistantMessageService;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public SendMessageToAssistantCommandHandler(ISendAssistantMessageService sendAssistantMessageService)
+    public SendMessageToAssistantCommandHandler(
+        ISendAssistantMessageService sendAssistantMessageService,
+        IUnitOfWork unitOfWork)
     {
         _sendAssistantMessageService = sendAssistantMessageService;
+        _unitOfWork = unitOfWork;
     }
 
-    public Task<string> Handle(SendMessageToAssistantCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(SendMessageToAssistantCommand request, CancellationToken cancellationToken)
     {
-        return _sendAssistantMessageService.SendMessageAndRun(request.SendMessageRequest);
+        var result = await _sendAssistantMessageService.SendMessageAndRun(request.SendMessageRequest);
+        await _unitOfWork.Commit();
+
+        return result;
     }
 }

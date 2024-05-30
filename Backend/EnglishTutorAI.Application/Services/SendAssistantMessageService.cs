@@ -1,5 +1,7 @@
 ﻿using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models;
+using EnglishTutorAI.Domain.Entities;
+using EnglishTutorAI.Domain.Enums;
 using OpenAI.Threads;
 
 namespace EnglishTutorAI.Application.Services;
@@ -16,12 +18,15 @@ public class SendAssistantMessageService : ISendAssistantMessageService
 
     public async Task<string> SendMessageAndRun(SendMessageRequest request)
     {
-        await _assistantClient.AddMessageToThread(request.ThreadId, request.Message);
+        await _assistantClient.AddMessageToThread(
+            new AddMessageToThreadModel(request.ThreadId, request.Message, ChatType.Dialog));
+
         var runResponse = await _assistantClient.CreateRunRequest(request.AssistantId,  request.ThreadId);
 
         if (runResponse.Status == RunStatus.Completed)
         {
-            return await _assistantClient.GetLastMessage(runResponse);
+            return await _assistantClient.GenerateLastMessage(
+                new GenerateLastMessageModel(runResponse, request.ThreadId, ChatType.Dialog));
         }
 
         return ErrorMessage;

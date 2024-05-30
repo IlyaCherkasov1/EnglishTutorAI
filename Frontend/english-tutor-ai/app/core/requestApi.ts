@@ -1,11 +1,9 @@
-import {cache} from "browserslist";
-
 export type HttpRequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 export interface RequestOptions<T> {
     url: string;
     body?: T;
-    noCache?: boolean;
+    enableCache?: boolean;
 }
 
 export const apiRootUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL;
@@ -60,7 +58,7 @@ const performRequest = async <TRequest, TResult>(
                 Accept: contentTypes.json,
                 ...getContentTypeHeader(options),
             },
-            cache: options.noCache ? "no-cache" : "force-cache",
+            cache: options.enableCache ? "force-cache" : "no-cache",
         });
 
     return await handleResponse(response);

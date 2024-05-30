@@ -4,6 +4,7 @@ import {DocumentListItem} from "@/app/dataModels/document/documentListItem";
 import {SplitDocumentContentRequest} from "@/app/dataModels/splitDocumentContentRequest";
 import {httpGet, httpPost} from "@/app/core/requestApi";
 import {SaveCurrentLineRequest} from "@/app/dataModels/document/saveCurrentLineRequest";
+import {ChatMessageResponse} from "@/app/dataModels/ChatMessageResponse";
 
 const documentsResource = "document";
 
@@ -27,7 +28,7 @@ export const getAllDocuments = async (): Promise<DocumentListItem[]> => {
 }
 
 export const getDocumentDetails = async (id: string): Promise<DocumentResponse> => {
-    return httpGet({ url: `${documentsResource}/get-document-details/${id}`, noCache: true })
+    return httpGet({ url: `${documentsResource}/get-document-details/${id}` })
 }
 
 export const splitDocumentContent = async (request: SplitDocumentContentRequest): Promise<string[]> => {
@@ -41,5 +42,11 @@ export const saveCurrentLine = async (request: SaveCurrentLineRequest): Promise<
     return httpPost({
         url: `${documentsResource}/save-current-line`,
         body: request,
+    })
+}
+
+export const getConversationThread = async (threadId: string): Promise<ChatMessageResponse[]> => {
+    return httpGet({
+        url: `${documentsResource}/get-conversation-thread/${threadId}`,
     })
 }

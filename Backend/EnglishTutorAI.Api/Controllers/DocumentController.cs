@@ -1,7 +1,7 @@
-﻿using System.Text.RegularExpressions;
-using EnglishTutorAI.Api.Constants;
+﻿using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Controllers.Attributes;
 using EnglishTutorAI.Application.Handlers.AddDocument;
+using EnglishTutorAI.Application.Handlers.GetConversationThread;
 using EnglishTutorAI.Application.Handlers.GetDocument;
 using EnglishTutorAI.Application.Handlers.GetDocumentCount;
 using EnglishTutorAI.Application.Handlers.GetDocumentDetails;
@@ -65,5 +65,12 @@ public class DocumentController : ControllerBase
     public Task SaveCurrentLine(SaveCurrentLineRequest request)
     {
         return _mediator.Send(new SaveCurrentLineCommand(request));
+    }
+
+
+    [HttpGet(Routes.Document.GetConversationThread)]
+    public Task<IReadOnlyList<ChatMessageResponse>> GetConversationThread(string threadId)
+    {
+        return _mediator.Send(new GetConversationThreadCommand(threadId));
     }
 }

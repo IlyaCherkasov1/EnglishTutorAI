@@ -6,14 +6,19 @@ namespace EnglishTutorAI.Application.Handlers.GenerateSentences;
 public class TextCorrectionCommandHandler : IRequestHandler<TextCorrectionCommand, (bool IsCorrected, string CorrectedText)>
 {
     private readonly ITextCorrectionService _textCorrectionService;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public TextCorrectionCommandHandler(ITextCorrectionService textCorrectionService)
+    public TextCorrectionCommandHandler(ITextCorrectionService textCorrectionService, IUnitOfWork unitOfWork)
     {
         _textCorrectionService = textCorrectionService;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<(bool IsCorrected, string CorrectedText)> Handle(TextCorrectionCommand request, CancellationToken cancellationToken)
     {
-        return await _textCorrectionService.Correct(request.TextGenerationRequest);
+        var result = await _textCorrectionService.Correct(request.TextGenerationRequest);
+        await _unitOfWork.Commit();
+
+        return result;
     }
 }
