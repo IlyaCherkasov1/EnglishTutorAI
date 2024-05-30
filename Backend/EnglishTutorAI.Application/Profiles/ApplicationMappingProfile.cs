@@ -10,5 +10,6 @@ public class ApplicationMappingProfile : Profile
     {
         CreateMap<Document, DocumentResponse>();
         CreateMap<Document, DocumentListItem>();
+        CreateMap<ChatMessage, ChatMessageResponse>();
     }
 }

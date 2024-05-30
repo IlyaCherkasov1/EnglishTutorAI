@@ -1,6 +1,10 @@
-﻿namespace EnglishTutorAI.Application.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+
+namespace EnglishTutorAI.Application.Models;
 
 public class SendMessageRequest : ThreadCreationResponse
 {
-    public string? Message { get; set; }
+    [Required]
+    public string Message { get; set; } = string.Empty;
 }

@@ -1,8 +1,8 @@
 ﻿    using EnglishTutorAI.Application.Configurations;
     using EnglishTutorAI.Application.Interfaces;
+    using EnglishTutorAI.Application.Models;
     using EnglishTutorAI.Application.Models.TextGeneration;
-    using Microsoft.Extensions.Options;
-    using OpenAI.Assistants;
+    using EnglishTutorAI.Domain.Enums;
     using OpenAI.Threads;
 
     namespace EnglishTutorAI.Application.Services
@@ -27,7 +27,9 @@
             public async Task<(bool IsCorrected, string CorrectedText)> Correct(TextGenerationRequest request)
             {
                 var message = await GenerateMessage(request);
-                await _assistantClient.AddMessageToThread(request.ThreadId, message);
+                await _assistantClient.AddMessageToThread(
+                    new AddMessageToThreadModel(request.ThreadId, message, ChatType.TextCorrection));
+
                 var runResponse = await _assistantClient.CreateRunRequest(request.AssistantId,  request.ThreadId);
 
                 if (runResponse.Status != RunStatus.Completed)
@@ -35,7 +37,8 @@
                     throw new InvalidOperationException("The text correction run did not complete successfully.");
                 }
 
-                var correctedText = await _assistantClient.GetLastMessage(runResponse);
+                var correctedText = await _assistantClient.GenerateLastMessage(
+                    new GenerateLastMessageModel(runResponse, request.ThreadId, ChatType.TextCorrection));
                 var isCorrected = !correctedText.Equals(request.TranslatedText, StringComparison.OrdinalIgnoreCase);
 
                 return (isCorrected, correctedText);

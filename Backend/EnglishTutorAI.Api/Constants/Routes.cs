@@ -22,7 +22,10 @@ public class Routes
         public const string GetDocumentDetails = "get-document-details/{id}";
 
         public const string SplitDocumentContent = "split-document-content";
+
         public const string SaveCurrentLine = "save-current-line";
+
+        public const string GetConversationThread = "get-conversation-thread/{threadId}";
     }
 
     public static class Assistant

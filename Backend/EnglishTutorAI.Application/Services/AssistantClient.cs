@@ -2,6 +2,9 @@
 using EnglishTutorAI.Application.Configurations;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models;
+using EnglishTutorAI.Application.Specifications;
+using EnglishTutorAI.Domain.Entities;
+using EnglishTutorAI.Domain.Enums;
 using Microsoft.Extensions.Options;
 using OpenAI;
 using OpenAI.Assistants;
@@ -13,9 +16,14 @@ namespace EnglishTutorAI.Application.Services;
 public class AssistantClient : IAssistantClient
 {
     private readonly OpenAIClient _api;
+    private readonly IRepository<ChatMessage> _chatMessageRepository;
 
-    public AssistantClient(IOptionsMonitor<OpenAiConfig> openAiConfig, IHttpClientFactory httpClientFactory)
+    public AssistantClient(
+        IOptionsMonitor<OpenAiConfig> openAiConfig,
+        IHttpClientFactory httpClientFactory,
+        IRepository<ChatMessage> chatMessageRepository)
     {
+        _chatMessageRepository = chatMessageRepository;
         var customHttpClient = httpClientFactory.CreateClient();
         _api = new OpenAIClient(openAiConfig.CurrentValue.Key, client: customHttpClient);
     }
@@ -34,10 +42,21 @@ public class AssistantClient : IAssistantClient
         return thread;
     }
 
-    public async Task AddMessageToThread(string threadId, string content)
+    public async Task AddMessageToThread(AddMessageToThreadModel addMessageToThreadModel)
     {
-        var textMessage = new Message(content);
-        await _api.ThreadsEndpoint.CreateMessageAsync(threadId, textMessage);
+        var textMessage = new Message(addMessageToThreadModel.Content);
+        await _api.ThreadsEndpoint.CreateMessageAsync(addMessageToThreadModel.ThreadId, textMessage);
+
+        var chatMessage = new ChatMessage
+        {
+            Content = addMessageToThreadModel.Content,
+            CreatedAt = DateTime.UtcNow,
+            ThreadId = addMessageToThreadModel.ThreadId,
+            ConversationRole = ConversationRole.User,
+            ChatType = addMessageToThreadModel.ChatType,
+        };
+
+        await _chatMessageRepository.Add(chatMessage);
     }
 
     public async Task<RunResponse> CreateRunRequest(string assistantId, string threadId)
@@ -48,30 +67,40 @@ public class AssistantClient : IAssistantClient
         return await run.WaitForStatusChangeAsync();
     }
 
-    public async Task<string> GetLastMessage(RunResponse run)
+    public async Task<string> GenerateLastMessage(GenerateLastMessageModel model)
     {
-        var messagesResponse = await run.ListMessagesAsync();
+        var messagesResponse = await model.Run.ListMessagesAsync();
         var lastMessage = messagesResponse.Items.Last();
         List<MessageContentResponse> response = JsonSerializer.Deserialize<List<MessageContentResponse>>(lastMessage.Content);
+        var assistantResponse = response.First().Text.Value;
 
-        return response.First().Text.Value;
+        var chatMessage = new ChatMessage
+        {
+            Content = assistantResponse,
+            CreatedAt = DateTime.UtcNow,
+            ThreadId = model.ThreadId,
+            ConversationRole = ConversationRole.Assistant,
+            ChatType = model.ChatType,
+        };
+
+        await _chatMessageRepository.Add(chatMessage);
+
+        return assistantResponse;
     }
 
-    public async Task<List<MessageHistoryItem>> GetAllMessages(RunResponse run)
+    public async Task<IReadOnlyList<ChatMessage>> GetAllMessages(string threadId)
     {
-        var messageHistory = new List<MessageHistoryItem>();
-        var messages = await run.ListMessagesAsync();
+        var messages = await _chatMessageRepository.List(new ChatMessagesByThreadIdSpecification(threadId));
 
-        foreach (var message in messages.Items.OrderBy(response => response.CreatedAt))
-        {
-            List<MessageContentResponse> response = JsonSerializer.Deserialize<List<MessageContentResponse>>(message.Content);
-            messageHistory.Add(new MessageHistoryItem
-            {
-                Role = message.Role.ToString(),
-                Content = response.First().Text.Value
-            });
-        }
+        var userMessages = messages.Where(m => m.ConversationRole == ConversationRole.User).ToList();
+        var botMessages = messages.Where(m => m.ConversationRole == ConversationRole.Assistant).ToList();
 
-        return messageHistory;
+        var orderedMessages = userMessages
+            .Select((m, i) => new { Message = m, Index = i })
+            .SelectMany(x => new[] { x.Message, botMessages.ElementAtOrDefault(x.Index) })
+            .Where(m => m != null)
+            .ToList();
+
+        return orderedMessages;
     }
 }

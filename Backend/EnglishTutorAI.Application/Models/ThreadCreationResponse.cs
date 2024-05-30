@@ -2,6 +2,6 @@
 
 public class ThreadCreationResponse
 {
-    public string? AssistantId { get; init; }
-    public string? ThreadId { get; init; }
+    public required string AssistantId { get; init; }
+    public required string ThreadId { get; init; }
 }
