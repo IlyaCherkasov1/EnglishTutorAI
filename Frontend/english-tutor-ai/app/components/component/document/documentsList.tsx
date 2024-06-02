@@ -1,26 +1,32 @@
 'use client'
 
-import React from 'react';
-import { DocumentListItem } from "@/app/dataModels/document/documentListItem";
-import { DocumentListItemComponent } from "@/app/components/component/document/documentListItemComponent";
-import { useI18n } from "@/app/locales/client";
+import React, {useState} from 'react';
+import {DocumentListItem} from "@/app/dataModels/document/documentListItem";
+import {DocumentListItemComponent} from "@/app/components/component/document/documentListItemComponent";
+import {useI18n} from "@/app/locales/client";
 
 interface Props {
     allDocuments: DocumentListItem[];
 }
 
 export const DocumentsList = (props: Props) => {
+    const [documents, setDocuments] = useState(props.allDocuments);
     const t = useI18n();
+
+    const handleDeleteDocument = (documentId: string) => {
+        setDocuments(documents.filter(document => document.id !== documentId));
+    }
 
     return (
         <main>
             <div className="bg-gray-100">
                 <ul className="divide-y divide-gray-200">
-                    {props.allDocuments ? (
-                        props.allDocuments.map(document => (
-                            <a href={`/documents/${document.id}`} key={document.id} className="block no-underline">
-                                <DocumentListItemComponent document={document} />
-                            </a>
+                    {documents ? (
+                        documents.map(document => (
+                            <DocumentListItemComponent
+                                key={document.id}
+                                document={document}
+                                onDelete={handleDeleteDocument} />
                         ))
                     ) : (
                         <li className="py-4">

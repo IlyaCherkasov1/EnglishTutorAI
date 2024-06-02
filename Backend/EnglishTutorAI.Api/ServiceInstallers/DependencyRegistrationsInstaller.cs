@@ -23,7 +23,7 @@ public class DependencyRegistrationsInstaller : IServiceInstaller
         services.AddScoped<ISentenceSplitterService, SentenceSplitterService>();
         services.AddScoped<IAssistantClient, AssistantClient>();
         services.AddScoped<ISendAssistantMessageService, SendAssistantMessageService>();
-        services.AddScoped<IThreadCreationService, ThreadCreationService>();
         services.AddScoped<ISaveCurrentLineService, SaveCurrentLineService>();
+        services.AddScoped<IDeleteDocumentService, DeleteDocumentService>();
     }
 }

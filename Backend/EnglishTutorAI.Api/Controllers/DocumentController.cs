@@ -1,6 +1,7 @@
 ﻿using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Controllers.Attributes;
 using EnglishTutorAI.Application.Handlers.AddDocument;
+using EnglishTutorAI.Application.Handlers.DeleteDocument;
 using EnglishTutorAI.Application.Handlers.GetConversationThread;
 using EnglishTutorAI.Application.Handlers.GetDocument;
 using EnglishTutorAI.Application.Handlers.GetDocumentCount;
@@ -67,10 +68,15 @@ public class DocumentController : ControllerBase
         return _mediator.Send(new SaveCurrentLineCommand(request));
     }
 
-
     [HttpGet(Routes.Document.GetConversationThread)]
     public Task<IReadOnlyList<ChatMessageResponse>> GetConversationThread(string threadId)
     {
         return _mediator.Send(new GetConversationThreadCommand(threadId));
+    }
+
+    [HttpPost(Routes.Document.DeleteDocument)]
+    public Task DeleteDocument(Guid documentId)
+    {
+        return _mediator.Send(new DeleteDocumentCommand(documentId));
     }
 }

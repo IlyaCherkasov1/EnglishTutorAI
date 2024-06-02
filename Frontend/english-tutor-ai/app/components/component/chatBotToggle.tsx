@@ -3,10 +3,9 @@ import {Button} from "@/app/components/ui/button";
 import {MessageCircle} from "lucide-react";
 import {ChatBot} from "@/app/components/component/chatBot";
 import {useI18n} from "@/app/locales/client";
-import {ThreadCreationResponse} from "@/app/dataModels/languageModel/threadCreationResponse";
 
 export interface Props {
-    createAssistantResponse: ThreadCreationResponse;
+    threadId: string;
 }
 
 const ChatBotToggle = (props: Props) => {
@@ -25,7 +24,7 @@ const ChatBotToggle = (props: Props) => {
                     {t('askAI')}
                 </Button>
             </div>
-            {isChatBotVisible && <ChatBot createAssistantResponse={props.createAssistantResponse} />})
+            {isChatBotVisible && <ChatBot threadId={props.threadId} />})
         </>
     )
 };

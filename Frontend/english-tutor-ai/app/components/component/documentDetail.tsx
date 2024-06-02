@@ -1,14 +1,12 @@
 'use client'
 
-import React, {useEffect, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import {useI18n} from "@/app/locales/client";
 import {Button} from "@/app/components/ui/button";
 import DocumentCorrectionOutput from "@/app/components/component/document/documentCorrectionOutput";
 import {Textarea} from "@/app/components/ui/textarea";
 import {handleCorrection} from "@/app/actions/actions";
 import ChatBotToggle from "@/app/components/component/chatBotToggle";
-import {createThread} from "@/app/api/languageModel/languageModelApi";
-import {ThreadCreationResponse} from "@/app/dataModels/languageModel/threadCreationResponse";
 import {saveCurrentLine} from "@/app/api/document/documentApi";
 import {DocumentResponse} from "@/app/dataModels/document/documentResponse";
 
@@ -22,28 +20,15 @@ export function DocumentDetail(props: Props) {
     const [correctedText, setCorrectedText] = useState('');
     const [isCorrected, setIsCorrected] = useState(false);
     const [isDisplayResponse, setIsDisplayResponse] = useState(false);
-    const [createAssistantResponse, setCreateAssistantResponse] = useState<ThreadCreationResponse>();
-
-    useEffect(() => {
-        createThread(props.document.id)
-            .then(response => {
-                setCreateAssistantResponse(response);
-            })
-            .catch(console.error);
-    }, [props.document]);
 
     const t = useI18n()
     const formRef = useRef<HTMLFormElement>(null);
 
     const handleFormAction = async (formData: FormData) => {
-        if (!createAssistantResponse) {
-            return;
-        }
-
         const { isCorrected, correctedText } = await handleCorrection({
             formData,
             currentLine: props.sentences[currentLine],
-            createAssistantResponse,
+            threadId: props.document.threadId,
         });
 
         if (isCorrected) {
@@ -82,9 +67,7 @@ export function DocumentDetail(props: Props) {
                         <DocumentCorrectionOutput correctedText={correctedText} isCorrected={isCorrected}/> : <></>
                     }
                 </div>
-                {createAssistantResponse ?
-                    <ChatBotToggle createAssistantResponse={createAssistantResponse}/> : <></>
-                }
+                <ChatBotToggle threadId={props.document.threadId}/>
             </div>
         </div>
     )

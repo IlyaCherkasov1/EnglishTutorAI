@@ -2,7 +2,6 @@
 
 import {addDocument} from "@/app/api/document/documentApi";
 import {correctText} from "@/app/api/languageModel/languageModelApi";
-import {ThreadCreationResponse} from "@/app/dataModels/languageModel/threadCreationResponse";
 
 export const addDocumentAction = async (formData: FormData) => {
     const title = formData.get('document-title') as string;
@@ -14,7 +13,7 @@ export const addDocumentAction = async (formData: FormData) => {
 export interface handleCorrectionParams {
     formData: FormData;
     currentLine: string;
-    createAssistantResponse: ThreadCreationResponse;
+    threadId: string;
 }
 
 export const handleCorrection = async (props : handleCorrectionParams)
@@ -24,8 +23,7 @@ export const handleCorrection = async (props : handleCorrectionParams)
     const { isCorrected, correctedText } = await correctText({
         originalText: props.currentLine,
         translatedText: translatedText,
-        assistantId: props.createAssistantResponse.assistantId,
-        threadId: props.createAssistantResponse.threadId,
+        threadId: props.threadId,
     })
 
     return { isCorrected, correctedText };
