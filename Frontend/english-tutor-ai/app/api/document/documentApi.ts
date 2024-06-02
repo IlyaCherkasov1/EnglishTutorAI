@@ -50,3 +50,9 @@ export const getConversationThread = async (threadId: string): Promise<ChatMessa
         url: `${documentsResource}/get-conversation-thread/${threadId}`,
     })
 }
+
+export const deleteDocument = async (documentId: string): Promise<void> => {
+    return httpPost({
+        url: `${documentsResource}/delete-document/${documentId}`,
+    })
+}

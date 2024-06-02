@@ -3,6 +3,7 @@
     using EnglishTutorAI.Application.Models;
     using EnglishTutorAI.Application.Models.TextGeneration;
     using EnglishTutorAI.Domain.Enums;
+    using Microsoft.Extensions.Options;
     using OpenAI.Threads;
 
     namespace EnglishTutorAI.Application.Services
@@ -15,13 +16,16 @@
 
             private readonly IMessageGenerationService _messageGenerationService;
             private readonly IAssistantClient _assistantClient;
+            private readonly string _assistantId;
 
             public TextCorrectionService(
                 IMessageGenerationService messageGenerationService,
-                IAssistantClient assistantClient)
+                IAssistantClient assistantClient,
+                IOptionsMonitor<OpenAiConfig> openAiConfig)
             {
                 _messageGenerationService = messageGenerationService;
                 _assistantClient = assistantClient;
+                _assistantId = openAiConfig.CurrentValue.EnglishTutorAssistantId!;
             }
 
             public async Task<(bool IsCorrected, string CorrectedText)> Correct(TextGenerationRequest request)
@@ -30,7 +34,7 @@
                 await _assistantClient.AddMessageToThread(
                     new AddMessageToThreadModel(request.ThreadId, message, ChatType.TextCorrection));
 
-                var runResponse = await _assistantClient.CreateRunRequest(request.AssistantId,  request.ThreadId);
+                var runResponse = await _assistantClient.CreateRunRequest(_assistantId,  request.ThreadId);
 
                 if (runResponse.Status != RunStatus.Completed)
                 {
@@ -46,11 +50,6 @@
 
             private async Task<string> GenerateMessage(TextGenerationRequest request)
             {
-                if (string.IsNullOrEmpty(request.OriginalText) || string.IsNullOrEmpty(request.TranslatedText))
-                {
-                    throw new ArgumentException("Text cannot be null or empty.");
-                }
-
                 var message = await _messageGenerationService.Generate(
                     new Dictionary<string, string>
                     {

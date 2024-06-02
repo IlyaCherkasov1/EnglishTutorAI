@@ -1,6 +1,5 @@
-import {ThreadCreationResponse} from "@/app/dataModels/languageModel/threadCreationResponse";
-
-export interface TextGenerationRequest extends ThreadCreationResponse {
-    originalText: string,
-    translatedText: string,
+export interface TextGenerationRequest {
+    originalText: string;
+    translatedText: string;
+    threadId: string;
 }

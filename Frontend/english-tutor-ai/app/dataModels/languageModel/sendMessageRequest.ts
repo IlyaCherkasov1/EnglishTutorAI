@@ -1,5 +1,4 @@
-import {ThreadCreationResponse} from "@/app/dataModels/languageModel/threadCreationResponse";
-
-export interface SendMessageRequest extends ThreadCreationResponse{
+export interface SendMessageRequest {
     message: string;
+    threadId: string;
 }

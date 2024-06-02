@@ -1,6 +1,5 @@
 ﻿using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Controllers.Attributes;
-using EnglishTutorAI.Application.Handlers.CreateAssistance;
 using EnglishTutorAI.Application.Handlers.GenerateSentences;
 using EnglishTutorAI.Application.Handlers.SendMessageToAssistant;
 using EnglishTutorAI.Application.Models;
@@ -27,12 +26,6 @@ public class LanguageModelController : ControllerBase
         var (isCorrected, correctedText) = await _mediator.Send(new TextCorrectionCommand(request));
 
         return Ok(new { IsCorrected = isCorrected, CorrectedText = correctedText });
-    }
-
-    [HttpPost(Routes.Assistant.Create)]
-    public async Task<ThreadCreationResponse> CreateThread(Guid documentId)
-    {
-        return await _mediator.Send(new ThreadCreationCommand(documentId));
     }
 
     [HttpPost(Routes.Assistant.SendMessage)]

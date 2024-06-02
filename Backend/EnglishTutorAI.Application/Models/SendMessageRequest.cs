@@ -3,8 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace EnglishTutorAI.Application.Models;
 
-public class SendMessageRequest : ThreadCreationResponse
+public class SendMessageRequest
 {
-    [Required]
-    public string Message { get; set; } = string.Empty;
+    public required string Message { get; set; }
+    public required string ThreadId { get; set; }
 }

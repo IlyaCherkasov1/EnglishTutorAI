@@ -3,13 +3,12 @@ import {Button} from "@/app/components/ui/button"
 import {ArrowUp, Bot} from "lucide-react";
 import React, {useEffect, useRef, useState} from "react";
 import {sendMessage} from "@/app/api/languageModel/languageModelApi";
-import {ThreadCreationResponse} from "@/app/dataModels/languageModel/threadCreationResponse";
 import {getConversationThread} from "@/app/api/document/documentApi";
 import {ChatMessageResponse} from "@/app/dataModels/ChatMessageResponse";
 import {ConversationRole} from "@/app/dataModels/enums/conversationRole";
 
 interface Props {
-    createAssistantResponse: ThreadCreationResponse;
+    threadId: string;
 }
 
 type Message = {
@@ -23,12 +22,12 @@ export const ChatBot = (props: Props) => {
 
     useEffect(() => {
         const fetchConversationThread = async () => {
-            const response = await getConversationThread(props.createAssistantResponse.threadId);
+            const response = await getConversationThread(props.threadId);
             setChatMessageResponse(response);
         };
 
         fetchConversationThread().catch(console.error);
-    }, [props.createAssistantResponse]);
+    }, [props.threadId]);
 
     useEffect(() => {
         if (chatMessageResponse) {
@@ -51,8 +50,7 @@ export const ChatBot = (props: Props) => {
         const assistantResponse = await sendMessage(
             {
                 message: inputValue,
-                threadId: props.createAssistantResponse.threadId,
-                assistantId: props.createAssistantResponse.assistantId,
+                threadId: props.threadId,
             });
 
         const botMessage: Message = {
