@@ -149,6 +149,13 @@ public class Repository<T> : IRepository<T>
         return Task.CompletedTask;
     }
 
+    public Task Delete(IEnumerable<T> entities)
+    {
+        Context.RemoveRange(entities);
+
+        return Task.CompletedTask;
+    }
+
     public Task DeleteIfExists(T entity)
     {
         return entity == null ? Task.CompletedTask : Delete(entity);

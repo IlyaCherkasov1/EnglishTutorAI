@@ -27,6 +27,8 @@ public interface IRepository<T> where T : Entity
 
     Task Delete(T entity);
 
+    Task Delete(IEnumerable<T> entities);
+
     Task<int> Count();
 
     public Task<T?> GetByIndex(int index, ISpecification<T> specification);
