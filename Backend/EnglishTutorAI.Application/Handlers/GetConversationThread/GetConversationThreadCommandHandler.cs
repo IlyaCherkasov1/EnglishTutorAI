@@ -2,6 +2,7 @@
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Domain.Entities;
+using EnglishTutorAI.Domain.Enums;
 using MediatR;
 
 namespace EnglishTutorAI.Application.Handlers.GetConversationThread;
@@ -22,7 +23,7 @@ public class GetConversationThreadCommandHandler
         GetConversationThreadCommand request,
         CancellationToken cancellationToken)
     {
-        var result = await _assistantClient.GetAllMessages(request.ThreadId);
+        var result = await _assistantClient.GetAllMessages(request.ThreadId, ChatType.Dialog);
 
         return _mapper.Map<IReadOnlyList<ChatMessageResponse>>(result);
     }
