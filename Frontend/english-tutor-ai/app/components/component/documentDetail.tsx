@@ -19,7 +19,8 @@ export function DocumentDetail(props: Props) {
     const [currentLine, setCurrentLine] = useState(props.document.currentLine | 0);
     const [correctedText, setCorrectedText] = useState('');
     const [isCorrected, setIsCorrected] = useState(false);
-    const [isDisplayResponse, setIsDisplayResponse] = useState(false);
+    const [isDisplayCorrectionOutput, setIsDisplayCorrectionOutput] = useState(false);
+    const [IsDocumentFinished, setIsDocumentFinished] = useState(false);
 
     const t = useI18n()
     const formRef = useRef<HTMLFormElement>(null);
@@ -31,16 +32,26 @@ export function DocumentDetail(props: Props) {
             threadId: props.document.threadId,
         });
 
-        if (isCorrected) {
-            setCorrectedText(correctedText);
-        } else {
-            setCurrentLine((prevLine) => prevLine + 1)
-            await saveCurrentLine({ currentLine: currentLine + 1, documentId: props.document.id });
-            formRef.current?.reset();
-        }
-
         setIsCorrected(isCorrected);
-        setIsDisplayResponse(true);
+        setIsDisplayCorrectionOutput(true);
+        isCorrected ? setCorrectedText(correctedText) : await moveToNextLine();
+    }
+
+    const moveToNextLine = async () => {
+        setCurrentLine((prevLine) => prevLine + 1);
+        await saveCurrentLine({ currentLine: currentLine + 1, documentId: props.document.id });
+        formRef.current?.reset();
+
+        if (currentLine >= props.sentences.length - 1) {
+            setIsDisplayCorrectionOutput(false);
+            setIsDocumentFinished(true);
+        }
+    };
+
+    const handleStartAgain = async () => {
+        await saveCurrentLine({ currentLine: 0, documentId: props.document.id });
+        setCurrentLine(0);
+        setIsDocumentFinished(false);
     }
 
     return (
@@ -57,14 +68,19 @@ export function DocumentDetail(props: Props) {
                             </span>
                         ))}
                     </div>
-                    <form ref={formRef} className="flex flex-col  mb-4" action={handleFormAction}>
-                        <Textarea name="textarea-value" placeholder={t('enterYourText')}/>
-                        <div className="flex justify-end mt-2">
-                            <Button type="submit">SEND</Button>
-                        </div>
-                    </form>
-                    {isDisplayResponse ?
-                        <DocumentCorrectionOutput correctedText={correctedText} isCorrected={isCorrected}/> : <></>
+                    {IsDocumentFinished ? (
+                            <div className="flex justify-end mt-2">
+                                <Button onClick={handleStartAgain}>{t('startAgain')}</Button>
+                            </div>
+                        ) :
+                        (<form ref={formRef} className="flex flex-col mb-4" action={handleFormAction}>
+                            <Textarea name="textarea-value" placeholder={t('enterYourText')}/>
+                            <div className="flex justify-end mt-2">
+                                <Button type="submit">{t('send')}</Button>
+                            </div>
+                        </form>)}
+                    {isDisplayCorrectionOutput ?
+                        <DocumentCorrectionOutput correctedText={correctedText} isCorrected={isCorrected}/> : null
                     }
                 </div>
                 <ChatBotToggle threadId={props.document.threadId}/>
