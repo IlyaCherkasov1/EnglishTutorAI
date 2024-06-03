@@ -13,5 +13,5 @@ public interface IAssistantClient
     Task AddMessageToThread(AddMessageToThreadModel addMessageToThreadModel);
     Task<RunResponse> CreateRunRequest(string assistantId, string threadId);
     Task<string> GenerateLastMessage(GenerateLastMessageModel model);
-    Task<IReadOnlyList<ChatMessage>> GetAllMessages(string threadId);
+    Task<IReadOnlyList<ChatMessage>> GetAllMessages(string threadId, ChatType chatType);
 }

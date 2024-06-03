@@ -88,9 +88,9 @@ public class AssistantClient : IAssistantClient
         return assistantResponse;
     }
 
-    public async Task<IReadOnlyList<ChatMessage>> GetAllMessages(string threadId)
+    public async Task<IReadOnlyList<ChatMessage>> GetAllMessages(string threadId, ChatType chatType)
     {
-        var messages = await _chatMessageRepository.List(new ChatMessagesByThreadIdSpecification(threadId));
+        var messages = await _chatMessageRepository.List(new ChatMessagesByThreadIdSpecification(threadId, chatType));
 
         var userMessages = messages.Where(m => m.ConversationRole == ConversationRole.User).ToList();
         var botMessages = messages.Where(m => m.ConversationRole == ConversationRole.Assistant).ToList();

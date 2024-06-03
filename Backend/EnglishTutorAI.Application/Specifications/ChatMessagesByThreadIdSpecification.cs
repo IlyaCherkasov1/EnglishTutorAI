@@ -6,8 +6,8 @@ namespace EnglishTutorAI.Application.Specifications;
 
 public class ChatMessagesByThreadIdSpecification : Specification<ChatMessage>
 {
-    public ChatMessagesByThreadIdSpecification(string threadId)
-        : base(c => c.ThreadId == threadId)
+    public ChatMessagesByThreadIdSpecification(string threadId, ChatType chatType)
+        : base(c => c.ThreadId == threadId && c.ChatType == chatType)
     {
         ApplyOrderBy(c => c.CreatedAt);
     }
