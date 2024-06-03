@@ -6,9 +6,10 @@ export default {
     "enterYourText": "Write your text...",
     "correctedText": "Corrected text",
     "yourTranslation": "Your translation",
-    "askAI": "ask AI",
-    "send": "send",
+    "askAI": "Ask AI",
+    "send": "Send",
     "loading": "Loading...",
-    "addingDocumentStatus": "adding document...",
+    "addingDocumentStatus": "Adding document...",
     "translationSuccessMessage": "Great! Your translation is correct.",
+    "startAgain": "Start again",
 } as const
