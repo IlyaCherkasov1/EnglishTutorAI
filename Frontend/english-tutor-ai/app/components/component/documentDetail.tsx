@@ -18,6 +18,7 @@ interface Props {
 export function DocumentDetail(props: Props) {
     const [currentLine, setCurrentLine] = useState(props.document.currentLine | 0);
     const [correctedText, setCorrectedText] = useState('');
+    const [translatedText, setTranslatedText] = useState('');
     const [isCorrected, setIsCorrected] = useState(false);
     const [isDisplayCorrectionOutput, setIsDisplayCorrectionOutput] = useState(false);
     const [IsDocumentFinished, setIsDocumentFinished] = useState(false);
@@ -26,8 +27,11 @@ export function DocumentDetail(props: Props) {
     const formRef = useRef<HTMLFormElement>(null);
 
     const handleFormAction = async (formData: FormData) => {
+        const translatedText = formData.get('textarea-value') as string;
+        setTranslatedText(translatedText);
+
         const { isCorrected, correctedText } = await handleCorrection({
-            formData,
+            translatedText,
             currentLine: props.sentences[currentLine],
             threadId: props.document.threadId,
         });
@@ -80,7 +84,11 @@ export function DocumentDetail(props: Props) {
                             </div>
                         </form>)}
                     {isDisplayCorrectionOutput ?
-                        <DocumentCorrectionOutput correctedText={correctedText} isCorrected={isCorrected}/> : null
+                        <DocumentCorrectionOutput
+                            originalText={translatedText}
+                            correctedText={correctedText}
+                            isCorrected={isCorrected}/>
+                        : null
                     }
                 </div>
                 <ChatBotToggle threadId={props.document.threadId}/>

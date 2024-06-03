@@ -11,18 +11,17 @@ export const addDocumentAction = async (formData: FormData) => {
 }
 
 export interface handleCorrectionParams {
-    formData: FormData;
+    translatedText: string;
     currentLine: string;
     threadId: string;
 }
 
 export const handleCorrection = async (props : handleCorrectionParams)
     : Promise<{ isCorrected: boolean, correctedText: string }> => {
-    const translatedText = props.formData.get('textarea-value') as string;
 
     const { isCorrected, correctedText } = await correctText({
         originalText: props.currentLine,
-        translatedText: translatedText,
+        translatedText: props.translatedText,
         threadId: props.threadId,
     })
 

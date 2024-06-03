@@ -1,7 +1,9 @@
 import React from 'react';
 import {useI18n} from "@/app/locales/client";
+import DiffComponent from "@/app/components/component/DiffComponent";
 
 interface Props {
+    originalText: string;
     correctedText: string;
     isCorrected: boolean;
 }
@@ -15,7 +17,7 @@ const DocumentCorrectionOutput = (props: Props) => {
                 {props.isCorrected ? (
                     <>
                         <h3 className="font-bold mb-2">{t('correctedText')}:</h3>
-                        <p className="mb-4 text-sm">{props.correctedText}</p>
+                        <DiffComponent originalText={props.originalText} correctedText={props.correctedText} />
                     </>
                 ) : (
                     <h3 className="font-bold mb-2">{t('translationSuccessMessage')}</h3>
