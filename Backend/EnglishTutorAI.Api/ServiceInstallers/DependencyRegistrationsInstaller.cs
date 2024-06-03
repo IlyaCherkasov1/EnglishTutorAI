@@ -25,5 +25,7 @@ public class DependencyRegistrationsInstaller : IServiceInstaller
         services.AddScoped<ISendAssistantMessageService, SendAssistantMessageService>();
         services.AddScoped<ISaveCurrentLineService, SaveCurrentLineService>();
         services.AddScoped<IDeleteDocumentService, DeleteDocumentService>();
+        services.AddScoped<ITextComparisonService, TextComparisonService>();
+        services.AddScoped<ITextExtractionService, TextExtractionService>();
     }
 }
