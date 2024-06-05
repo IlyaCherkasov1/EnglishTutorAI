@@ -17,7 +17,7 @@ public class SendAssistantMessageService : ISendAssistantMessageService
     private readonly IChatMessageAddService _chatMessageAddService;
     private const string ErrorMessage = "Something went wrong...";
     private const string TemplateKey = "englishAssistantTemplate";
-    private const string MessagePlaceholder = "Message";
+    private const string MessagePlaceholder = "{Message}";
 
     public SendAssistantMessageService(
         IAssistantClient assistantClient,
