@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useRef, useState} from "react";
+import React, {useMemo, useRef, useState} from "react";
 import {useI18n} from "@/app/locales/client";
 import {Button} from "@/app/components/ui/button";
 import DocumentCorrectionOutput from "@/app/components/component/document/documentCorrectionOutput";
@@ -21,7 +21,10 @@ export function DocumentDetail(props: Props) {
     const [translatedText, setTranslatedText] = useState('');
     const [isCorrected, setIsCorrected] = useState(false);
     const [isDisplayCorrectionOutput, setIsDisplayCorrectionOutput] = useState(false);
-    const [IsDocumentFinished, setIsDocumentFinished] = useState(false);
+
+    const IsDocumentFinished = useMemo(() => {
+        return currentLine >= props.sentences.length;
+    }, [currentLine, props.sentences.length]);
 
     const t = useI18n()
     const formRef = useRef<HTMLFormElement>(null);
@@ -48,14 +51,12 @@ export function DocumentDetail(props: Props) {
 
         if (currentLine >= props.sentences.length - 1) {
             setIsDisplayCorrectionOutput(false);
-            setIsDocumentFinished(true);
         }
     };
 
     const handleStartAgain = async () => {
         await saveCurrentLine({ currentLine: 0, documentId: props.document.id });
         setCurrentLine(0);
-        setIsDocumentFinished(false);
     }
 
     return (
