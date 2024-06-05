@@ -1,5 +1,6 @@
 ﻿using EnglishTutorAI.Api.Interfaces;
 using EnglishTutorAI.Application.Interfaces;
+using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Services;
 using EnglishTutorAI.Infrastructure.Data;
 using EnglishTutorAI.Infrastructure.HttpClients;
@@ -25,5 +26,7 @@ public class DependencyRegistrationsInstaller : IServiceInstaller
         services.AddScoped<IDeleteDocumentService, DeleteDocumentService>();
         services.AddScoped<ITextComparisonService, TextComparisonService>();
         services.AddScoped<ITextExtractionService, TextExtractionService>();
+        services.AddScoped<IChatMessageAddService, ChatMessageAddService>();
+        services.AddScoped<ITextCorrectionMessageGenerationService, TextCorrectionMessageGenerationService>();
     }
 }

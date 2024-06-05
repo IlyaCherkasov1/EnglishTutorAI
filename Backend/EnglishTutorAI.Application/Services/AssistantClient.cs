@@ -42,21 +42,10 @@ public class AssistantClient : IAssistantClient
         return thread;
     }
 
-    public async Task AddMessageToThread(AddMessageToThreadModel addMessageToThreadModel)
+    public async Task AddMessageToThread(string threadId, string content)
     {
-        var textMessage = new Message(addMessageToThreadModel.Content);
-        await _api.ThreadsEndpoint.CreateMessageAsync(addMessageToThreadModel.ThreadId, textMessage);
-
-        var chatMessage = new ChatMessage
-        {
-            Content = addMessageToThreadModel.Content,
-            CreatedAt = DateTime.UtcNow,
-            ThreadId = addMessageToThreadModel.ThreadId,
-            ConversationRole = ConversationRole.User,
-            ChatType = addMessageToThreadModel.ChatType,
-        };
-
-        await _chatMessageRepository.Add(chatMessage);
+        var textMessage = new Message(content);
+        await _api.ThreadsEndpoint.CreateMessageAsync(threadId, textMessage);
     }
 
     public async Task<RunResponse> CreateRunRequest(string assistantId, string threadId)
@@ -72,20 +61,8 @@ public class AssistantClient : IAssistantClient
         var messagesResponse = await model.Run.ListMessagesAsync();
         var lastMessage = messagesResponse.Items.Last();
         List<MessageContentResponse> response = JsonSerializer.Deserialize<List<MessageContentResponse>>(lastMessage.Content);
-        var assistantResponse = response.First().Text.Value;
 
-        var chatMessage = new ChatMessage
-        {
-            Content = assistantResponse,
-            CreatedAt = DateTime.UtcNow,
-            ThreadId = model.ThreadId,
-            ConversationRole = ConversationRole.Assistant,
-            ChatType = model.ChatType,
-        };
-
-        await _chatMessageRepository.Add(chatMessage);
-
-        return assistantResponse;
+        return response.First().Text.Value;
     }
 
     public async Task<IReadOnlyList<ChatMessage>> GetAllMessages(string threadId, ChatType chatType)

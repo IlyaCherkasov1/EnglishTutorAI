@@ -1,3 +1,4 @@
 {
-  "template": "<<F>> Translated text: '{TranslatedText}'; Original text: '{OriginalText}'."
+  "textCorrectionTemplate": "Check the following text for grammar mistakes and correct them if there are any, and make this text sound more natural where possible: {TranslatedText}, based on the original text: {OriginalText}. Return only the corrected sentence, do not include any additional comments or confirmations. If there are no mistakes, just return the Translated Text as is.",
+  "englishAssistantTemplate": "You are an English teacher. Respond to the questions or statements. If the question is not related to English topics, politely decline to answer and suggest the user ask a relevant source. message: {Message}"
 }

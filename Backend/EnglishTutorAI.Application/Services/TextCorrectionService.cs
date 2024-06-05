@@ -10,63 +10,72 @@ namespace EnglishTutorAI.Application.Services
 {
     public class TextCorrectionService : ITextCorrectionService
     {
-        private const string TranslatedTextPlaceholder = "{TranslatedText}";
-        private const string OriginalTextPlaceholder = "{OriginalText}";
-        private const string TemplateKey = "template";
-
-        private readonly IMessageGenerationService _messageGenerationService;
-        private readonly IAssistantClient _assistantClient;
         private readonly string _assistantId;
+        private readonly IAssistantClient _assistantClient;
         private readonly ITextComparisonService _textComparisonService;
         private readonly ITextExtractionService _textExtractionService;
+        private readonly IChatMessageAddService _chatMessageAddService;
+        private readonly ITextCorrectionMessageGenerationService _messageGenerationService;
 
         public TextCorrectionService(
-            IMessageGenerationService messageGenerationService,
             IAssistantClient assistantClient,
             IOptionsMonitor<OpenAiConfig> openAiConfig,
             ITextComparisonService textComparisonService,
-            ITextExtractionService textExtractionService)
+            ITextExtractionService textExtractionService,
+             IChatMessageAddService chatMessageAddService,
+            ITextCorrectionMessageGenerationService messageGenerationService)
         {
-            _messageGenerationService = messageGenerationService;
             _assistantClient = assistantClient;
             _textComparisonService = textComparisonService;
             _textExtractionService = textExtractionService;
+            _chatMessageAddService = chatMessageAddService;
+            _messageGenerationService = messageGenerationService;
             _assistantId = openAiConfig.CurrentValue.EnglishTutorAssistantId!;
         }
 
         public async Task<(bool IsCorrected, string CorrectedText)> Correct(TextGenerationRequest request)
         {
-            var message = await GenerateMessage(request);
-            await _assistantClient.AddMessageToThread(
-                new AddMessageToThreadModel(request.ThreadId, message, ChatType.TextCorrection));
+            await GenerateAndAddUserMessageAsync(request);
+            var runResponse = await CreateAndValidateRunRequestAsync(request.ThreadId);
+            var correctedText = await GenerateCorrectedMessageAsync(runResponse, request.ThreadId, request.TranslatedText);
+            var isCorrected = _textComparisonService.HasTextChanged(request.TranslatedText, correctedText);
 
-            var runResponse = await _assistantClient.CreateRunRequest(_assistantId, request.ThreadId);
+            return (isCorrected, correctedText);
+        }
+
+        private async Task GenerateAndAddUserMessageAsync(TextGenerationRequest request)
+        {
+            var message = await _messageGenerationService.GenerateMessageAsync(request);
+            await _assistantClient.AddMessageToThread(request.ThreadId, message);
+            await _chatMessageAddService.Add(new AddChatMessageModel(
+                request.ThreadId, request.TranslatedText, ChatType.TextCorrection, ConversationRole.User));
+        }
+
+        private async Task<RunResponse> CreateAndValidateRunRequestAsync(string threadId)
+        {
+            var runResponse = await _assistantClient.CreateRunRequest(_assistantId, threadId);
 
             if (runResponse.Status != RunStatus.Completed)
             {
                 throw new InvalidOperationException("The text correction run did not complete successfully.");
             }
 
-            var correctedText = await _assistantClient.GenerateLastMessage(
-                new GenerateLastMessageModel(runResponse, request.ThreadId, ChatType.TextCorrection));
-
-            var cleanCorrectedText = _textExtractionService.ExtractCleanText(correctedText, request.TranslatedText);
-            var isCorrected = _textComparisonService.HasTextChanged(request.TranslatedText, cleanCorrectedText);
-
-            return (isCorrected, correctedText);
+            return runResponse;
         }
 
-        private async Task<string> GenerateMessage(TextGenerationRequest request)
+        private async Task<string> GenerateCorrectedMessageAsync(
+            RunResponse runResponse,
+            string threadId,
+            string originalText)
         {
-            var message = await _messageGenerationService.Generate(
-                new Dictionary<string, string>
-                {
-                    { TranslatedTextPlaceholder, request.TranslatedText },
-                    { OriginalTextPlaceholder, request.OriginalText }
-                },
-                TemplateKey);
+            var correctedText = await _assistantClient.GenerateLastMessage(
+                new GenerateLastMessageModel(runResponse, threadId, ChatType.TextCorrection));
+            var cleanCorrectedText = _textExtractionService.ExtractCleanText(correctedText, originalText);
 
-            return message;
+            await _chatMessageAddService.Add(new AddChatMessageModel(
+                threadId, cleanCorrectedText, ChatType.TextCorrection, ConversationRole.Assistant));
+
+            return cleanCorrectedText;
         }
     }
 }
