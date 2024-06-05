@@ -5,13 +5,13 @@ namespace EnglishTutorAI.Domain.Entities;
 
 public class ChatMessage : Entity, IHasCreatedAt
 {
-    public ConversationRole ConversationRole { get; set; }
+    public ConversationRole ConversationRole { get; init; }
 
-    public required string Content { get; set; }
+    public required string Content { get; init; }
 
     public required DateTime CreatedAt { get; set; }
 
-    public ChatType ChatType { get; set; }
+    public ChatType ChatType { get; init; }
 
-    public required string ThreadId { get; set; }
+    public required string ThreadId { get; init; }
 }

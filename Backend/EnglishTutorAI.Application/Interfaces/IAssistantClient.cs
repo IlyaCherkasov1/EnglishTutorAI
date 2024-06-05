@@ -10,7 +10,7 @@ public interface IAssistantClient
 {
     Task<AssistantResponse> RetrieveAssistant(string assistantId);
     Task<ThreadResponse> CreateThread();
-    Task AddMessageToThread(AddMessageToThreadModel addMessageToThreadModel);
+    Task AddMessageToThread(string threadId, string content);
     Task<RunResponse> CreateRunRequest(string assistantId, string threadId);
     Task<string> GenerateLastMessage(GenerateLastMessageModel model);
     Task<IReadOnlyList<ChatMessage>> GetAllMessages(string threadId, ChatType chatType);
