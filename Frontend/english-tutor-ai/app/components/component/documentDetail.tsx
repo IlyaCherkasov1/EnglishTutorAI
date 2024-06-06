@@ -9,6 +9,7 @@ import {handleCorrection} from "@/app/actions/actions";
 import ChatBotToggle from "@/app/components/component/chatBotToggle";
 import {saveCurrentLine} from "@/app/api/document/documentApi";
 import {DocumentResponse} from "@/app/dataModels/document/documentResponse";
+import {SendButton} from "@/app/components/component/buttons/sendButton";
 
 interface Props {
     document: DocumentResponse;
@@ -81,7 +82,7 @@ export function DocumentDetail(props: Props) {
                         (<form ref={formRef} className="flex flex-col mb-4" action={handleFormAction}>
                             <Textarea name="textarea-value" placeholder={t('enterYourText')}/>
                             <div className="flex justify-end mt-2">
-                                <Button type="submit">{t('send')}</Button>
+                                <SendButton />
                             </div>
                         </form>)}
                     {isDisplayCorrectionOutput ?

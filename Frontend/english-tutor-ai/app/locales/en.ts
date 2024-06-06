@@ -12,4 +12,5 @@ export default {
     "addingDocumentStatus": "Adding document...",
     "translationSuccessMessage": "Great! Your translation is correct.",
     "startAgain": "Start again",
+    "sending": "Sending...",
 } as const
