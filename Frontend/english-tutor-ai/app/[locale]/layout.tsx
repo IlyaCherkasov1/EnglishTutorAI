@@ -1,9 +1,6 @@
-import "./globals.css";
-import {AppRouterCacheProvider} from "@mui/material-nextjs/v13-appRouter";
-import theme from "@/app/theme";
-import {ThemeProvider} from "@mui/material";
+import "../globals.css";
 import {ReactNode} from "react";
-import { I18nProviderClient } from "../locales/client";
+import {I18nProviderClient} from "../locales/client";
 
 export default async function RootLayout({ children, params: { locale } }: Readonly<{
     children: ReactNode;
@@ -13,13 +10,9 @@ export default async function RootLayout({ children, params: { locale } }: Reado
     return (
         <html lang={locale}>
         <body>
-        <AppRouterCacheProvider>
-            <ThemeProvider theme={theme}>
-                <I18nProviderClient locale={locale}>
-                    {children}
-                </I18nProviderClient>
-            </ThemeProvider>
-        </AppRouterCacheProvider>
+        <I18nProviderClient locale={locale}>
+            {children}
+        </I18nProviderClient>
         </body>
         </html>
     );

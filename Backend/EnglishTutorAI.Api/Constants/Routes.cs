@@ -22,10 +22,17 @@ public class Routes
         public const string GetDocumentDetails = "get-document-details/{id}";
 
         public const string SplitDocumentContent = "split-document-content";
+
+        public const string SaveCurrentLine = "save-current-line";
+
+        public const string GetConversationThread = "get-conversation-thread/{threadId}";
+
+        public const string DeleteDocument = "delete-document/{documentId}";
     }
 
     public static class Assistant
     {
-        public const string GenerateChatCompletion = "generate-chat-completion";
+        public const string GenerateChatCompletion = "correct-text";
+        public const string SendMessage = "send-message";
     }
 }

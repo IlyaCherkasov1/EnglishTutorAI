@@ -6,8 +6,11 @@ export default {
     "enterYourText": "Введите ваш текст...",
     "correctedText": "Исправленный текст",
     "yourTranslation": "Ваш перевод",
-    "askAI": "спросить ИИ",
-    "send": "отправить",
+    "askAI": "Спросить ИИ",
+    "send": "Отправить",
     "loading": "Загрузка...",
     "addingDocumentStatus": "Добавление документа...",
+    "translationSuccessMessage": "Отлично! Ваш перевод правильный.",
+    "startAgain": "Начать заново",
+    "sending": "Отправка...",
 } as const

@@ -1,5 +1,5 @@
 import {getAllDocuments} from "@/app/api/document/documentApi";
-import {DocumentsList} from "@/app/[locale]/components/document/documentsList";
+import {DocumentsList} from "@/app/components/component/document/documentsList";
 
 export default async function Home() {
     const allDocuments = await getAllDocuments();

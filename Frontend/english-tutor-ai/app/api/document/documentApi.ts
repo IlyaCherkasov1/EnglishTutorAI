@@ -3,6 +3,8 @@ import {DocumentCreationRequest} from "@/app/dataModels/document/documentCreatio
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem";
 import {SplitDocumentContentRequest} from "@/app/dataModels/splitDocumentContentRequest";
 import {httpGet, httpPost} from "@/app/core/requestApi";
+import {SaveCurrentLineRequest} from "@/app/dataModels/document/saveCurrentLineRequest";
+import {ChatMessageResponse} from "@/app/dataModels/ChatMessageResponse";
 
 const documentsResource = "document";
 
@@ -34,4 +36,23 @@ export const splitDocumentContent = async (request: SplitDocumentContentRequest)
         url: `${documentsResource}/split-document-content`,
         body: request,
     });
+}
+
+export const saveCurrentLine = async (request: SaveCurrentLineRequest): Promise<void> =>{
+    return httpPost({
+        url: `${documentsResource}/save-current-line`,
+        body: request,
+    })
+}
+
+export const getConversationThread = async (threadId: string): Promise<ChatMessageResponse[]> => {
+    return httpGet({
+        url: `${documentsResource}/get-conversation-thread/${threadId}`,
+    })
+}
+
+export const deleteDocument = async (documentId: string): Promise<void> => {
+    return httpPost({
+        url: `${documentsResource}/delete-document/${documentId}`,
+    })
 }

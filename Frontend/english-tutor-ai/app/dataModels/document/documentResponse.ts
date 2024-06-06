@@ -3,4 +3,6 @@ export interface DocumentResponse {
     title: string;
     content: string;
     createdAt: Date;
+    threadId: string;
+    currentLine: number;
 }

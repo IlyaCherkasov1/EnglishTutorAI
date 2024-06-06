@@ -3,9 +3,10 @@ export type HttpRequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 export interface RequestOptions<T> {
     url: string;
     body?: T;
+    enableCache?: boolean;
 }
 
-export const apiRootUrl = process.env.LOCAL_API_URL;
+export const apiRootUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL;
 
 const contentTypes = {
     plainText: "text/plain",
@@ -49,7 +50,7 @@ const performRequest = async <TRequest, TResult>(
     method: HttpRequestMethod,
     options: RequestOptions<TRequest>
 ): Promise<TResult> => {
-        const response = await fetch(`${apiRootUrl}/${options.url}`, {
+        const response = await fetch(`${apiRootUrl}/${options.url}`,  {
             method,
             body: getBody(options),
             credentials: "same-origin",
@@ -57,6 +58,7 @@ const performRequest = async <TRequest, TResult>(
                 Accept: contentTypes.json,
                 ...getContentTypeHeader(options),
             },
+            cache: options.enableCache ? "force-cache" : "no-cache",
         });
 
     return await handleResponse(response);

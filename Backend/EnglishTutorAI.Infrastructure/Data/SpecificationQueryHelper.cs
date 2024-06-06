@@ -1,8 +1,9 @@
-﻿using System.Linq.Expressions;
-using EnglishTutorAI.Application.Specifications;
+﻿using System.ComponentModel;
+using System.Linq.Expressions;
 using EnglishTutorAI.Application.Specifications.Configurations;
 using EnglishTutorAI.Application.Specifications.ImplicitFilters;
 using EnglishTutorAI.Domain.Entities;
+using EnglishTutorAI.Domain.Enums;
 using EnglishTutorAI.Domain.Extensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,7 @@ internal static class SpecificationQueryHelper<T>
         var query = specification.IsReadOnly ? inputQuery.AsNoTracking() : inputQuery;
         query = await ApplyBaseQuery(query, specification, dataFilters);
         query = ApplyIncludes(query, specification);
+        query = ApplyOrdering(query, specification);
         query = ApplyPaging(query, specification);
 
         return query;
@@ -150,5 +152,41 @@ internal static class SpecificationQueryHelper<T>
     {
         return query.GroupBy(dataGroupingSpecification.GroupByExpression)
             .Select(dataGroupingSpecification.GroupTransformExpression);
+    }
+
+    private static IQueryable<T> ApplyOrdering(IQueryable<T> query, ISpecification<T> specification)
+    {
+        if (!specification.OrderRules.IsNullOrEmpty())
+        {
+            var firstRule = specification.OrderRules.First();
+
+            query = firstRule.SortOrder switch
+            {
+                SortOrder.Ascending => query.OrderBy(firstRule.OrderExpression),
+                SortOrder.Descending => query.OrderByDescending(firstRule.OrderExpression),
+                _ => throw new InvalidEnumArgumentException(
+                    nameof(firstRule.SortOrder),
+                    (int)firstRule.SortOrder,
+                    typeof(SortOrder)),
+            };
+
+            query = specification
+                .OrderRules
+                .Skip(1)
+                .Aggregate(query, (currentQuery, rule) =>
+                    rule.SortOrder switch
+                    {
+                        SortOrder.Ascending => ((IOrderedQueryable<T>)currentQuery)
+                            .ThenBy(rule.OrderExpression),
+                        SortOrder.Descending => ((IOrderedQueryable<T>)currentQuery)
+                            .ThenByDescending(rule.OrderExpression),
+                        _ => throw new InvalidEnumArgumentException(
+                            nameof(rule.SortOrder),
+                            (int)rule.SortOrder,
+                            typeof(SortOrder)),
+                    });
+        }
+
+        return query;
     }
 }
