@@ -1,11 +1,11 @@
 import {Input} from "@/app/components/ui/input"
-import {Button} from "@/app/components/ui/button"
-import {ArrowUp, Bot} from "lucide-react";
+import {Bot} from "lucide-react";
 import React, {useEffect, useRef, useState} from "react";
 import {sendMessage} from "@/app/api/languageModel/languageModelApi";
 import {getConversationThread} from "@/app/api/document/documentApi";
 import {ChatMessageResponse} from "@/app/dataModels/ChatMessageResponse";
 import {ConversationRole} from "@/app/dataModels/enums/conversationRole";
+import {SendButton} from "@/app/components/component/buttons/sendButton";
 
 interface Props {
     threadId: string;
@@ -87,10 +87,7 @@ export const ChatBot = (props: Props) => {
                             <div className="flex items-center w-full space-x-2">
                                 <Input className="flex-1 rounded-full px-4 py-2" name="message"
                                        placeholder="Write your message..." type="text"/>
-                                <Button onClick={() => handleOnClick} className="rounded-full px-3 py-2" type="submit"
-                                        variant="secondary">
-                                    <ArrowUp className="h-5 w-5"/>
-                                </Button>
+                                <SendButton />
                             </div>
                         </form>
                     </div>

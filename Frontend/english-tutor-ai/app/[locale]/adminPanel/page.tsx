@@ -25,7 +25,7 @@ export default function AdminPanel() {
             />
             <div className="mb-2 text-lg font-medium">{t('documentContent')}</div>
             <Textarea name="document-input" required />
-            <SubmitButton/>
+            <SubmitButton />
         </form>
     );
 }
