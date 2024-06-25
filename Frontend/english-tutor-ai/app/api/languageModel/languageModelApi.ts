@@ -1,5 +1,5 @@
 import {TextGenerationRequest} from "@/app/dataModels/languageModel/textGenerationRequest";
-import {httpPost} from "@/app/core/requestApi";
+import {httpPost} from "@/app/infrastructure/requestApi";
 import {SendMessageRequest} from "@/app/dataModels/languageModel/sendMessageRequest";
 
 const resources = 'LanguageModel';

@@ -28,5 +28,6 @@ public class DependencyRegistrationsInstaller : IServiceInstaller
         services.AddScoped<ITextExtractionService, TextExtractionService>();
         services.AddScoped<IChatMessageAddService, ChatMessageAddService>();
         services.AddScoped<ITextCorrectionMessageGenerationService, TextCorrectionMessageGenerationService>();
+        services.AddScoped<IGetUserService, GetUserService>();
     }
 }

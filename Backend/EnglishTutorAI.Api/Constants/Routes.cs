@@ -35,4 +35,9 @@ public class Routes
         public const string GenerateChatCompletion = "correct-text";
         public const string SendMessage = "send-message";
     }
+
+    public static class UserRoute
+    {
+        public const string GetUser = "get-user";
+    }
 }

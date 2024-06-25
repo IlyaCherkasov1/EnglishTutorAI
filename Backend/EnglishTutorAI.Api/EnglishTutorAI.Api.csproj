@@ -1,11 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>EnglishTutorAI.Api</RootNamespace>
-    </PropertyGroup>
+      <UserSecretsId>a96c868a-dd9d-4a92-af74-254a80c3b62b</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\EnglishTutorAI.Application\EnglishTutorAI.Application.csproj" />
@@ -13,6 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
         <PrivateAssets>all</PrivateAssets>
@@ -26,6 +28,10 @@
       <Reference Include="OpenAI-DotNet">
         <HintPath>..\EnglishTutorAI.Application\libs\OpenAI-DotNet.dll</HintPath>
       </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Middelware\" />
     </ItemGroup>
 
 </Project>

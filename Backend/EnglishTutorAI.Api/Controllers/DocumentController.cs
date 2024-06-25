@@ -11,12 +11,14 @@ using EnglishTutorAI.Application.Handlers.SaveProgress;
 using EnglishTutorAI.Application.Handlers.SplitSentences;
 using EnglishTutorAI.Application.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnglishTutorAI.Api.Controllers;
 
-[ApiController]
 [ApiRoute]
+[Authorize]
+[ApiController]
 public class DocumentController : ControllerBase
 {
     private readonly IMediator _mediator;

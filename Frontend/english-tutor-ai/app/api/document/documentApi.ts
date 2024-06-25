@@ -2,7 +2,7 @@ import {DocumentResponse} from "@/app/dataModels/document/documentResponse";
 import {DocumentCreationRequest} from "@/app/dataModels/document/documentCreationRequest";
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem";
 import {SplitDocumentContentRequest} from "@/app/dataModels/splitDocumentContentRequest";
-import {httpGet, httpPost} from "@/app/core/requestApi";
+import {httpGet, httpPost} from "@/app/infrastructure/requestApi";
 import {SaveCurrentLineRequest} from "@/app/dataModels/document/saveCurrentLineRequest";
 import {ChatMessageResponse} from "@/app/dataModels/ChatMessageResponse";
 

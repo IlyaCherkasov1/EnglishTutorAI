@@ -1,6 +1,6 @@
 import React from 'react';
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem";
-import {formatDateToISO} from "@/app/core/helpers/dateHelpers";
+import {formatDateToISO} from "@/app/infrastructure/helpers/dateHelpers";
 import {FileIcon} from "lucide-react";
 import dynamic from "next/dynamic";
 import {deleteDocument} from "@/app/api/document/documentApi";

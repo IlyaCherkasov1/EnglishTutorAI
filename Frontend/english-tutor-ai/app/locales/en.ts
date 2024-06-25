@@ -13,4 +13,6 @@ export default {
     "translationSuccessMessage": "Great! Your translation is correct.",
     "startAgain": "Start again",
     "sending": "Sending...",
+    loggingIn: 'Logging in...',
+    logIn: 'Log In',
 } as const
