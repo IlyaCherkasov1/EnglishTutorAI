@@ -64,7 +64,7 @@ const performRequest = async <TRequest, TResult>(
                 ...authorizationHeader,
                 ...getContentTypeHeader(options),
             },
-        cache: options.enableCache ? "force-cache" : "no-cache",
+        cache: options.disableCache ? "force-cache" : "no-cache",
         });
 
     return await handleResponse(response);
