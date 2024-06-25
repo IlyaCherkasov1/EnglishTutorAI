@@ -1,16 +1,8 @@
-import type {NextRequest} from "next/server";
-import {createI18nMiddleware} from "next-international/middleware";
+import {chain} from "@/middlewares/chain";
+import {localizationMiddleware} from "@/middlewares/I18nMiddleware";
+import {authMiddleware} from "@/middlewares/authMiddleware";
 
-
-const I18nMiddleware = createI18nMiddleware({
-    locales: ['en', 'ru'],
-    defaultLocale: 'ru'
-})
-
-export function middleware(request: NextRequest) {
-    return I18nMiddleware(request)
-}
-
+export default chain([authMiddleware, localizationMiddleware])
 
 export const config = {
     matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],

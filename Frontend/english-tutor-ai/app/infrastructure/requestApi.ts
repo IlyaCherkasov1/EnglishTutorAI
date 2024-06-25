@@ -1,9 +1,12 @@
+import {getAccessToken} from "@/app/infrastructure/utils/sessionUtils";
+
 export type HttpRequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 export interface RequestOptions<T> {
     url: string;
     body?: T;
-    enableCache?: boolean;
+    disableCache?: boolean;
+    isAnonymous?: boolean;
 }
 
 export const apiRootUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL;
@@ -50,18 +53,35 @@ const performRequest = async <TRequest, TResult>(
     method: HttpRequestMethod,
     options: RequestOptions<TRequest>
 ): Promise<TResult> => {
-        const response = await fetch(`${apiRootUrl}/${options.url}`,  {
+    const authorizationHeader = await getAuthorizationHeader(options);
+
+    const response = await fetch(`${apiRootUrl}/${options.url}`,  {
             method,
             body: getBody(options),
             credentials: "same-origin",
             headers: {
                 Accept: contentTypes.json,
+                ...authorizationHeader,
                 ...getContentTypeHeader(options),
             },
-            cache: options.enableCache ? "force-cache" : "no-cache",
+        cache: options.enableCache ? "force-cache" : "no-cache",
         });
 
     return await handleResponse(response);
+}
+
+async function getAuthorizationHeader<T>(options: RequestOptions<T>): Promise<{ Authorization: string } | {} | null> {
+    if (options.isAnonymous) {
+        return null;
+    }
+
+    return getAccessTokenAuthorizationHeader();
+}
+
+async function getAccessTokenAuthorizationHeader(): Promise<{ Authorization: string } | {}> {
+    let token = await getAccessToken();
+
+    return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
 

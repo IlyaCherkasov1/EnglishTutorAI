@@ -5,12 +5,14 @@ using EnglishTutorAI.Application.Handlers.SendMessageToAssistant;
 using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Models.TextGeneration;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnglishTutorAI.Api.Controllers;
 
-[ApiController]
 [ApiRoute]
+[Authorize]
+[ApiController]
 public class LanguageModelController : ControllerBase
 {
     private readonly IMediator _mediator;
