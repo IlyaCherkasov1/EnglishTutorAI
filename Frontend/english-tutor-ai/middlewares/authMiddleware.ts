@@ -1,8 +1,8 @@
 import {type NextFetchEvent, type NextRequest, NextResponse} from 'next/server';
 import {CustomMiddleware} from './chain';
 import {auth} from '@/auth';
-import {authRoutes, DEFAULT_LOGIN_REDIRECT_URI, LOGIN_PATH, publicRoutes} from '@/routes';
 import {LOCALES} from '@/app/infrastructure/locales';
+import {DEFAULT_LOGIN_REDIRECT_URI, authRoutes, LOGIN_PATH, publicRoutes} from "@/app/infrastructure/auth/routes";
 
 const removeLocaleFromPathname = (pathname: string, locales: string[]): string => {
     const localePattern = new RegExp(`^/(${locales.join('|')})`);

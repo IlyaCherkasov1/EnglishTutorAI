@@ -2,7 +2,7 @@
 
 import React, {useState} from 'react';
 import {Input} from '@/app/components/ui/input';
-import {LogInButton} from "@/app/components/component/buttons/logInButton";
+import {SignInButton} from "@/app/components/component/buttons/signInButton";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod"
 import {
@@ -15,13 +15,14 @@ import {
     FormField,
 } from "@/app/components/ui/form";
 import {FormError} from "@/app/components/component/form-error";
-import {FormSuccess} from "@/app/components/component/form-success";
 import {LoginSchema, TLoginSchema} from "@/app/infrastructure/schemas";
-import {loginAction} from "@/app/actions/actions";
+import {loginAction} from "@/app/actions/authAction";
+import {useRouter} from 'next/navigation';
+import {DEFAULT_LOGIN_REDIRECT_URI} from "@/app/infrastructure/auth/routes";
 
 const Login = () => {
     const [error, setError] = useState<string | undefined>("");
-    const [success, setSuccess] = useState<string | undefined>("");
+    const router = useRouter();
 
     const form = useForm<TLoginSchema>({
         resolver: zodResolver(LoginSchema),
@@ -33,13 +34,13 @@ const Login = () => {
 
     const onSubmit = async (values: TLoginSchema) => {
         setError("");
-        setSuccess("");
 
         await loginAction(values).then((data) => {
                 setError(data?.error);
-                setSuccess(data?.success);
             }
         )
+
+        router.push(DEFAULT_LOGIN_REDIRECT_URI);
     }
 
     return (
@@ -55,7 +56,10 @@ const Login = () => {
                             <FormItem>
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                    <Input {...field} placeholder="john.doe@example.com" type="email"/>
+                                    <Input {...field}
+                                           disabled={form.formState.isSubmitting}
+                                           placeholder="john.doe@example.com"
+                                           type="email"/>
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
@@ -66,21 +70,26 @@ const Login = () => {
                             <FormItem>
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
-                                    <Input {...field} placeholder="*******" type="password"/>
+                                    <Input {...field}
+                                           disabled={form.formState.isSubmitting}
+                                           placeholder="*******"
+                                           type="password"/>
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
                         )}/>
                     </div>
                     <FormError message={error}/>
-                    <FormSuccess message={success}/>
                     <div className="grid gap-4">
-                        <LogInButton isSubmitting={form.formState.isSubmitting}/>
+                        <SignInButton isSubmitting={form.formState.isSubmitting}/>
                     </div>
                 </div>
                 <p className="mt-2 text-center text-sm text-gray-500">
                     Do not have an account?
-                    <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> Register</a>
+                    <span className="mr-1"></span>
+                    <a href="/auth/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                        Register
+                    </a>
                 </p>
             </form>
         </Form>

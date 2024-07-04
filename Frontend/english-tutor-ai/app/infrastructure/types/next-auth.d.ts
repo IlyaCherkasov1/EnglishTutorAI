@@ -17,11 +17,9 @@ declare module "next-auth" {
 
     interface User {
         id: string;
-        userName: string;
-        email: string;
-        emailConfirmed: boolean;
-        twoFactorEnabled: boolean;
-        lockoutEnabled: boolean;
+        tokenType: string;
         accessToken: string;
+        expiresIn: number;
+        refreshToken: string;
     }
 }

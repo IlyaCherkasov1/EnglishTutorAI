@@ -2,8 +2,6 @@
 
 import React, {useState} from 'react';
 import {Input} from '@/app/components/ui/input';
-import {Button} from '@/app/components/ui/button';
-import {LogInButton} from "@/app/components/component/buttons/logInButton";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod"
 import {
@@ -18,22 +16,31 @@ import {
 import {FormError} from "@/app/components/component/form-error";
 import {FormSuccess} from "@/app/components/component/form-success";
 import {RegisterSchema, TRegisterSchema} from "@/app/infrastructure/schemas";
+import {SignUpButton} from "@/app/components/component/buttons/signUpButton";
+import {RegisterAction} from "@/app/actions/authAction";
 
 const Register = () => {
-    const [error] = useState<string | undefined>("");
-    const [success] = useState<string | undefined>("");
+    const [error, setError] = useState<string | undefined>("");
+    const [success, setSuccess] = useState<string | undefined>("");
 
     const form = useForm<TRegisterSchema>({
         resolver: zodResolver(RegisterSchema),
         defaultValues: {
+            userName: "",
             email: "",
             password: "",
-            name: "",
         }
     });
 
     const onSubmit = async (values: TRegisterSchema) => {
-        console.log(values);
+        setError("");
+        setSuccess("");
+
+        await RegisterAction(values).then((data) => {
+                setError(data?.error);
+                setSuccess(data?.success);
+            }
+        )
     }
 
     return (
@@ -45,11 +52,11 @@ const Register = () => {
                 </div>
                 <div className="space-y-4">
                     <div className="space-y-2">
-                        <FormField control={form.control} name="name" render={({ field }) => (
+                        <FormField control={form.control} name="userName" render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Name</FormLabel>
                                 <FormControl>
-                                    <Input {...field} placeholder="John Doe"/>
+                                    <Input {...field} disabled={form.formState.isSubmitting} placeholder="John Doe"/>
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
@@ -60,7 +67,10 @@ const Register = () => {
                             <FormItem>
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                    <Input {...field} placeholder="john.doe@example.com" type="email"/>
+                                    <Input {...field}
+                                           disabled={form.formState.isSubmitting}
+                                           placeholder="john.doe@example.com"
+                                           type="email"/>
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
@@ -71,7 +81,10 @@ const Register = () => {
                             <FormItem>
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
-                                    <Input {...field} placeholder="*******" type="password"/>
+                                    <Input {...field}
+                                           disabled={form.formState.isSubmitting}
+                                           placeholder="*******"
+                                           type="password"/>
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
@@ -80,12 +93,16 @@ const Register = () => {
                     <FormError message={error}/>
                     <FormSuccess message={success}/>
                     <div className="grid gap-4">
-                        <LogInButton isSubmitting={form.formState.isSubmitting} />
-                        <Button className="w-full" variant="outline">
-                            Sign Up
-                        </Button>
+                        <SignUpButton isSubmitting={form.formState.isSubmitting}/>
                     </div>
                 </div>
+                <p className="mt-2 text-center text-sm text-gray-500">
+                    Already have an account?
+                    <span className="mr-1"></span>
+                    <a href="/auth/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                        Login
+                    </a>
+                </p>
             </form>
         </Form>
     );
