@@ -1,6 +1,5 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
-import {login} from "@/app/api/identity/identityApi";
 import {LoginSchema} from "@/app/infrastructure/schemas";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -16,24 +15,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 if (validatedFields.success) {
                     const { email, password } = validatedFields.data;
 
-                    const loginResponse = await login({ email: email, password: password });
-
-                    const userResponse = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_API_URL}/user/get-user`, {
-                        method: 'GET',
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_API_URL}/identity/login`, {
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${loginResponse.accessToken}`
                         },
+                        body: JSON.stringify({ email: email, password: password })
                     });
 
-                    const user = await userResponse.json();
-                    user.accessToken = loginResponse.accessToken;
-
-                    if (!user) {
+                    if (!response.ok) {
                         throw new Error("User not found.")
                     }
 
-                    return user;
+                    return await response.json();
                 }
 
                 return null;
@@ -46,25 +40,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token.userName = user.userName;
-                token.email = user.email;
-                token.emailConfirmed = user.emailConfirmed;
-                token.twoFactorEnabled = user.twoFactorEnabled;
-                token.lockoutEnabled = user.lockoutEnabled;
                 token.accessToken = user.accessToken;
             }
             return token;
         },
         async session({ session, token }) {
-            if (token.sub && session.user){
+            if (token.sub && session.user) {
                 session.user.id = token.sub;
             }
-
-            session.user.userName = token.userName as string;
-            session.user.email = token.email as string;
-            session.user.emailConfirmed = token.emailConfirmed as boolean;
-            session.user.twoFactorEnabled = token.twoFactorEnabled as boolean;
-            session.user.lockoutEnabled = token.lockoutEnabled as boolean;
             session.user.accessToken = token.accessToken as string;
 
             return session;

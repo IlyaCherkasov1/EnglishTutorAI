@@ -11,7 +11,6 @@ const Page = async () => {
                 "use server"
                 await signOut()
             }}>
-                <div>{JSON.stringify(session)}</div>
                 <Button variant="outline" type="submit">Sign Out</Button>
             </form>
         ) : (

@@ -1,4 +1,5 @@
 import {getAccessToken} from "@/app/infrastructure/utils/sessionUtils";
+import {opt} from "ts-interface-checker";
 
 export type HttpRequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -7,6 +8,7 @@ export interface RequestOptions<T> {
     body?: T;
     disableCache?: boolean;
     isAnonymous?: boolean;
+    skipHandleResponse?: boolean;
 }
 
 export const apiRootUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL;
@@ -40,6 +42,31 @@ const getContentTypeHeader = <T>(options?: RequestOptions<T>): { "Content-Type":
     };
 }
 
+const performRequest = async <TRequest, TResult>(
+    method: HttpRequestMethod,
+    options: RequestOptions<TRequest>
+): Promise<TResult> => {
+    const authorizationHeader = await getAuthorizationHeader(options);
+
+    const response = await fetch(`${apiRootUrl}/${options.url}`, {
+        method,
+        body: getBody(options),
+        credentials: "same-origin",
+        headers: {
+            Accept: contentTypes.json,
+            ...authorizationHeader,
+            ...getContentTypeHeader(options),
+        },
+        cache: options.disableCache ? "force-cache" : "no-cache",
+    });
+
+    if (options.skipHandleResponse) {
+        return response as TResult;
+    } else {
+        return await handleResponse(response);
+    }
+}
+
 const handleResponse = async (response: Response): Promise<any> => {
     if (!response.ok) {
         throw new Error("error on performing API request")
@@ -47,27 +74,6 @@ const handleResponse = async (response: Response): Promise<any> => {
 
     const text = await response.text();
     return text ? JSON.parse(text) : {};
-}
-
-const performRequest = async <TRequest, TResult>(
-    method: HttpRequestMethod,
-    options: RequestOptions<TRequest>
-): Promise<TResult> => {
-    const authorizationHeader = await getAuthorizationHeader(options);
-
-    const response = await fetch(`${apiRootUrl}/${options.url}`,  {
-            method,
-            body: getBody(options),
-            credentials: "same-origin",
-            headers: {
-                Accept: contentTypes.json,
-                ...authorizationHeader,
-                ...getContentTypeHeader(options),
-            },
-        cache: options.disableCache ? "force-cache" : "no-cache",
-        });
-
-    return await handleResponse(response);
 }
 
 async function getAuthorizationHeader<T>(options: RequestOptions<T>): Promise<{ Authorization: string } | {} | null> {
@@ -97,7 +103,7 @@ export const httpPut = async <TRequest, TResult = void>(options: RequestOptions<
     return performRequest<TRequest, TResult>("PUT", options);
 }
 
-export const httpDelete  = async <TResult = void>(options: RequestOptions<void>): Promise<TResult> => {
+export const httpDelete = async <TResult = void>(options: RequestOptions<void>): Promise<TResult> => {
     return performRequest("DELETE", options);
 }
 

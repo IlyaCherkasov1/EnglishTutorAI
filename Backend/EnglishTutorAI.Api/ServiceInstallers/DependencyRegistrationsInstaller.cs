@@ -4,6 +4,7 @@ using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Services;
 using EnglishTutorAI.Infrastructure.Data;
 using EnglishTutorAI.Infrastructure.HttpClients;
+using EnglishTutorAI.Infrastructure.Identity;
 
 namespace EnglishTutorAI.Api.ServiceInstallers;
 

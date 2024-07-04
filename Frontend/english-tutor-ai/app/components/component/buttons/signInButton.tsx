@@ -6,12 +6,12 @@ interface Props {
     isSubmitting: boolean;
 }
 
-export const LogInButton = ({ isSubmitting }: Props) => {
+export const SignInButton = ({ isSubmitting }: Props) => {
     const t = useI18n();
 
     return (
         <Button className="w-full" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? t('loggingIn') : t('logIn')}
+            {isSubmitting ? t('signingIn') : t('signIn')}
         </Button>
     );
 };

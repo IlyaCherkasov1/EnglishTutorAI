@@ -1,8 +1,7 @@
-using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Extensions;
 using EnglishTutorAI.Domain.Entities;
 using EnglishTutorAI.Infrastructure;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using EnglishTutorAI.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +15,8 @@ services.AddAuthentication()
     .AddBearerToken(IdentityConstants.BearerScheme);
 
 services.AddAuthorizationBuilder();
-services.AddIdentityCore<User>()
+services.AddIdentityCore<User>(options => { options.User.RequireUniqueEmail = true; })
+    .AddErrorDescriber<AuthErrorDescriber>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddApiEndpoints();
 
@@ -32,7 +32,7 @@ app.UseCors(
 
 app.MapGroup("api/identity/")
     .WithTags("Identity")
-    .MapIdentityApi<User>();
+    .MapMyIdentityApi<User>();
 
 app.UseRouting();
 app.MapControllers();

@@ -1,15 +1,16 @@
 import { httpGet, httpPost } from "@/app/infrastructure/requestApi";
-import {RegisterRequest} from "@/app/dataModels/identity/registerRequest";
+import {UserRegisterRequest} from "@/app/dataModels/identity/userRegisterRequest";
 import {LoginRequest} from "@/app/dataModels/identity/loginRequest";
 import {RefreshTokenRequest} from "@/app/dataModels/identity/refreshTokenRequest";
 import {LoginResponse} from "@/app/dataModels/identity/loginResponse";
 
 const identityResource = "identity";
 
-export const register = async (request: RegisterRequest) => {
+export const register = async (request: UserRegisterRequest): Promise<any> => {
     return httpPost({
         url: `${identityResource}/register`,
         body: request,
+        skipHandleResponse: true,
     });
 }
 
