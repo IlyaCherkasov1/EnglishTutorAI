@@ -24,7 +24,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     });
 
                     if (!response.ok) {
-                        throw new Error("User not found.")
+                        throw new Error("Not allowed.")
                     }
 
                     return await response.json();

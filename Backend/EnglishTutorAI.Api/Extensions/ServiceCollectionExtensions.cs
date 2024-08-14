@@ -8,6 +8,8 @@ public static IServiceCollection AddSettings(this IServiceCollection services, I
     {
         services.Configure<OpenAiConfig>(configuration.GetSection(nameof(OpenAiConfig)));
         services.Configure<ProxyConfig>(configuration.GetSection(nameof(ProxyConfig)));
+        services.Configure<EmailSettings>(configuration.GetSection(nameof(EmailSettings)));
+        services.Configure<AwsSettings>(configuration.GetSection("AWS"));
 
         return services;
     }
