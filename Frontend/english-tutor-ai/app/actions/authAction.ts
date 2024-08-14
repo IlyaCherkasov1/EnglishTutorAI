@@ -19,7 +19,7 @@ export const loginAction = async (values: TLoginSchema) => {
         });
 
     } catch (error) {
-        return { error: "User not found." };
+        return { error: "Something went wrong." };
     }
 }
 
@@ -36,7 +36,8 @@ export const RegisterAction = async (values: TLoginSchema) => {
         const response = await register({ firstName: userName, email, password });
 
         if (!response.ok) {
-            const errors = response.errors || [];
+            const responseData = await response.json();
+            const errors = responseData.errors || [];
 
             if ('DuplicateEmail' in errors) {
                 return { error: errors.DuplicateEmail[0] };
@@ -44,7 +45,7 @@ export const RegisterAction = async (values: TLoginSchema) => {
                 return { error: "Registration failed. Please try again." };
             }
         } else {
-            return { success: "Registration was successful!" };
+            return { success: "Registration was successful! Check your email" };
         }
     } catch (error) {
         if (error instanceof Error) {

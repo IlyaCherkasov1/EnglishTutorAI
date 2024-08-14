@@ -6,7 +6,7 @@ export type HttpRequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 export interface RequestOptions<T> {
     url: string;
     body?: T;
-    disableCache?: boolean;
+    enableCache?: boolean;
     isAnonymous?: boolean;
     skipHandleResponse?: boolean;
 }
@@ -57,7 +57,7 @@ const performRequest = async <TRequest, TResult>(
             ...authorizationHeader,
             ...getContentTypeHeader(options),
         },
-        cache: options.disableCache ? "force-cache" : "no-cache",
+        cache: options.enableCache ? "force-cache" : "no-cache",
     });
 
     if (options.skipHandleResponse) {

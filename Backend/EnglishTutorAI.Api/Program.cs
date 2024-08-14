@@ -15,7 +15,11 @@ services.AddAuthentication()
     .AddBearerToken(IdentityConstants.BearerScheme);
 
 services.AddAuthorizationBuilder();
-services.AddIdentityCore<User>(options => { options.User.RequireUniqueEmail = true; })
+services.AddIdentityCore<User>(options =>
+    {
+        options.User.RequireUniqueEmail = true;
+        options.SignIn.RequireConfirmedEmail = true;
+    })
     .AddErrorDescriber<AuthErrorDescriber>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddApiEndpoints();
