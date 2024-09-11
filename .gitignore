@@ -1,0 +1,10 @@
+.idea/
+obj/
+bin/
+
+**/appsettings*.json
+
+.idea/
+
+node_modules
+.env*.local

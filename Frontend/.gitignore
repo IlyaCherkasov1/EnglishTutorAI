@@ -1,7 +1,0 @@
-.idea/
-
-english-tutor-ai/node_modules
-english-tutor-ai/.next
-
-.env*.local
-certificates
