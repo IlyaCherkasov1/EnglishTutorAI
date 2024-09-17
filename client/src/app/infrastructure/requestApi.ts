@@ -1,6 +1,6 @@
 import {EmptyObject} from "react-hook-form";
-import {getAccessToken} from "./services/auth/accessTokenService.ts";
-import {isAccessTokenExpired, performAfterLogOutActions, refreshToken} from "./services/auth/identityService.ts";
+import {clearAccessToken, getAccessToken} from "./services/auth/accessTokenService.ts";
+import {isAccessTokenExpired, refreshToken} from "./services/auth/identityService.ts";
 import {routeLinks} from "../components/layout/routes/routeLink.ts";
 
 export type HttpRequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
@@ -84,7 +84,7 @@ const handleFailedResponse = async <TResult>(response: Response): Promise<TResul
     const handleHeaderStatus = await handleHeaders(response);
 
     if (handleHeaderStatus === responseHandlingStatuses.unauthorized) {
-        performAfterLogOutActions();
+        clearAccessToken();
         return {} as TResult;
     }
 

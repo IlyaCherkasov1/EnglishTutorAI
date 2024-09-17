@@ -24,7 +24,6 @@ configuration.AddJsonFile("appsettings.Development.json", optional: true, reload
 
 services.AddAuthorizationBuilder();
 
-
 var allowedOrigins = configuration.GetSection("AllowedOrigins").Get<string[]>()!;
 services.AddCors(options =>
 {

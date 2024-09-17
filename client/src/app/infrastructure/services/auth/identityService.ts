@@ -1,4 +1,4 @@
-import {clearAccessToken, setAccessToken} from "./accessTokenService.ts";
+import {setAccessToken} from "./accessTokenService.ts";
 import {jwtDecode} from "jwt-decode";
 import {responseHandlingStatuses} from "../../requestApi.ts";
 import {renewAccessToken} from "../../../api/identity/identityApi.ts";
@@ -23,12 +23,4 @@ export const refreshToken = async (): Promise<number> => {
     setAccessToken(response.data)
 
     return responseHandlingStatuses.refreshTokenWasCompleted;
-}
-
-export const removeIdentityData = () => {
-    clearAccessToken();
-};
-
-export function performAfterLogOutActions() {
-    removeIdentityData();
 }

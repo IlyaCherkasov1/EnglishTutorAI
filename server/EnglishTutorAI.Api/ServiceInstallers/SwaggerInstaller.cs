@@ -32,7 +32,7 @@ public class SwaggerInstaller : IServiceInstaller
                             Id = "Bearer"
                         }
                     },
-                    new string[] { }
+                    Array.Empty<string>()
                 }
             });
         });

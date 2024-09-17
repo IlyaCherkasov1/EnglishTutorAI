@@ -18,9 +18,9 @@ public class DeleteDocumentService : IDeleteDocumentService
     public async Task Delete(Guid documentId)
     {
         var document = await _documentRepository.GetById(documentId);
-        await _documentRepository.Delete(document);
+        _documentRepository.Delete(document);
 
         var chatList = await _chatMessageRepository.List(new ChatMessageByThreadIdSpecification(document.ThreadId));
-        await _chatMessageRepository.Delete(chatList);
+        _chatMessageRepository.DeleteRange(chatList);
     }
 }
