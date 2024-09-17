@@ -11,10 +11,6 @@ public class Routes
 
     public static class Document
     {
-        public const string GetDocumentByIndex = "get-document-by-index/{index}";
-
-        public const string Count = "count";
-
         public const string AddDocument = "add-document";
 
         public const string GetDocument = "get-documents";

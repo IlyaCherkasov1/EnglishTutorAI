@@ -49,5 +49,5 @@ public class UnitOfWork : IUnitOfWork
 
     private IEnumerable<EntityEntry> GetAddedAndUpdatedEntities() => _context.ChangeTracker.Entries().Where(x =>
         x.Entity.GetType().GetInterfaces().Intersect(CommonInterfaces).Any() &&
-        (x.State == EntityState.Added || x.State == EntityState.Modified));
+        x.State is EntityState.Added or EntityState.Modified);
 }

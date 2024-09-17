@@ -17,7 +17,6 @@ public class DependencyRegistrationsInstaller : IServiceInstaller
         services.AddSingleton<IHttpClientFactory, ConfigurableProxyHttpClientFactory>();
         services.AddScoped<IMessageGenerationService, MessageGenerationService>();
         services.AddScoped<IDocumentCreationService, DocumentCreationCreationService>();
-        services.AddScoped<IDocumentCounterService, DocumentCounterService>();
         services.AddScoped<IDocumentRetrievalService, DocumentRetrievalService>();
         services.AddScoped<ISentenceSplitterService, SentenceSplitterService>();
         services.AddScoped<IAssistantClient, AssistantClient>();
@@ -28,7 +27,6 @@ public class DependencyRegistrationsInstaller : IServiceInstaller
         services.AddScoped<ITextExtractionService, TextExtractionService>();
         services.AddScoped<IChatMessageAddService, ChatMessageAddService>();
         services.AddScoped<ITextCorrectionMessageGenerationService, TextCorrectionMessageGenerationService>();
-        services.AddScoped<IGetUserService, GetUserService>();
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IRefreshTokenCookieService, RefreshTokenCookieService>();

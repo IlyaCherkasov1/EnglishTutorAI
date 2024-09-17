@@ -65,13 +65,7 @@ public class IdentityService : IIdentityService
         var accessToken = _tokenService.GenerateAccessToken(user);
         var refreshToken = _tokenService.GenerateRefreshToken();
 
-        var existingRefreshToken = await _refreshTokenRepository.GetSingleOrDefault(
-            new RefreshTokenByUserIdSpecification(user.Id));
-
-        if (existingRefreshToken != null)
-        {
-            await _refreshTokenRepository.Delete(existingRefreshToken);
-        }
+        await _refreshTokenRepository.DeleteIfExists(new RefreshTokenByUserIdSpecification(user.Id));
 
         var refreshTokenEntity = new RefreshToken
         {
@@ -97,7 +91,7 @@ public class IdentityService : IIdentityService
 
             if (refreshTokenEntity != null)
             {
-                await _refreshTokenRepository.Delete(refreshTokenEntity);
+                _refreshTokenRepository.Delete(refreshTokenEntity);
             }
 
             _refreshTokenCookieService.DeleteRefreshToken();

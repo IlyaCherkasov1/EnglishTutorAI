@@ -8,14 +8,6 @@ import {httpGet, httpPost} from "../../infrastructure/requestApi.ts";
 
 const documentsResource = "document";
 
-export const getDocumentByIndex = async ( index: number): Promise<DocumentResponse> => {
-    return httpGet({ url: `${documentsResource}/count/get-document-by-index/${index}` })
-}
-
-export const getDocumentCount = async (): Promise<number> => {
-    return httpGet({ url: `${documentsResource}/count` })
-}
-
 export const addDocument = async (request: DocumentCreationRequest ) => {
     return httpPost({
         url: `${documentsResource}/add-document`,

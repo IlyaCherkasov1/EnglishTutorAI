@@ -9,5 +9,4 @@ public class DocumentListByCreatedAtSpecification : Specification<Document>
     {
         ApplyOrderByDescending(d => d.CreatedAt);
     }
-
 }

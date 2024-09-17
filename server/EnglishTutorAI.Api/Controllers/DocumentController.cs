@@ -3,8 +3,6 @@ using EnglishTutorAI.Api.Controllers.Attributes;
 using EnglishTutorAI.Application.Handlers.AddDocument;
 using EnglishTutorAI.Application.Handlers.DeleteDocument;
 using EnglishTutorAI.Application.Handlers.GetConversationThread;
-using EnglishTutorAI.Application.Handlers.GetDocument;
-using EnglishTutorAI.Application.Handlers.GetDocumentCount;
 using EnglishTutorAI.Application.Handlers.GetDocumentDetails;
 using EnglishTutorAI.Application.Handlers.GetDocuments;
 using EnglishTutorAI.Application.Handlers.SaveProgress;
@@ -26,18 +24,6 @@ public class DocumentController : ControllerBase
     public DocumentController(IMediator mediator)
     {
         _mediator = mediator;
-    }
-
-    [HttpGet(Routes.Document.GetDocumentByIndex)]
-    public Task<DocumentResponse> GetDocumentByIndex(int index)
-    {
-        return _mediator.Send(new GetDocumentQuery(index));
-    }
-
-    [HttpGet(Routes.Document.Count)]
-    public Task<int> GetDocumentCount()
-    {
-        return _mediator.Send(new GetDocumentCountQuery());
     }
 
     [HttpPost(Routes.Document.AddDocument)]
