@@ -26,32 +26,32 @@ public class Repository<T> : IRepository<T>
 
     protected IEnumerable<IDataFilter<T>> DataFilters { get; }
 
-    public async Task<T> GetSingleOrDefault(ISpecification<T> specification)
+    public async Task<T?> GetSingleOrDefault(ISpecification<T> specification)
     {
         IQueryable<T> queryable = await ApplySpecification(specification);
 
-        return await GetSingleOrDefault(queryable, specification.TreatEmptyResultAsConcurrency);
+        return await GetSingleOrDefault(queryable);
     }
 
-    public async Task<TResult> GetSingleOrDefault<TResult>(IDataTransformSpecification<T, TResult> specification)
+    public async Task<TResult?> GetSingleOrDefault<TResult>(IDataTransformSpecification<T, TResult> specification)
     {
         IQueryable<TResult> queryable = await ApplyDataTransformSpecification(specification);
 
-        return await GetSingleOrDefault(queryable, specification.TreatEmptyResultAsConcurrency);
+        return await GetSingleOrDefault(queryable);
     }
 
-    public async Task<T> GetFirstOrDefault(ISpecification<T> specification)
+    public async Task<T?> GetFirstOrDefault(ISpecification<T> specification)
     {
         IQueryable<T> queryable = await ApplySpecification(specification);
 
-        return await GetFirstOrDefault(queryable, specification.TreatEmptyResultAsConcurrency);
+        return await GetFirstOrDefault(queryable);
     }
 
-    public async Task<TResult> GetFirstOrDefault<TResult>(IDataTransformSpecification<T, TResult> specification)
+    public async Task<TResult?> GetFirstOrDefault<TResult>(IDataTransformSpecification<T, TResult> specification)
     {
         IQueryable<TResult> queryable = await ApplyDataTransformSpecification(specification);
 
-        return await GetFirstOrDefault(queryable, specification.TreatEmptyResultAsConcurrency);
+        return await GetFirstOrDefault(queryable);
     }
 
     public async Task<T> GetById(Guid id)
@@ -156,7 +156,7 @@ public class Repository<T> : IRepository<T>
         return Task.CompletedTask;
     }
 
-    public Task DeleteIfExists(T entity)
+    public Task DeleteIfExists(T? entity)
     {
         return entity == null ? Task.CompletedTask : Delete(entity);
     }
@@ -220,28 +220,18 @@ public class Repository<T> : IRepository<T>
         return await queryable.AnyAsync();
     }
 
-    private static async Task<TSource> GetSingleOrDefault<TSource>(
-        IQueryable<TSource> queryable, bool treatEmptyResultAsConcurrency)
-    {
-        return (await GetEntitiesWithEmptyResultHandling(queryable, treatEmptyResultAsConcurrency)).SingleOrDefault();
-    }
-
-    private static async Task<TSource> GetFirstOrDefault<TSource>(
-        IQueryable<TSource> queryable, bool treatEmptyResultAsConcurrency)
-    {
-        return (await GetEntitiesWithEmptyResultHandling(queryable, treatEmptyResultAsConcurrency)).FirstOrDefault();
-    }
-
-    private static async Task<List<TSource>> GetEntitiesWithEmptyResultHandling<TSource>(
-        IQueryable<TSource> queryable, bool treatEmptyResultAsConcurrency)
+    private static async Task<TSource?> GetSingleOrDefault<TSource>(IQueryable<TSource> queryable)
     {
         var entities = await queryable.ToListAsync();
-        if (treatEmptyResultAsConcurrency && entities.Count == 0)
-        {
-            throw new PotentiallyConcurrentModificationsException($"The entity of type {typeof(T)} was not found");
-        }
 
-        return entities;
+        return entities.SingleOrDefault();
+    }
+
+    private static async Task<TSource?> GetFirstOrDefault<TSource>(IQueryable<TSource> queryable)
+    {
+        var entities = await queryable.ToListAsync();
+
+        return entities.FirstOrDefault();
     }
 
     private async Task<IReadOnlyList<T>> ListInternal(ISpecification<T> specification)

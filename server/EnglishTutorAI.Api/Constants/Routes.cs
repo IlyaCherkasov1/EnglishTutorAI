@@ -46,5 +46,9 @@ public class Routes
         public const string Register = "Register";
 
         public const string Login = "login";
+
+        public const string RenewAccessToken = "renewAccessToken";
+
+        public const string Logout = "logout";
     }
 }

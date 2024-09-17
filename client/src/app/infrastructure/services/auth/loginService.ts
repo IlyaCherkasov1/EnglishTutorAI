@@ -1,9 +1,8 @@
 import {LoginSchema, TLoginSchema} from "../../schemas";
 import {loginUser} from "../../../api/identity/identityApi.ts";
-import {LoginResponse} from "../../../dataModels/identity/loginResponse.ts";
 
 type LoginResult =
-    | { isSuccess: true; data: LoginResponse }
+    | { isSuccess: true; data: string }
     | { isSuccess: false; error: string };
 
 export async function login(values: TLoginSchema): Promise<LoginResult> {

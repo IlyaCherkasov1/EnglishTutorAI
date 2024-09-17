@@ -7,7 +7,8 @@ namespace EnglishTutorAI.Application.Interfaces;
 
 public interface IRepository<T> where T : Entity
 {
-    Task<T> GetSingleOrDefault(ISpecification<T> specification);
+    Task<T?> GetSingleOrDefault(ISpecification<T> specification);
+    Task<T?> GetFirstOrDefault(ISpecification<T> specification);
 
     Task<T> GetById(Guid id);
 

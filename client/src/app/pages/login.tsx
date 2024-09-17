@@ -6,7 +6,7 @@ import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessag
 import {Input} from "../components/ui/input.tsx";
 import {FormError} from "../components/component/form-error.tsx";
 import {SignInButton} from "../components/component/buttons/signInButton.tsx";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {routeLinks} from "../components/layout/routes/routeLink.ts";
 import {applyNewIdentity} from "../infrastructure/services/auth/identityService.ts";
 import {login} from "../infrastructure/services/auth/loginService.ts";
@@ -81,9 +81,9 @@ const Login = () => {
                 <p className="mt-2 text-center text-sm text-gray-500">
                     Do not have an account?
                     <span className="mr-1"></span>
-                    <a href="/auth/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                    <Link to="/auth/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                         Register
-                    </a>
+                    </Link>
                 </p>
             </form>
         </FormProvider>
