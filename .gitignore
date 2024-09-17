@@ -1,10 +1,19 @@
+# Node.js dependencies
+node_modules/
+
+# Environment variables files
+.env
+*.local
+
+# SSL certificates and private keys
+*.pem
+
+# IDE config files (JetBrains)
 .idea/
+
+# Compiled binary files for .NET projects
 obj/
 bin/
 
+# Application settings configuration files
 **/appsettings*.json
-
-.idea/
-
-node_modules
-.env*.local

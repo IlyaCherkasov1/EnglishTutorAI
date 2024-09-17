@@ -10,13 +10,15 @@ export interface RequestOptions<T> {
     body?: T;
     enableCache?: boolean;
     isAnonymous?: boolean;
+    isRefreshTokenRequest?: boolean;
 }
 
 export const responseHandlingStatuses = {
     unhandled: 0,
     unauthenticated: 1,
     refreshTokenWasFailed: 2,
-    unauthorized: 3,
+    refreshTokenWasCompleted: 3,
+    unauthorized: 4,
 };
 
 export const apiRootUrl = import.meta.env.VITE_APP_API_URL;
@@ -50,12 +52,14 @@ const performRequest = async <TRequest, TResult>(
     method: HttpRequestMethod,
     options: RequestOptions<TRequest>
 ): Promise<TResult> => {
-    const authorizationHeader = await getAuthorizationHeader(options);
+    const authorizationHeader = options.isRefreshTokenRequest
+        ? {}
+        : await getAuthorizationHeader(options);
 
     const response = await fetch(`${apiRootUrl}/${options.url}`, {
         method,
         body: getBody(options),
-        credentials: "same-origin",
+        credentials: "include",
         headers: {
             Accept: contentTypes.json,
             ...authorizationHeader,
@@ -120,10 +124,15 @@ const getAuthorizationHeader = <T>(options: RequestOptions<T>): Promise<{
     options.isAnonymous ? Promise.resolve(null) : getAccessTokenAuthorizationHeader();
 
 const getAccessTokenAuthorizationHeader = async (): Promise<{ Authorization: string } | EmptyObject> => {
-    const token = getAccessToken();
+    let token = getAccessToken();
+
     if (token && isAccessTokenExpired(token)) {
-        // TODO: fetch refresh token
+        const refreshTokenResponseStatus  = await refreshToken();
+
+        handleRedirect(refreshTokenResponseStatus);
+        token = getAccessToken();
     }
+
     return token ? { Authorization: `Bearer ${token}` } : {};
 };
 

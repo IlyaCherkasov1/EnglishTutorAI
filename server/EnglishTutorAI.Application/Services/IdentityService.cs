@@ -1,33 +1,30 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using EnglishTutorAI.Application.Interfaces;
-using EnglishTutorAI.Application.Models;
+﻿using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models.Common;
 using EnglishTutorAI.Application.Models.Requests;
-using EnglishTutorAI.Application.Models.Responses;
+using EnglishTutorAI.Application.Specifications;
 using EnglishTutorAI.Application.Utils;
 using EnglishTutorAI.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace EnglishTutorAI.Application.Services;
 
 public class IdentityService : IIdentityService
 {
     private readonly UserManager<User> _userManager;
-    private readonly JwtSettings _jwtSettings;
-    private readonly IEmailService _emailService;
+    private readonly ITokenService _tokenService;
+    private readonly IRefreshTokenCookieService _refreshTokenCookieService;
+    private readonly IRepository<RefreshToken> _refreshTokenRepository;
 
     public IdentityService(
         UserManager<User> userManager,
-        IOptions<JwtSettings> jwtSettings,
-        IEmailService emailService)
+        ITokenService tokenService,
+        IRefreshTokenCookieService refreshTokenCookieService,
+        IRepository<RefreshToken> refreshTokenRepository)
     {
         _userManager = userManager;
-        _jwtSettings = jwtSettings.Value;
-        _emailService = emailService;
+        _tokenService = tokenService;
+        _refreshTokenCookieService = refreshTokenCookieService;
+        _refreshTokenRepository = refreshTokenRepository;
     }
 
     public async Task<Result> RegisterUser(UserRegisterRequest model)
@@ -49,42 +46,61 @@ public class IdentityService : IIdentityService
         return ResultBuilder.BuildSucceeded();
     }
 
-    public async Task<Result<LoginResponse>> LoginUser(LoginRequest request)
+    public async Task<Result<string>> LoginUser(LoginRequest request)
     {
         var user = await _userManager.FindByEmailAsync(request.Email);
 
         if (user == null)
         {
-            return ResultBuilder.BuildFailed<LoginResponse>("There is no user with that Email address");
+            return ResultBuilder.BuildFailed<string>("There is no user with that Email address");
         }
 
         var result = await _userManager.CheckPasswordAsync(user, request.Password);
 
         if (!result)
         {
-            return ResultBuilder.BuildFailed<LoginResponse>("Invalid password");
+            return ResultBuilder.BuildFailed<string>("Invalid password");
         }
 
-        var claims = new[]
+        var accessToken = _tokenService.GenerateAccessToken(user);
+        var refreshToken = _tokenService.GenerateRefreshToken();
+
+        var existingRefreshToken = await _refreshTokenRepository.GetSingleOrDefault(
+            new RefreshTokenByUserIdSpecification(user.Id));
+
+        if (existingRefreshToken != null)
         {
-            new Claim(ClaimTypes.Email, request.Email),
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            await _refreshTokenRepository.Delete(existingRefreshToken);
+        }
+
+        var refreshTokenEntity = new RefreshToken
+        {
+            Token = refreshToken,
+            Expires = DateTime.UtcNow.AddDays(7),
+            UserId = user.Id
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+        await _refreshTokenRepository.Add(refreshTokenEntity);
+        _refreshTokenCookieService.SetRefreshToken(refreshTokenEntity.Token, refreshTokenEntity.Expires);
 
-        var token = new JwtSecurityToken(
-            issuer: _jwtSettings.Issuer,
-            audience: _jwtSettings.Audience,
-            claims: claims,
-            expires: DateTime.Now.AddMinutes(30),
-            signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
+        return ResultBuilder.BuildSucceeded(accessToken);
+    }
 
-        var tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);
+    public async Task Logout()
+    {
+        var refreshToken = _refreshTokenCookieService.GetRefreshToken();
 
-        return ResultBuilder.BuildSucceeded(new LoginResponse
+        if (refreshToken != null)
         {
-            AccessToken = tokenAsString,
-        });
+            var refreshTokenEntity = await _refreshTokenRepository
+                .GetSingleOrDefault(new RefreshTokenByValueSpecification(refreshToken));
+
+            if (refreshTokenEntity != null)
+            {
+                await _refreshTokenRepository.Delete(refreshTokenEntity);
+            }
+
+            _refreshTokenCookieService.DeleteRefreshToken();
+        }
     }
 }

@@ -1,10 +1,10 @@
 import {clearAccessToken, setAccessToken} from "./accessTokenService.ts";
-import {LoginResponse} from "../../../dataModels/identity/loginResponse.ts";
 import {jwtDecode} from "jwt-decode";
 import {responseHandlingStatuses} from "../../requestApi.ts";
+import {renewAccessToken} from "../../../api/identity/identityApi.ts";
 
-export const applyNewIdentity = async (data: LoginResponse) => {
-    setAccessToken(data.accessToken);
+export const applyNewIdentity = async (accessToken: string) => {
+    setAccessToken(accessToken);
 }
 
 export const isAccessTokenExpired = (accessToken: string) => {
@@ -13,9 +13,16 @@ export const isAccessTokenExpired = (accessToken: string) => {
     return Date.now() > decodedToken.exp * 1000;
 };
 
-export async function refreshToken(): Promise<number> {
-    // TODO: Implement refresh token functionality
-    return responseHandlingStatuses.unauthenticated;
+export const refreshToken = async (): Promise<number> => {
+    const response = await renewAccessToken();
+
+    if (!response.isSucceeded) {
+        return responseHandlingStatuses.unauthenticated;
+    }
+
+    setAccessToken(response.data)
+
+    return responseHandlingStatuses.refreshTokenWasCompleted;
 }
 
 export const removeIdentityData = () => {

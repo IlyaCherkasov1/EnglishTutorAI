@@ -30,5 +30,7 @@ public class DependencyRegistrationsInstaller : IServiceInstaller
         services.AddScoped<ITextCorrectionMessageGenerationService, TextCorrectionMessageGenerationService>();
         services.AddScoped<IGetUserService, GetUserService>();
         services.AddScoped<IIdentityService, IdentityService>();
+        services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IRefreshTokenCookieService, RefreshTokenCookieService>();
     }
 }

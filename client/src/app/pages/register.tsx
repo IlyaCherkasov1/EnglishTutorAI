@@ -8,6 +8,7 @@ import {RegisterSchema, TRegisterSchema} from "../infrastructure/schemas";
 import {FormSuccess} from "../components/component/form-success.tsx";
 import {SignUpButton} from "../components/component/buttons/signUpButton.tsx";
 import {register} from "../infrastructure/services/auth/registrationService.ts";
+import {Link} from "react-router-dom";
 
 const Register = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -90,9 +91,9 @@ const Register = () => {
                 <p className="mt-2 text-center text-sm text-gray-500">
                     Already have an account?
                     <span className="mr-1"></span>
-                    <a href="/auth/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                    <Link to={"/auth/login"} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                         Login
-                    </a>
+                    </Link>
                 </p>
             </form>
         </FormProvider>

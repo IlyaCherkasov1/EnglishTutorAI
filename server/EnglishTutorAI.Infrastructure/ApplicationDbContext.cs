@@ -14,4 +14,5 @@ public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<Guid>, 
 
     public DbSet<Document> Documents { get; set; }
     public DbSet<ChatMessage> ChatMessages { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 }

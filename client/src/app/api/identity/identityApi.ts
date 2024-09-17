@@ -1,7 +1,6 @@
 import {UserRegisterRequest} from "../../dataModels/identity/userRegisterRequest.ts";
-import {httpPost} from "../../infrastructure/requestApi.ts";
+import {httpGet, httpPost} from "../../infrastructure/requestApi.ts";
 import {LoginRequest} from "../../dataModels/identity/loginRequest.ts";
-import {LoginResponse} from "../../dataModels/identity/loginResponse.ts";
 import {Result} from "../../dataModels/result.ts";
 
 const identityResource = "identity";
@@ -13,9 +12,22 @@ export const registerUser = async (request: UserRegisterRequest): Promise<Result
     });
 }
 
-export const loginUser = async (request: LoginRequest): Promise<Result<LoginResponse>> => {
+export const loginUser = async (request: LoginRequest): Promise<Result<string>> => {
     return httpPost({
         url: `${identityResource}/login`,
         body: request,
     });
+}
+
+export const renewAccessToken = async (): Promise<Result<string>> => {
+    return httpGet({
+        url: `${identityResource}/renewAccessToken`,
+        isRefreshTokenRequest: true,
+    })
+}
+
+export const logout = async (): Promise<Result<string>> => {
+    return httpGet({
+        url: `${identityResource}/logout`,
+    })
 }
