@@ -1,9 +1,11 @@
-﻿using EnglishTutorAI.Application.Interfaces;
+﻿using EnglishTutorAI.Application.Attributes;
+using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Domain.Entities;
 
 namespace EnglishTutorAI.Application.Services;
 
+[ScopedDependency]
 public class SaveCurrentLineService : ISaveCurrentLineService
 {
     private readonly IRepository<Document> _documentRepository;

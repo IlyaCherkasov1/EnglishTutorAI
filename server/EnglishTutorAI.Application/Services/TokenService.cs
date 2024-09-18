@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using EnglishTutorAI.Application.Attributes;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Models.Common;
@@ -13,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace EnglishTutorAI.Application.Services;
 
+[ScopedDependency]
 public class TokenService : ITokenService
 {
     private readonly JwtSettings _jwtSettings;

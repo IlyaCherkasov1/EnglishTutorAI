@@ -1,4 +1,5 @@
-﻿using EnglishTutorAI.Application.Interfaces;
+﻿using EnglishTutorAI.Application.Attributes;
+using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models.Common;
 using EnglishTutorAI.Application.Models.Requests;
 using EnglishTutorAI.Application.Specifications;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EnglishTutorAI.Application.Services;
 
+[ScopedDependency]
 public class IdentityService : IIdentityService
 {
     private readonly UserManager<User> _userManager;

@@ -1,4 +1,5 @@
-﻿using EnglishTutorAI.Application.Configurations;
+﻿using EnglishTutorAI.Application.Attributes;
+using EnglishTutorAI.Application.Configurations;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Domain.Entities;
@@ -9,6 +10,7 @@ using OpenAI.Threads;
 
 namespace EnglishTutorAI.Application.Services;
 
+[ScopedDependency]
 public class SendAssistantMessageService : ISendAssistantMessageService
 {
     private readonly IAssistantClient _assistantClient;

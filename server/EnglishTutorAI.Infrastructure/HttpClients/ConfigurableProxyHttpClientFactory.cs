@@ -1,9 +1,11 @@
 ﻿using System.Net;
+using EnglishTutorAI.Application.Attributes;
 using EnglishTutorAI.Application.Configurations;
 using Microsoft.Extensions.Options;
 
 namespace EnglishTutorAI.Infrastructure.HttpClients;
 
+[SingletonDependency]
 public class ConfigurableProxyHttpClientFactory : IHttpClientFactory
 {
     private readonly ProxyConfig _proxyConfig;

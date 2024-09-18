@@ -1,8 +1,10 @@
-﻿using EnglishTutorAI.Application.Interfaces;
+﻿using EnglishTutorAI.Application.Attributes;
+using EnglishTutorAI.Application.Interfaces;
 using Newtonsoft.Json;
 
 namespace EnglishTutorAI.Application.Services;
 
+[ScopedDependency]
 public class MessageGenerationService : IMessageGenerationService
 {
     private const string PromptPath = "prompt.json";
