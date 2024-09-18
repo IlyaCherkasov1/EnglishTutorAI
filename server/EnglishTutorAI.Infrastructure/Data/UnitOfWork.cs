@@ -1,10 +1,12 @@
-﻿using EnglishTutorAI.Application.Interfaces;
+﻿using EnglishTutorAI.Application.Attributes;
+using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace EnglishTutorAI.Infrastructure.Data;
 
+[ScopedDependency]
 public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _context;

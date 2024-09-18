@@ -1,7 +1,9 @@
-﻿using EnglishTutorAI.Application.Interfaces;
+﻿using EnglishTutorAI.Application.Attributes;
+using EnglishTutorAI.Application.Interfaces;
 
 namespace EnglishTutorAI.Application.Services;
 
+[ScopedDependency]
 public class TextExtractionService : ITextExtractionService
 {
     public string ExtractCleanText(string correctedText, string originalText)

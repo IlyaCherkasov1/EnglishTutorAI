@@ -1,3 +1,4 @@
+using EnglishTutorAI.Application.Attributes;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Specifications.Configurations;
 using EnglishTutorAI.Domain.Entities;
@@ -5,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EnglishTutorAI.Infrastructure.Data;
 
+[ScopedDependency]
 public class Repository<T> : IRepository<T> where T : Entity
 {
     public Repository(ApplicationDbContext context)

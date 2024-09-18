@@ -1,6 +1,9 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using EnglishTutorAI.Api.Extensions;
 using EnglishTutorAI.Domain.Entities;
 using EnglishTutorAI.Infrastructure;
+using EnglishTutorAI.Infrastructure.DependencyInjection;
 using EnglishTutorAI.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 
@@ -18,6 +21,12 @@ services.AddIdentity<User, IdentityRole<Guid>>(options =>
     .AddErrorDescriber<AuthErrorDescriber>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+{
+    containerBuilder.RegisterModule(new AutofacModule());
+});
 
 services.InstallServicesInAssembly(builder.Configuration);
 configuration.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);

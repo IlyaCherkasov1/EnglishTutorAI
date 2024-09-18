@@ -1,8 +1,10 @@
-﻿using EnglishTutorAI.Application.Interfaces;
+﻿using EnglishTutorAI.Application.Attributes;
+using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models.TextGeneration;
 
 namespace EnglishTutorAI.Application.Services;
 
+[ScopedDependency]
 public class TextCorrectionMessageGenerationService : ITextCorrectionMessageGenerationService
 {
     private const string TranslatedTextPlaceholder = "{TranslatedText}";

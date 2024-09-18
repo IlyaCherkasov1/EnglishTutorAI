@@ -1,8 +1,10 @@
-﻿using EnglishTutorAI.Application.Interfaces;
+﻿using EnglishTutorAI.Application.Attributes;
+using EnglishTutorAI.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 
 namespace EnglishTutorAI.Application.Services;
 
+[ScopedDependency]
 public class RefreshTokenCookieService : IRefreshTokenCookieService
 {
     private const string RefreshTokenCookieName = "refreshToken";

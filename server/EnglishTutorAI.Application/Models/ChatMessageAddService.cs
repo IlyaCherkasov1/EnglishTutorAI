@@ -1,8 +1,10 @@
-﻿using EnglishTutorAI.Application.Interfaces;
+﻿using EnglishTutorAI.Application.Attributes;
+using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Domain.Entities;
 
 namespace EnglishTutorAI.Application.Models;
 
+[ScopedDependency]
 public class ChatMessageAddService : IChatMessageAddService
 {
     private readonly IRepository<ChatMessage> _chatMessageRepository;

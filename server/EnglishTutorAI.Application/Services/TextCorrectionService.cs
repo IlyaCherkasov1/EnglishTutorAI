@@ -1,4 +1,5 @@
-﻿using EnglishTutorAI.Application.Configurations;
+﻿using EnglishTutorAI.Application.Attributes;
+using EnglishTutorAI.Application.Configurations;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Models.TextGeneration;
@@ -8,6 +9,7 @@ using OpenAI.Threads;
 
 namespace EnglishTutorAI.Application.Services
 {
+    [ScopedDependency]
     public class TextCorrectionService : ITextCorrectionService
     {
         private readonly string _assistantId;

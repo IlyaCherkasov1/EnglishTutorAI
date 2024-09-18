@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using EnglishTutorAI.Application.Attributes;
 using EnglishTutorAI.Application.Configurations;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models;
@@ -13,6 +14,7 @@ using Message = OpenAI.Threads.Message;
 
 namespace EnglishTutorAI.Application.Services;
 
+[ScopedDependency]
 public class AssistantClient : IAssistantClient
 {
     private readonly OpenAIClient _api;
