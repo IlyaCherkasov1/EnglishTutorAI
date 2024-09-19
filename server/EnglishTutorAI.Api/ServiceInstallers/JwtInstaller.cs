@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using EnglishTutorAI.Api.Interfaces;
+using EnglishTutorAI.Application.Configurations;
 using EnglishTutorAI.Application.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;

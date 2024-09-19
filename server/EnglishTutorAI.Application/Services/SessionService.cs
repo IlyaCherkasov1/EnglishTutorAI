@@ -1,7 +1,9 @@
 ﻿using EnglishTutorAI.Application.Attributes;
+using EnglishTutorAI.Application.Configurations;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Specifications;
 using EnglishTutorAI.Domain.Entities;
+using Microsoft.Extensions.Options;
 
 namespace EnglishTutorAI.Application.Services;
 
@@ -11,15 +13,18 @@ public class SessionService : ISessionService
     private readonly IRepository<UserSession> _userSession;
     private readonly IRefreshTokenCookieService _refreshTokenCookieService;
     private readonly ITokenGeneratorService _tokenGeneratorService;
+    private readonly RefreshTokenSettings _refreshTokenSettings;
 
     public SessionService(
         IRepository<UserSession> userSession,
         IRefreshTokenCookieService refreshTokenCookieService,
-        ITokenGeneratorService tokenGeneratorService)
+        ITokenGeneratorService tokenGeneratorService,
+        IOptions<RefreshTokenSettings> refreshTokenSettings)
     {
         _userSession = userSession;
         _refreshTokenCookieService = refreshTokenCookieService;
         _tokenGeneratorService = tokenGeneratorService;
+        _refreshTokenSettings = refreshTokenSettings.Value;
     }
 
     public async Task<UserSession> CreateSession(Guid userId)
@@ -27,7 +32,7 @@ public class SessionService : ISessionService
         var session = new UserSession
         {
             UserId = userId,
-            Expires = DateTime.UtcNow.AddDays(7),
+            Expires = DateTime.UtcNow.AddDays(_refreshTokenSettings.ExpiryDays),
             RefreshToken = _tokenGeneratorService.GenerateRefreshToken(),
         };
 
@@ -56,7 +61,7 @@ public class SessionService : ISessionService
 
     public void UpdateRefreshToken(UserSession session)
     {
-        session.Expires = DateTime.UtcNow.AddDays(30);
+        session.Expires = DateTime.UtcNow.AddDays(_refreshTokenSettings.ExpiryDays);
         session.RefreshToken = _tokenGeneratorService.GenerateRefreshToken();
 
         _userSession.Update(session);
