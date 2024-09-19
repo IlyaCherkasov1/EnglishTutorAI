@@ -1,4 +1,4 @@
-﻿namespace EnglishTutorAI.Application.Models;
+﻿namespace EnglishTutorAI.Application.Configurations;
 
 public class JwtSettings
 {

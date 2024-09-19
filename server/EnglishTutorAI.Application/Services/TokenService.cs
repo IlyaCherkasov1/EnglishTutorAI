@@ -1,15 +1,13 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using EnglishTutorAI.Application.Attributes;
+using EnglishTutorAI.Application.Configurations;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Models.Common;
-using EnglishTutorAI.Application.Specifications;
 using EnglishTutorAI.Application.Utils;
 using EnglishTutorAI.Domain.Entities;
-using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
