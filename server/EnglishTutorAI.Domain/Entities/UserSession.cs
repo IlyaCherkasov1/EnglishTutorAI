@@ -2,15 +2,15 @@
 
 namespace EnglishTutorAI.Domain.Entities;
 
-public class RefreshToken : Entity, IHasCreatedAt
+public class UserSession : Entity, IHasCreatedAt
 {
-    public required string Token { get; set; }
+    public required string RefreshToken { get; set; }
 
     public DateTime Expires { get; set; }
 
-    public bool IsExpired => DateTime.UtcNow >= Expires;
-
     public DateTime CreatedAt { get; set; }
+
+    public bool IsValid { get; set; } = true;
 
     public required Guid UserId { get; init; }
 

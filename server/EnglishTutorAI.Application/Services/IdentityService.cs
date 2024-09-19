@@ -2,7 +2,6 @@
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models.Common;
 using EnglishTutorAI.Application.Models.Requests;
-using EnglishTutorAI.Application.Specifications;
 using EnglishTutorAI.Application.Utils;
 using EnglishTutorAI.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -15,18 +14,18 @@ public class IdentityService : IIdentityService
     private readonly UserManager<User> _userManager;
     private readonly ITokenService _tokenService;
     private readonly IRefreshTokenCookieService _refreshTokenCookieService;
-    private readonly IRepository<RefreshToken> _refreshTokenRepository;
+    private readonly ISessionService _sessionService;
 
     public IdentityService(
         UserManager<User> userManager,
         ITokenService tokenService,
         IRefreshTokenCookieService refreshTokenCookieService,
-        IRepository<RefreshToken> refreshTokenRepository)
+        ISessionService sessionService)
     {
         _userManager = userManager;
         _tokenService = tokenService;
         _refreshTokenCookieService = refreshTokenCookieService;
-        _refreshTokenRepository = refreshTokenRepository;
+        _sessionService = sessionService;
     }
 
     public async Task<Result> RegisterUser(UserRegisterRequest model)
@@ -65,19 +64,7 @@ public class IdentityService : IIdentityService
         }
 
         var accessToken = _tokenService.GenerateAccessToken(user);
-        var refreshToken = _tokenService.GenerateRefreshToken();
-
-        await _refreshTokenRepository.DeleteIfExists(new RefreshTokenByUserIdSpecification(user.Id));
-
-        var refreshTokenEntity = new RefreshToken
-        {
-            Token = refreshToken,
-            Expires = DateTime.UtcNow.AddDays(7),
-            UserId = user.Id
-        };
-
-        await _refreshTokenRepository.Add(refreshTokenEntity);
-        _refreshTokenCookieService.SetRefreshToken(refreshTokenEntity.Token, refreshTokenEntity.Expires);
+        await _sessionService.CreateSession(user.Id);
 
         return ResultBuilder.BuildSucceeded(accessToken);
     }
@@ -88,15 +75,12 @@ public class IdentityService : IIdentityService
 
         if (refreshToken != null)
         {
-            var refreshTokenEntity = await _refreshTokenRepository
-                .GetSingleOrDefault(new RefreshTokenByValueSpecification(refreshToken));
+            var session = await _sessionService.GetValidSession(refreshToken);
 
-            if (refreshTokenEntity != null)
+            if (session != null)
             {
-                _refreshTokenRepository.Delete(refreshTokenEntity);
+                await _sessionService.InvalidateSessions(session.UserId);
             }
-
-            _refreshTokenCookieService.DeleteRefreshToken();
         }
     }
 }

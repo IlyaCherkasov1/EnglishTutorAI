@@ -16,5 +16,12 @@
   "signingIn": "Signing In...",
   "signIn": "Sign In",
   "signingUp": "Signing Up...",
-  "signUp": "Sign Up"
+  "signUp": "Sign Up",
+  "header": {
+    "toggleMenu": "Toggle menu",
+    "title": "English Tutor AI",
+    "myAccount": "My Account",
+    "profile": "Profile",
+    "signOut": "Sign out"
+  }
 }

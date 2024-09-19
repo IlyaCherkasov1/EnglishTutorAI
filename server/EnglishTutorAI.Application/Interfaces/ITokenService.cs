@@ -7,7 +7,5 @@ public interface ITokenService
 {
     string GenerateAccessToken(User user);
 
-    string GenerateRefreshToken();
-
     Task<Result<string>> RenewAccessToken();
 }

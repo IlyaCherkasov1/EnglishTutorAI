@@ -9,6 +9,8 @@ using EnglishTutorAI.Application.Models.Common;
 using EnglishTutorAI.Application.Specifications;
 using EnglishTutorAI.Application.Utils;
 using EnglishTutorAI.Domain.Entities;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,15 +21,18 @@ public class TokenService : ITokenService
 {
     private readonly JwtSettings _jwtSettings;
     private readonly IRefreshTokenCookieService _refreshTokenCookieService;
-    private readonly IRepository<RefreshToken> _refreshTokenRepository;
+    private readonly ISessionService _sessionService;
+    private readonly UserManager<User> _userManager;
 
     public TokenService(
         IOptions<JwtSettings> jwtSettings,
         IRefreshTokenCookieService refreshTokenCookieService,
-        IRepository<RefreshToken> refreshTokenRepository)
+        UserManager<User> userManager,
+        ISessionService sessionService)
     {
         _refreshTokenCookieService = refreshTokenCookieService;
-        _refreshTokenRepository = refreshTokenRepository;
+        _userManager = userManager;
+        _sessionService = sessionService;
         _jwtSettings = jwtSettings.Value;
     }
 
@@ -52,15 +57,6 @@ public class TokenService : ITokenService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public string GenerateRefreshToken()
-    {
-        var randomNumber = new byte[128];
-        using var rng = RandomNumberGenerator.Create();
-        rng.GetBytes(randomNumber);
-
-        return Convert.ToBase64String(randomNumber);
-    }
-
     public async Task<Result<string>> RenewAccessToken()
     {
         var refreshToken = _refreshTokenCookieService.GetRefreshToken();
@@ -70,25 +66,16 @@ public class TokenService : ITokenService
             return ResultBuilder.BuildFailed<string>("refresh token does not exist");
         }
 
-        var refreshTokenEntity = await _refreshTokenRepository
-            .GetSingleOrDefault(new RefreshTokenByValueSpecification(refreshToken));
+        var session = await _sessionService.GetValidSession(refreshToken);
 
-        if (refreshTokenEntity == null || refreshTokenEntity.IsExpired)
+        if (session == null)
         {
-            return ResultBuilder.BuildFailed<string>("Invalid or expired refresh token");
+            return ResultBuilder.BuildFailed<string>("session is not valid");
         }
 
-        var user = refreshTokenEntity.User;
-
-        var newAccessToken = GenerateAccessToken(user);
-        var newRefreshToken = GenerateRefreshToken();
-
-        refreshTokenEntity.Token = newRefreshToken;
-        refreshTokenEntity.Expires = DateTime.UtcNow.AddDays(7);
-
-        _refreshTokenCookieService.SetRefreshToken(
-            newRefreshToken,
-            refreshTokenEntity.Expires);
+        _sessionService.UpdateRefreshToken(session);
+        var user = await _userManager.FindByIdAsync(session.UserId.ToString());
+        var newAccessToken = GenerateAccessToken(user!);
 
         return ResultBuilder.BuildSucceeded(newAccessToken);
     }
