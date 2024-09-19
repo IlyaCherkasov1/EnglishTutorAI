@@ -1,7 +1,7 @@
-import {setAccessToken} from "./accessTokenService.ts";
+import {clearAccessToken, setAccessToken} from "./accessTokenService.ts";
 import {jwtDecode} from "jwt-decode";
 import {responseHandlingStatuses} from "../../requestApi.ts";
-import {renewAccessToken} from "../../../api/identity/identityApi.ts";
+import {logout, renewAccessToken} from "../../../api/identity/identityApi.ts";
 
 export const applyNewIdentity = async (accessToken: string) => {
     setAccessToken(accessToken);
@@ -23,4 +23,14 @@ export const refreshToken = async (): Promise<number> => {
     setAccessToken(response.data)
 
     return responseHandlingStatuses.refreshTokenWasCompleted;
+}
+
+export const performLogOut = async (): Promise<void> => {
+    await logout();
+    performAfterLogOutActions();
+}
+
+export const performAfterLogOutActions = () => {
+    clearAccessToken();
+    location.reload();
 }

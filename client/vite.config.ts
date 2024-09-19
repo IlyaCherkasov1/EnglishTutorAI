@@ -10,5 +10,10 @@ export default defineConfig({
       key: fs.readFileSync(path.resolve(__dirname, 'key.pem')),
       cert: fs.readFileSync(path.resolve(__dirname, 'cert.pem')),
     }
-  }
+  },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
 });
