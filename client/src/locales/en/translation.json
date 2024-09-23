@@ -1,0 +1,27 @@
+{
+  "add": "Add",
+  "title": "Title",
+  "documentContent": "Document Content",
+  "back": "Back",
+  "enterYourText": "Write your text...",
+  "correctedText": "Corrected text",
+  "yourTranslation": "Your translation",
+  "askAI": "Ask AI",
+  "send": "Send",
+  "loading": "Loading...",
+  "addingDocumentStatus": "Adding document...",
+  "translationSuccessMessage": "Great! Your translation is correct.",
+  "startAgain": "Start again",
+  "sending": "Sending...",
+  "signingIn": "Signing In...",
+  "signIn": "Sign In",
+  "signingUp": "Signing Up...",
+  "signUp": "Sign Up",
+  "header": {
+    "toggleMenu": "Toggle menu",
+    "title": "English Tutor AI",
+    "myAccount": "My Account",
+    "profile": "Profile",
+    "signOut": "Sign out"
+  }
+}
