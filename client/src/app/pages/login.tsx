@@ -31,7 +31,7 @@ const Login = () => {
 
         if (result.isSuccess) {
             await applyNewIdentity(result.data);
-            navigate(routeLinks.root);
+            navigate(routeLinks.home);
         } else {
             setError(result.error);
         }

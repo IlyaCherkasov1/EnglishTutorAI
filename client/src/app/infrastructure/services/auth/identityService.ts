@@ -13,7 +13,7 @@ export const isAccessTokenExpired = (accessToken: string) => {
     return Date.now() > decodedToken.exp * 1000;
 };
 
-export const refreshToken = async (): Promise<number> => {
+export const renewAccessTokenHandler = async (): Promise<number> => {
     const response = await renewAccessToken();
 
     if (!response.isSucceeded) {

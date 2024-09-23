@@ -1,7 +1,8 @@
 import {EmptyObject} from "react-hook-form";
 import {clearAccessToken, getAccessToken} from "./services/auth/accessTokenService.ts";
-import {isAccessTokenExpired, refreshToken} from "./services/auth/identityService.ts";
+import {renewAccessTokenHandler} from "./services/auth/identityService.ts";
 import {routeLinks} from "../components/layout/routes/routeLink.ts";
+import {isAccessTokenValid} from "@/app/infrastructure/utils/tokenUtils.ts";
 
 export type HttpRequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -10,7 +11,6 @@ export interface RequestOptions<T> {
     body?: T;
     enableCache?: boolean;
     isAnonymous?: boolean;
-    isRefreshTokenRequest?: boolean;
 }
 
 export const responseHandlingStatuses = {
@@ -52,7 +52,7 @@ const performRequest = async <TRequest, TResult>(
     method: HttpRequestMethod,
     options: RequestOptions<TRequest>
 ): Promise<TResult> => {
-    const authorizationHeader = options.isRefreshTokenRequest
+    const authorizationHeader = options.isAnonymous
         ? {}
         : await getAuthorizationHeader(options);
 
@@ -111,7 +111,7 @@ const handleHeaders = async (response: Response): Promise<number> => {
 };
 
 const handleUnauthorized = async (response: Response): Promise<number> =>
-    isInvalidTokenResponse(response) ? await refreshToken() : responseHandlingStatuses.unauthorized;
+    isInvalidTokenResponse(response) ? await renewAccessTokenHandler() : responseHandlingStatuses.unauthorized;
 
 const isInvalidTokenResponse = (response: Response): boolean => {
     const authHeader = response.headers.get(headerNames.authenticate);
@@ -126,8 +126,8 @@ const getAuthorizationHeader = <T>(options: RequestOptions<T>): Promise<{
 const getAccessTokenAuthorizationHeader = async (): Promise<{ Authorization: string } | EmptyObject> => {
     let token = getAccessToken();
 
-    if (token && isAccessTokenExpired(token)) {
-        const refreshTokenResponseStatus  = await refreshToken();
+    if (!isAccessTokenValid()) {
+        const refreshTokenResponseStatus  = await renewAccessTokenHandler();
 
         handleRedirect(refreshTokenResponseStatus);
         token = getAccessToken();
