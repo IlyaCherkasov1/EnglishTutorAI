@@ -1,5 +1,6 @@
-# Node.js dependencies
+# React js dependencies
 node_modules/
+.vite
 
 # Environment variables files
 .env
