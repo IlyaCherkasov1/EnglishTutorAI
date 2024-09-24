@@ -1,7 +1,7 @@
 import {useTranslation} from "react-i18next";
 import {useState} from "react";
-import {DocumentListItem} from "../../../dataModels/document/documentListItem.ts";
-import {DocumentListItemComponent} from "./documentListItemComponent.tsx";
+import {DocumentListItem} from "@/app/dataModels/document/documentListItem.ts";
+import {DocumentListItemComponent} from "@/app/components/component/document/documentListItemComponent.tsx";
 
 interface Props {
     allDocuments: DocumentListItem[];

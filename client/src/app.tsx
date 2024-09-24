@@ -1,9 +1,9 @@
 import {Route, Routes} from "react-router-dom";
-import DocumentDetails from "./app/pages/documentDetails.tsx";
-import Register from "./app/pages/register.tsx";
-import Login from "./app/pages/login.tsx";
-import AdminPanel from "./app/pages/adminPanel.tsx";
-import Home from "./app/pages/home.tsx";
+import DocumentDetails from "@/app/pages/documentDetails.tsx";
+import Register from "@/app/pages/register.tsx";
+import Login from "@/app/pages/login.tsx";
+import AdminPanel from "@/app/pages/adminPanel.tsx";
+import Home from "@/app/pages/home.tsx";
 import {MainLayout} from "@/app/components/layout/mainLayout.tsx";
 
 function App() {

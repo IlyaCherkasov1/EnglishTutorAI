@@ -1,5 +1,5 @@
 import {useTranslation} from "react-i18next";
-import { Button } from "../../ui/button";
+import { Button } from "@/app/components/ui/button.tsx";
 
 interface Props {
     isSubmitting: boolean;

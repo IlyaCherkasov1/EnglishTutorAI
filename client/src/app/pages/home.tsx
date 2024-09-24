@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
-import {getAllDocuments} from "../api/document/documentApi.ts";
-import {DocumentListItem} from "../dataModels/document/documentListItem.ts";
-import {DocumentsList} from "../components/component/document/documentsList.tsx";
+import {getAllDocuments} from "@/app/api/document/documentApi.ts";
+import {DocumentListItem} from "@/app/dataModels/document/documentListItem.ts";
+import {DocumentsList} from "@/app/components/component/document/documentsList.tsx";
 
 const Home = () => {
     const [documents, setDocuments] = useState<DocumentListItem[]>([]);

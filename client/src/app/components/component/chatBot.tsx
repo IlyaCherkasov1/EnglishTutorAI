@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { ChatMessageResponse } from "../../dataModels/ChatMessageResponse.ts";
-import { getConversationThread } from "../../api/document/documentApi.ts";
-import { ConversationRole } from "../../dataModels/enums/conversationRole.ts";
-import { sendMessage } from "./languageModel/languageModelApi.ts";
+import { ChatMessageResponse } from "@/app/dataModels/chatMessageResponse.ts";
+import { getConversationThread } from "@/app/api/document/documentApi.ts";
+import { ConversationRole } from "@/app/dataModels/enums/conversationRole.ts";
+import {sendMessage} from "@/app/api/languageModel/languageModelApi.ts";
 import { Bot } from "lucide-react";
-import { Input } from "../ui/input.tsx";
-import { Button } from "../ui/button.tsx";
+import { Input } from "@/app/components/ui/input.tsx";
+import { Button } from "@/app/components/ui/button.tsx";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 

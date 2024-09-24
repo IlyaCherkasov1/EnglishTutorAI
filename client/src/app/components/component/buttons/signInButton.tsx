@@ -1,4 +1,4 @@
-import {Button} from "../../ui/button.tsx";
+import {Button} from "@/app/components/ui/button.tsx";
 import {useTranslation} from "react-i18next";
 
 interface Props {

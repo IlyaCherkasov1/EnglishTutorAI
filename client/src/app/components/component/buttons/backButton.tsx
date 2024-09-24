@@ -1,5 +1,5 @@
 import { ArrowLeft } from 'lucide-react';
-import { Button } from "../../ui/button.tsx";
+import { Button } from "@/app/components/ui/button.tsx";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from 'react-router-dom';
 

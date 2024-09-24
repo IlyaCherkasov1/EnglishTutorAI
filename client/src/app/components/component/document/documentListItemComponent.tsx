@@ -1,9 +1,9 @@
 import {FileIcon} from "lucide-react";
-import {DeleteDocumentModal} from "../modals/deleteDocumentModal.tsx";
-import {deleteDocument} from "../../../api/document/documentApi.ts";
-import {DocumentListItem} from "../../../dataModels/document/documentListItem.ts";
-import {formatDateToISO} from "../../../infrastructure/helpers/dateHelpers.ts";
+import {DeleteDocumentModal} from "@/app/components/component/modals/deleteDocumentModal.tsx";
 import { Link } from 'react-router-dom';
+import {deleteDocument} from "@/app/api/document/documentApi.ts";
+import {DocumentListItem} from "@/app/dataModels/document/documentListItem.ts";
+import {formatDateToISO} from "@/app/infrastructure/helpers/dateHelpers.ts";
 
 interface Props {
     document: DocumentListItem;

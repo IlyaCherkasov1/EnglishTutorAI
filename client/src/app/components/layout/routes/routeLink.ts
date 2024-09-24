@@ -1,5 +1,3 @@
-export const originRouteParamName = "origin_url";
-
 export const routeLinks = {
     home: "/",
     login: "/auth/login",

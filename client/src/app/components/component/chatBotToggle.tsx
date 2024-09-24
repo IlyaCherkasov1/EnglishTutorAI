@@ -1,8 +1,8 @@
 import {useTranslation} from "react-i18next";
 import {useState} from "react";
-import {Button} from "../ui/button.tsx";
+import {Button} from "@/app/components/ui/button.tsx";
 import {MessageCircle} from "lucide-react";
-import {ChatBot} from "./chatBot.tsx";
+import {ChatBot} from "@/app/components/component/chatBot.tsx";
 
 export interface Props {
     threadId: string;

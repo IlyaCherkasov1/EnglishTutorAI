@@ -1,9 +1,9 @@
-import {getDocumentDetails, splitDocumentContent} from "../api/document/documentApi.ts";
+import {getDocumentDetails, splitDocumentContent} from "@/app/api/document/documentApi.ts";
 import {useTranslation} from "react-i18next";
-import BackButton from "../components/component/buttons/backButton.tsx";
-import {DocumentDetail} from "../components/component/documentDetail.tsx";
+import BackButton from "@/app/components/component/buttons/backButton.tsx";
+import {DocumentDetail} from "@/app/components/component/documentDetail.tsx";
 import {useEffect, useState} from "react";
-import {DocumentResponse} from "../dataModels/document/documentResponse.ts";
+import {DocumentResponse} from "@/app/dataModels/document/documentResponse.ts";
 import {useParams} from "react-router-dom";
 
 const DocumentDetails = () => {
