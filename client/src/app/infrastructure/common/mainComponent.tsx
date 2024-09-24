@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import App from "../../../app.tsx";
-import {renewAccessTokenHandler} from "../services/auth/identityService.ts";
+import App from "@/app.tsx";
+import {renewAccessTokenHandler} from "@/app/infrastructure/services/auth/identityService.ts";
 import {isAuthPage} from "@/app/infrastructure/utils/authUtils.ts";
 import {isAccessTokenValid} from "@/app/infrastructure/utils/tokenUtils.ts";
 

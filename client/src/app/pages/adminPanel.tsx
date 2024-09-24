@@ -1,8 +1,8 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Textarea } from "../components/ui/textarea.tsx";
-import { addDocument } from "../api/document/documentApi.ts";
-import {Button} from "../components/ui/button.tsx";
+import { Textarea } from "@/app/components/ui/textarea.tsx";
+import { addDocument } from "@/app/api/document/documentApi.ts";
+import {Button} from "@/app/components/ui/button.tsx";
 
 type FormValues = {
     title: string;

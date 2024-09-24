@@ -8,8 +8,8 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger
-} from "../../ui/dialog.tsx";
-import {Button} from "../../ui/button.tsx";
+} from "@/app/components/ui/dialog.tsx";
+import {Button} from "@/app/components/ui/button.tsx";
 
 interface Props {
     onConfirm: () => void;

@@ -1,7 +1,7 @@
-import {clearAccessToken, setAccessToken} from "./accessTokenService.ts";
+import {clearAccessToken, setAccessToken} from "@/app/infrastructure/services/auth/accessTokenService.ts";
 import {jwtDecode} from "jwt-decode";
-import {responseHandlingStatuses} from "../../requestApi.ts";
-import {logout, renewAccessToken} from "../../../api/identity/identityApi.ts";
+import {responseHandlingStatuses} from "@/app/infrastructure/requestApi.ts";
+import {logout, renewAccessToken} from "@/app/api/identity/identityApi.ts";
 
 export const applyNewIdentity = async (accessToken: string) => {
     setAccessToken(accessToken);

@@ -1,5 +1,5 @@
-import {registerUser} from "../../../api/identity/identityApi.ts";
-import {RegisterSchema, TRegisterSchema} from "../../schemas";
+import {registerUser} from "@/app/api/identity/identityApi.ts";
+import {RegisterSchema, TRegisterSchema} from "@/app/infrastructure/schemas";
 
 export async function register(values: TRegisterSchema) {
     const validatedFields = RegisterSchema.safeParse(values);

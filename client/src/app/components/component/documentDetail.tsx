@@ -1,13 +1,13 @@
-import {DocumentResponse} from "../../dataModels/document/documentResponse";
+import {DocumentResponse} from "@/app/dataModels/document/documentResponse.ts";
 import {useMemo, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {saveCurrentLine} from "../../api/document/documentApi.ts";
-import {Button} from "../ui/button.tsx";
-import {Textarea} from "../ui/textarea.tsx";
-import DocumentCorrectionOutput from "./document/documentCorrectionOutput.tsx";
-import ChatBotToggle from "./chatBotToggle.tsx";
-import {correctText} from "./languageModel/languageModelApi.ts";
+import {saveCurrentLine} from "@/app/api/document/documentApi.ts";
+import {Button} from "@/app/components/ui/button.tsx";
+import {Textarea} from "@/app/components/ui/textarea.tsx";
+import DocumentCorrectionOutput from "@/app/components/component/document/documentCorrectionOutput.tsx";
 import {useForm} from "react-hook-form";
+import {correctText} from "@/app/api/languageModel/languageModelApi.ts";
+import ChatBotToggle from "@/app/components/component/chatBotToggle.tsx";
 
 interface Props {
     document: DocumentResponse;

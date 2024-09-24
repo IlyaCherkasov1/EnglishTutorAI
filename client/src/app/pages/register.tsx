@@ -1,13 +1,13 @@
 import {FormProvider, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useState} from "react";
-import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "../components/ui/form.tsx";
-import {Input} from "../components/ui/input.tsx";
-import {FormError} from "../components/component/form-error.tsx";
-import {RegisterSchema, TRegisterSchema} from "../infrastructure/schemas";
-import {FormSuccess} from "../components/component/form-success.tsx";
-import {SignUpButton} from "../components/component/buttons/signUpButton.tsx";
-import {register} from "../infrastructure/services/auth/registrationService.ts";
+import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/app/components/ui/form.tsx";
+import {Input} from "@/app/components/ui/input.tsx";
+import {FormError} from "@/app/components/component/form-error.tsx";
+import {RegisterSchema, TRegisterSchema} from "@/app/infrastructure/schemas";
+import {FormSuccess} from "@/app/components/component/form-success.tsx";
+import {SignUpButton} from "@/app/components/component/buttons/signUpButton.tsx";
+import {register} from "@/app/infrastructure/services/auth/registrationService.ts";
 import {Link} from "react-router-dom";
 
 const Register = () => {

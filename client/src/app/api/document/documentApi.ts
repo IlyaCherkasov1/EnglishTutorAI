@@ -1,10 +1,10 @@
-import {DocumentResponse} from "../../dataModels/document/documentResponse.ts";
-import {DocumentCreationRequest} from "../../dataModels/document/documentCreationRequest.ts";
-import {DocumentListItem} from "../../dataModels/document/documentListItem.ts";
-import {SplitDocumentContentRequest} from "../../dataModels/splitDocumentContentRequest.tsx";
-import {SaveCurrentLineRequest} from "../../dataModels/document/saveCurrentLineRequest.ts";
-import {ChatMessageResponse} from "../../dataModels/ChatMessageResponse.ts";
-import {httpGet, httpPost} from "../../infrastructure/requestApi.ts";
+import {DocumentResponse} from "@/app/dataModels/document/documentResponse.ts";
+import {DocumentCreationRequest} from "@/app/dataModels/document/documentCreationRequest.ts";
+import {DocumentListItem} from "@/app/dataModels/document/documentListItem.ts";
+import {SplitDocumentContentRequest} from "@/app/dataModels/splitDocumentContentRequest.tsx";
+import {SaveCurrentLineRequest} from "@/app/dataModels/document/saveCurrentLineRequest.ts";
+import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
+import {httpGet, httpPost} from "@/app/infrastructure/requestApi.ts";
 
 const documentsResource = "document";
 

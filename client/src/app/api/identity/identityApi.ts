@@ -1,7 +1,7 @@
-import {UserRegisterRequest} from "../../dataModels/identity/userRegisterRequest.ts";
-import {httpGet, httpPost} from "../../infrastructure/requestApi.ts";
-import {LoginRequest} from "../../dataModels/identity/loginRequest.ts";
-import {Result} from "../../dataModels/result.ts";
+import {UserRegisterRequest} from "@/app/dataModels/identity/userRegisterRequest.ts";
+import {httpGet, httpPost} from "@/app/infrastructure/requestApi.ts";
+import {LoginRequest} from "@/app/dataModels/identity/loginRequest.ts";
+import {Result} from "@/app/dataModels/result.ts";
 
 const identityResource = "identity";
 

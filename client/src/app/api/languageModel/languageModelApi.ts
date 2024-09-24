@@ -1,6 +1,6 @@
-import {TextGenerationRequest} from "../../dataModels/languageModel/textGenerationRequest.ts";
-import {httpPost} from "../../infrastructure/requestApi.ts";
-import {SendMessageRequest} from "../../dataModels/languageModel/sendMessageRequest.ts";
+import {TextGenerationRequest} from "@/app/dataModels/languageModel/textGenerationRequest.ts";
+import {httpPost} from "@/app/infrastructure/requestApi.ts";
+import {SendMessageRequest} from "@/app/dataModels/languageModel/sendMessageRequest.ts";
 
 const resources = 'LanguageModel';
 

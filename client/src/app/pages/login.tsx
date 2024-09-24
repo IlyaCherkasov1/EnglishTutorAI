@@ -1,15 +1,15 @@
 import {FormProvider, useForm} from "react-hook-form";
-import {LoginSchema, TLoginSchema} from "../infrastructure/schemas";
+import {LoginSchema, TLoginSchema} from "@/app/infrastructure/schemas";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useState} from "react";
-import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "../components/ui/form.tsx";
-import {Input} from "../components/ui/input.tsx";
-import {FormError} from "../components/component/form-error.tsx";
-import {SignInButton} from "../components/component/buttons/signInButton.tsx";
+import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/app/components/ui/form.tsx";
+import {Input} from "@/app/components/ui/input.tsx";
+import {FormError} from "@/app/components/component/form-error.tsx";
+import {SignInButton} from "@/app/components/component/buttons/signInButton.tsx";
 import {Link, useNavigate} from "react-router-dom";
-import {routeLinks} from "../components/layout/routes/routeLink.ts";
-import {applyNewIdentity} from "../infrastructure/services/auth/identityService.ts";
-import {login} from "../infrastructure/services/auth/loginService.ts";
+import {routeLinks} from "@/app/components/layout/routes/routeLink.ts";
+import {applyNewIdentity} from "@/app/infrastructure/services/auth/identityService.ts";
+import {login} from "@/app/infrastructure/services/auth/loginService.ts";
 
 const Login = () => {
     const [error, setError] = useState<string | undefined>("");
