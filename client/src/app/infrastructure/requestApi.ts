@@ -32,13 +32,6 @@ const contentTypes = {
     json: "application/json",
 };
 
-const getBody = <T>(options: RequestOptions<T>) =>
-    !options || !options.body
-        ? undefined
-        : options.body instanceof FormData
-            ? options.body
-            : JSON.stringify(options.body);
-
 const getContentTypeHeader = <T>(options?: RequestOptions<T>): { "Content-Type": string } | EmptyObject =>
     options === null || options === undefined
         ? { "Content-Type": contentTypes.plainText }
@@ -74,6 +67,14 @@ const performRequest = async <TRequest, TResult>(
         return await handleFailedResponse(response);
     }
 };
+
+const getBody = <T>(options: RequestOptions<T>) => {
+    if (!options || !options.body) {
+        return undefined;
+    }
+
+    return JSON.stringify(options.body);
+}
 
 const handleSucceededResponse = async <TResult>(response: Response): Promise<TResult> => {
     const responseText = await response.text();
@@ -127,7 +128,7 @@ const getAccessTokenAuthorizationHeader = async (): Promise<{ Authorization: str
     let token = getAccessToken();
 
     if (!isAccessTokenValid()) {
-        const refreshTokenResponseStatus  = await renewAccessTokenHandler();
+        const refreshTokenResponseStatus = await renewAccessTokenHandler();
 
         handleRedirect(refreshTokenResponseStatus);
         token = getAccessToken();

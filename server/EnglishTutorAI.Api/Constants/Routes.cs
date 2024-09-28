@@ -39,12 +39,24 @@ public class Routes
 
     public static class Identity
     {
-        public const string Register = "Register";
+        public const string Register = "register";
 
         public const string Login = "login";
 
         public const string RenewAccessToken = "renewAccessToken";
 
         public const string Logout = "logout";
+    }
+
+    public static class ExternalAuth
+    {
+        public const string ExternalLogin = "external-login";
+
+        public const string ExternalLoginCallback = "external-auth-callback";
+    }
+
+    public static class Urls
+    {
+        public const string ExternalAuthCallbackUrl = "https://localhost:7008/api/externalAuth/external-auth-callback";
     }
 }

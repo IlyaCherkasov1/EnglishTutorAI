@@ -2,6 +2,7 @@ import {clearAccessToken, setAccessToken} from "@/app/infrastructure/services/au
 import {jwtDecode} from "jwt-decode";
 import {responseHandlingStatuses} from "@/app/infrastructure/requestApi.ts";
 import {logout, renewAccessToken} from "@/app/api/identity/identityApi.ts";
+import {routeLinks} from "@/app/components/layout/routes/routeLink.ts";
 
 export const applyNewIdentity = async (accessToken: string) => {
     setAccessToken(accessToken);
@@ -32,5 +33,5 @@ export const performLogOut = async (): Promise<void> => {
 
 export const performAfterLogOutActions = () => {
     clearAccessToken();
-    location.reload();
+    window.location.pathname = routeLinks.login;
 }

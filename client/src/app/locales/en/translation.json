@@ -23,5 +23,6 @@
     "myAccount": "My Account",
     "profile": "Profile",
     "signOut": "Sign out"
-  }
+  },
+  "signInWithGoogle": "Sign In With Google"
 }

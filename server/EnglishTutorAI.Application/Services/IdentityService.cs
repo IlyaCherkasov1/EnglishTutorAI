@@ -12,20 +12,23 @@ namespace EnglishTutorAI.Application.Services;
 public class IdentityService : IIdentityService
 {
     private readonly UserManager<User> _userManager;
-    private readonly ITokenService _tokenService;
+    private readonly IJwtAuthService _jwtAuthService;
     private readonly IRefreshTokenCookieService _refreshTokenCookieService;
     private readonly ISessionService _sessionService;
+    private readonly IClaimsService _claimsService;
 
     public IdentityService(
         UserManager<User> userManager,
-        ITokenService tokenService,
         IRefreshTokenCookieService refreshTokenCookieService,
-        ISessionService sessionService)
+        ISessionService sessionService,
+        IClaimsService claimsService,
+        IJwtAuthService jwtAuthService)
     {
         _userManager = userManager;
-        _tokenService = tokenService;
         _refreshTokenCookieService = refreshTokenCookieService;
         _sessionService = sessionService;
+        _claimsService = claimsService;
+        _jwtAuthService = jwtAuthService;
     }
 
     public async Task<Result> RegisterUser(UserRegisterRequest model)
@@ -63,7 +66,8 @@ public class IdentityService : IIdentityService
             return ResultBuilder.BuildFailed<string>("Invalid password");
         }
 
-        var accessToken = _tokenService.GenerateAccessToken(user);
+        var claims = _claimsService.CreateUserClaims(user);
+        var accessToken = _jwtAuthService.GenerateAccessToken(claims);
         await _sessionService.CreateSession(user.Id);
 
         return ResultBuilder.BuildSucceeded(accessToken);

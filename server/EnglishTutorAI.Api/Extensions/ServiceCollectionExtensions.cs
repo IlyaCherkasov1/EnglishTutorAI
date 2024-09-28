@@ -13,6 +13,7 @@ public static IServiceCollection AddSettings(this IServiceCollection services, I
         services.Configure<AwsSettings>(configuration.GetSection("AWS"));
         services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
         services.Configure<RefreshTokenSettings>(configuration.GetSection(nameof(RefreshTokenSettings)));
+        services.Configure<GoogleKeys>(configuration.GetSection(nameof(GoogleKeys)));
 
         return services;
     }

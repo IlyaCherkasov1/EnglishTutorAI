@@ -4,7 +4,6 @@ using System.Text;
 using EnglishTutorAI.Application.Attributes;
 using EnglishTutorAI.Application.Configurations;
 using EnglishTutorAI.Application.Interfaces;
-using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Models.Common;
 using EnglishTutorAI.Application.Utils;
 using EnglishTutorAI.Domain.Entities;
@@ -15,33 +14,30 @@ using Microsoft.IdentityModel.Tokens;
 namespace EnglishTutorAI.Application.Services;
 
 [ScopedDependency]
-public class TokenService : ITokenService
+public class JwtAuthService : IJwtAuthService
 {
     private readonly JwtSettings _jwtSettings;
     private readonly IRefreshTokenCookieService _refreshTokenCookieService;
     private readonly ISessionService _sessionService;
     private readonly UserManager<User> _userManager;
+    private readonly IClaimsService _claimsService;
 
-    public TokenService(
+    public JwtAuthService(
         IOptions<JwtSettings> jwtSettings,
         IRefreshTokenCookieService refreshTokenCookieService,
         UserManager<User> userManager,
-        ISessionService sessionService)
+        ISessionService sessionService,
+        IClaimsService claimsService)
     {
         _refreshTokenCookieService = refreshTokenCookieService;
         _userManager = userManager;
         _sessionService = sessionService;
+        _claimsService = claimsService;
         _jwtSettings = jwtSettings.Value;
     }
 
-    public string GenerateAccessToken(User user)
+    public string GenerateAccessToken(List<Claim> claims)
     {
-        var claims = new List<Claim>
-        {
-            new(ClaimTypes.Email, user.Email),
-            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-        };
-
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -73,7 +69,14 @@ public class TokenService : ITokenService
 
         _sessionService.UpdateRefreshToken(session);
         var user = await _userManager.FindByIdAsync(session.UserId.ToString());
-        var newAccessToken = GenerateAccessToken(user!);
+
+        if (user == null)
+        {
+            return ResultBuilder.BuildFailed<string>("user not found");
+        }
+
+        var claims = _claimsService.CreateUserClaims(user);
+        var newAccessToken = GenerateAccessToken(claims);
 
         return ResultBuilder.BuildSucceeded(newAccessToken);
     }
