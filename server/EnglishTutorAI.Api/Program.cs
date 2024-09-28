@@ -29,8 +29,6 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 });
 
 services.InstallServicesInAssembly(builder.Configuration);
-configuration.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
-
 services.AddAuthorizationBuilder();
 
 var allowedOrigins = configuration.GetSection("AllowedOrigins").Get<string[]>()!;

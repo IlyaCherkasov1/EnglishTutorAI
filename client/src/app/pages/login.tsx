@@ -1,7 +1,7 @@
 import {FormProvider, useForm} from "react-hook-form";
 import {LoginSchema, TLoginSchema} from "@/app/infrastructure/schemas";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/app/components/ui/form.tsx";
 import {Input} from "@/app/components/ui/input.tsx";
 import {FormError} from "@/app/components/component/form-error.tsx";
@@ -10,6 +10,8 @@ import {Link, useNavigate} from "react-router-dom";
 import {routeLinks} from "@/app/components/layout/routes/routeLink.ts";
 import {applyNewIdentity} from "@/app/infrastructure/services/auth/identityService.ts";
 import {login} from "@/app/infrastructure/services/auth/loginService.ts";
+import {GoogleSignInButton} from "@/app/components/component/auth/googleSignInButton.tsx";
+import {isAccessTokenValid} from "@/app/infrastructure/utils/tokenUtils.ts";
 
 const Login = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -24,6 +26,12 @@ const Login = () => {
         }
     });
 
+    useEffect(() => {
+        if (isAccessTokenValid()) {
+            navigate(routeLinks.home, { replace: true })
+        }
+    }, []);
+
     const onSubmit = async (values: TLoginSchema) => {
         setError("");
 
@@ -31,7 +39,7 @@ const Login = () => {
 
         if (result.isSuccess) {
             await applyNewIdentity(result.data);
-            navigate(routeLinks.home);
+            navigate(routeLinks.home, { replace: true });
         } else {
             setError(result.error);
         }
@@ -75,7 +83,8 @@ const Login = () => {
                     </div>
                     <FormError message={error}/>
                     <div className="grid gap-4">
-                        <SignInButton isSubmitting={form.formState.isSubmitting}/>
+                        <SignInButton isSubmitting={form.formState.isSubmitting} />
+                        <GoogleSignInButton />
                     </div>
                 </div>
                 <p className="mt-2 text-center text-sm text-gray-500">
