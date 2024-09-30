@@ -24,5 +24,8 @@
     "profile": "Profile",
     "signOut": "Sign out"
   },
-  "signInWithGoogle": "Sign In With Google"
+  "signInWith": {
+    "Google": "Sign In With Google",
+    "Facebook": "Sign In With Facebook"
+  }
 }

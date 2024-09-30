@@ -12,6 +12,7 @@ import {applyNewIdentity} from "@/app/infrastructure/services/auth/identityServi
 import {login} from "@/app/infrastructure/services/auth/loginService.ts";
 import {GoogleSignInButton} from "@/app/components/component/auth/googleSignInButton.tsx";
 import {isAccessTokenValid} from "@/app/infrastructure/utils/tokenUtils.ts";
+import {FacebookSignInButton} from "@/app/components/component/auth/facebookSignInButton.tsx";
 
 const Login = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -30,7 +31,7 @@ const Login = () => {
         if (isAccessTokenValid()) {
             navigate(routeLinks.home, { replace: true })
         }
-    }, []);
+    }, [navigate]);
 
     const onSubmit = async (values: TLoginSchema) => {
         setError("");
@@ -85,6 +86,7 @@ const Login = () => {
                     <div className="grid gap-4">
                         <SignInButton isSubmitting={form.formState.isSubmitting} />
                         <GoogleSignInButton />
+                        <FacebookSignInButton />
                     </div>
                 </div>
                 <p className="mt-2 text-center text-sm text-gray-500">

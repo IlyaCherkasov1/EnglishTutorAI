@@ -14,6 +14,7 @@ public class AuthInstaller : IServiceInstaller
     {
         var jwtSettings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>()!;
         var googleKeys = configuration.GetSection(nameof(GoogleKeys)).Get<GoogleKeys>()!;
+        var facebookKeys = configuration.GetSection(nameof(FacebookKeys)).Get<FacebookKeys>()!;
 
         services.AddAuthentication(options =>
             {
@@ -51,6 +52,11 @@ public class AuthInstaller : IServiceInstaller
                         return Task.CompletedTask;
                     },
                 };
+            })
+            .AddFacebook(options =>
+            {
+                options.ClientId = facebookKeys.ClientId;
+                options.ClientSecret = facebookKeys.ClientSecret;
             });
     }
 }

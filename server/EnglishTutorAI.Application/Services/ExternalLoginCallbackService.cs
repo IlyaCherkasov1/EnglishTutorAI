@@ -60,8 +60,9 @@ public class ExternalLoginCallbackService : IExternalLoginCallbackService
             };
 
             await _userManager.CreateAsync(user);
-            await _userManager.AddLoginAsync(user, info);
         }
+
+        await _userManager.AddLoginAsync(user, info);
 
         return user;
     }
