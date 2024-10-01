@@ -98,7 +98,7 @@ export function DocumentDetail(props: Props) {
                                     <Button type="submit" disabled={isSubmitting}>{t('send')}</Button>
                                 </div>
                                 {isSubmitting && <div
-                                    className="text-center mt-4">{t('loading')}...</div>} {/* Показать индикатор загрузки */}
+                                    className="text-center mt-4">{t('loading')}...</div>}
                             </form>
                 )}
                 {isDisplayCorrectionOutput ?

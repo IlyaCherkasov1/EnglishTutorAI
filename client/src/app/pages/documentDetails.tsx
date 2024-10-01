@@ -1,5 +1,4 @@
 import {getDocumentDetails, splitDocumentContent} from "@/app/api/document/documentApi.ts";
-import {useTranslation} from "react-i18next";
 import BackButton from "@/app/components/component/buttons/backButton.tsx";
 import {DocumentDetail} from "@/app/components/component/documentDetail.tsx";
 import {useEffect, useState} from "react";
@@ -8,8 +7,6 @@ import {useParams} from "react-router-dom";
 
 const DocumentDetails = () => {
     const { documentId } = useParams<{ documentId: string }>();
-
-    const { t } = useTranslation();
     const [document, setDocument] = useState<DocumentResponse>();
     const [sentences, setSentences] = useState<string[]>([]);
 
@@ -24,19 +21,17 @@ const DocumentDetails = () => {
         fetchDocumentDetails().catch(console.error);
     }, [documentId]);
 
-    return document ? (
+    if (!document || sentences.length === 0) {
+        return null;
+    }
+
+    return (
         <div className="flex flex-col h-screen">
             <div className="p-4">
-                <BackButton/>
+                <BackButton />
             </div>
-            {sentences.length > 0 ? (
-                <DocumentDetail document={document} sentences={sentences}/>
-            ) : (
-                <p>{t('loading')}</p>
-            )}
+            <DocumentDetail document={document} sentences={sentences} />
         </div>
-    ) : (
-        <p>{t('loading')}</p>
     )
 };
 
