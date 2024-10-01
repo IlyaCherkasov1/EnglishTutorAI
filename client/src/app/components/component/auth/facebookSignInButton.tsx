@@ -13,7 +13,7 @@ export const FacebookSignInButton = () => {
                  alt="Google sign-in"
                  width="24"
                  height="24"/>
-            <span className="ml-2">{t('signInWith.Facebook')}</span>
+            <span className="ml-2">{t('signInWith.facebook')}</span>
         </Button>
     );
 }

@@ -13,7 +13,7 @@ export const GoogleSignInButton = () => {
                  alt="Google sign-in"
                  width="24"
                  height="24"/>
-            <span className="ml-2">{t('signInWith.Google')}</span>
+            <span className="ml-2">{t('signInWith.google')}</span>
         </Button>
     );
 };

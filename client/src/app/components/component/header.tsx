@@ -12,6 +12,7 @@ import {
 } from "@/app/components/ui/dropdown-menu"
 import {performLogOut} from "@/app/infrastructure/services/auth/identityService.ts";
 import {useTranslation} from "react-i18next";
+import {contextStore} from "@/app/infrastructure/stores/contextStore.ts";
 
 export const Header = () => {
   const { t } = useTranslation();
@@ -36,7 +37,7 @@ export const Header = () => {
             </HeaderButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>{t("header.myAccount")}</DropdownMenuLabel>
+            <DropdownMenuLabel>{contextStore.firstName}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>{t("header.profile")}</DropdownMenuItem>
             <DropdownMenuItem onClick={performLogOut}>{t("header.signOut")}</DropdownMenuItem>
