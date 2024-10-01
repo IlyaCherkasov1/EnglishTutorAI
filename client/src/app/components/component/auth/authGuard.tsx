@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { isAuthPage } from '@/app/infrastructure/utils/authUtils.ts';
-import { renewAccessTokenHandler } from '@/app/infrastructure/services/auth/identityService.ts';
-import { responseHandlingStatuses } from '@/app/infrastructure/requestApi.ts';
-import { routeLinks } from '@/app/components/layout/routes/routeLink.ts';
-import { contextStore } from '@/app/infrastructure/stores/contextStore.ts';
-import { contextService } from '@/app/infrastructure/services/contextService.ts';
+import React, {useEffect, useState} from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
+import {isAuthPage} from '@/app/infrastructure/utils/authUtils.ts';
+import {renewAccessTokenHandler} from '@/app/infrastructure/services/auth/identityService.ts';
+import {responseHandlingStatuses} from '@/app/infrastructure/requestApi.ts';
+import {routeLinks} from '@/app/components/layout/routes/routeLink.ts';
+import {contextStore} from '@/app/infrastructure/stores/contextStore.ts';
+import {contextService} from '@/app/infrastructure/services/contextService.ts';
 import {observer} from "mobx-react-lite";
 
-interface AuthGuardProps  {
+interface AuthGuardProps {
     children: React.ReactNode;
 }
 
-export const AuthGuard: React.FC<AuthGuardProps > = observer(({ children }) => {
+export const AuthGuard: React.FC<AuthGuardProps> = observer(({ children }) => {
     const [loading, setLoading] = useState(true);
     const location = useLocation();
     const navigate = useNavigate();
@@ -47,7 +47,7 @@ export const AuthGuard: React.FC<AuthGuardProps > = observer(({ children }) => {
     }, [location.pathname, navigate]);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return;
     }
 
     return <>{children}</>;

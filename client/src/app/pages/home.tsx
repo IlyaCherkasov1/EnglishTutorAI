@@ -15,15 +15,11 @@ const Home = () => {
         fetchAllDocuments().catch(console.error);
     }, []);
 
-    return (
-        <>
-            {documents.length > 0 ? (
-                <DocumentsList allDocuments={documents}/>
-            ) : (
-                <div>Loading documents...</div>
-            )}
-        </>
-    );
+    if (documents.length === 0) {
+        return null;
+    }
+
+    return <DocumentsList allDocuments={documents} />;
 };
 
 export default Home;
