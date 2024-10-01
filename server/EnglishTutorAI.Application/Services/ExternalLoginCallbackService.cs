@@ -42,8 +42,9 @@ public class ExternalLoginCallbackService : IExternalLoginCallbackService
         }
 
         var user = await GetOrCreateUser(email, info);
+        await _sessionService.CreateSession(user.Id);
 
-        return await TrySignInAndCreateSession(info, user);
+        return ResultBuilder.BuildSucceeded();
     }
 
     private async Task<User> GetOrCreateUser(string email, ExternalLoginInfo info)
@@ -65,19 +66,5 @@ public class ExternalLoginCallbackService : IExternalLoginCallbackService
         await _userManager.AddLoginAsync(user, info);
 
         return user;
-    }
-
-    private async Task<Result> TrySignInAndCreateSession(ExternalLoginInfo info, User user)
-    {
-        var signinResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
-
-        if (!signinResult.Succeeded)
-        {
-            return ResultBuilder.BuildFailed("Failed to signs in a user via third party login");
-        }
-
-        await _sessionService.CreateSession(user.Id);
-
-        return ResultBuilder.BuildSucceeded();
     }
 }
