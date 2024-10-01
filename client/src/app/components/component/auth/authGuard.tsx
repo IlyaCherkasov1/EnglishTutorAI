@@ -24,16 +24,16 @@ export const AuthGuard: React.FC<AuthGuardProps > = observer(({ children }) => {
                     return;
                 }
 
-                if (!contextStore.isContextLoaded) {
-                    await contextService.load();
-                }
-
                 if (!contextStore.isAuthenticated) {
                     const result = await renewAccessTokenHandler();
 
                     if (result === responseHandlingStatuses.unauthenticated) {
                         navigate(routeLinks.login, { replace: true });
                     }
+                }
+
+                if (!contextStore.isContextLoaded) {
+                    await contextService.load();
                 }
 
             } catch (error) {
