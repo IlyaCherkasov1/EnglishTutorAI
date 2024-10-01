@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
-import { ChatMessageResponse } from "@/app/dataModels/chatMessageResponse.ts";
-import { getConversationThread } from "@/app/api/document/documentApi.ts";
-import { ConversationRole } from "@/app/dataModels/enums/conversationRole.ts";
+import {useEffect, useState} from "react";
+import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
+import {getConversationThread} from "@/app/api/document/documentApi.ts";
+import {ConversationRole} from "@/app/dataModels/enums/conversationRole.ts";
 import {sendMessage} from "@/app/api/languageModel/languageModelApi.ts";
-import { Bot } from "lucide-react";
-import { Input } from "@/app/components/ui/input.tsx";
-import { Button } from "@/app/components/ui/button.tsx";
-import { useTranslation } from "react-i18next";
-import { useForm } from "react-hook-form";
+import {Bot} from "lucide-react";
+import {Input} from "@/app/components/ui/input.tsx";
+import {Button} from "@/app/components/ui/button.tsx";
+import {useTranslation} from "react-i18next";
+import {useForm} from "react-hook-form";
+import useAsyncEffect from "use-async-effect";
 
 interface Props {
     threadId: string;
@@ -28,13 +29,9 @@ export const ChatBot = (props: Props) => {
     const { t } = useTranslation();
     const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm<FormValues>();
 
-    useEffect(() => {
-        const fetchConversationThread = async () => {
-            const response = await getConversationThread(props.threadId);
-            setChatMessageResponse(response);
-        };
-
-        fetchConversationThread().catch(console.error);
+    useAsyncEffect(async () => {
+        const response = await getConversationThread(props.threadId);
+        setChatMessageResponse(response);
     }, [props.threadId]);
 
     useEffect(() => {
@@ -81,7 +78,7 @@ export const ChatBot = (props: Props) => {
                                              message.sender === ConversationRole.Assistant
                                                  ? 'ml-3' : 'self-end bg-gray-100 rounded-3xl'}`}>
                                         {message.sender === ConversationRole.Assistant &&
-                                            <Bot className="absolute -left-6 top-4 h-5 w-5 text-gray-500"/>}
+                                            <Bot className="absolute -left-6 top-4 h-5 w-5 text-gray-500" />}
                                         <p className="text-sm">{message.text}</p>
                                     </div>
                                 ))}
@@ -102,7 +99,8 @@ export const ChatBot = (props: Props) => {
                                 </Button>
                             </div>
                         </form>
-                        {isSubmitting && <div className="text-center mt-4">{t('Loading')}...</div>} {/* Show loading indicator */}
+                        {isSubmitting &&
+                            <div className="text-center mt-4">{t('Loading')}...</div>} {/* Show loading indicator */}
                     </div>
                 </div>
             </main>

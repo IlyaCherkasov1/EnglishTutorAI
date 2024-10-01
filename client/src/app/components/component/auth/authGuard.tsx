@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {isAuthPage} from '@/app/infrastructure/utils/authUtils.ts';
 import {renewAccessTokenHandler} from '@/app/infrastructure/services/auth/identityService.ts';
@@ -7,6 +7,7 @@ import {routeLinks} from '@/app/components/layout/routes/routeLink.ts';
 import {contextStore} from '@/app/infrastructure/stores/contextStore.ts';
 import {contextService} from '@/app/infrastructure/services/contextService.ts';
 import {observer} from "mobx-react-lite";
+import useAsyncEffect from "use-async-effect";
 
 interface AuthGuardProps {
     children: React.ReactNode;
@@ -17,33 +18,29 @@ export const AuthGuard: React.FC<AuthGuardProps> = observer(({ children }) => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const loadContextAndRenewToken = async () => {
-            try {
-                if (isAuthPage(location.pathname)) {
-                    return;
-                }
-
-                if (!contextStore.isAuthenticated) {
-                    const result = await renewAccessTokenHandler();
-
-                    if (result === responseHandlingStatuses.unauthenticated) {
-                        navigate(routeLinks.login, { replace: true });
-                    }
-                }
-
-                if (!contextStore.isContextLoaded) {
-                    await contextService.load();
-                }
-
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
+    useAsyncEffect(async () => {
+        try {
+            if (isAuthPage(location.pathname)) {
+                return;
             }
-        };
 
-        loadContextAndRenewToken().catch(console.error);
+            if (!contextStore.isAuthenticated) {
+                const result = await renewAccessTokenHandler();
+
+                if (result === responseHandlingStatuses.unauthenticated) {
+                    navigate(routeLinks.login, { replace: true });
+                }
+            }
+
+            if (!contextStore.isContextLoaded) {
+                await contextService.load();
+            }
+
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
     }, [location.pathname, navigate]);
 
     if (loading) {
