@@ -1,8 +1,7 @@
 import {EmptyObject} from "react-hook-form";
 import {clearAccessToken, getAccessToken} from "@/app/infrastructure/services/auth/accessTokenService.ts";
-import {renewAccessTokenHandler} from "@/app/infrastructure/services/auth/identityService.ts";
+import {isAccessTokenExpired, renewAccessTokenHandler} from "@/app/infrastructure/services/auth/identityService.ts";
 import {routeLinks} from "@/app/components/layout/routes/routeLink.ts";
-import {isAccessTokenValid} from "@/app/infrastructure/utils/tokenUtils.ts";
 
 export type HttpRequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -127,7 +126,7 @@ const getAuthorizationHeader = <T>(options: RequestOptions<T>): Promise<{
 const getAccessTokenAuthorizationHeader = async (): Promise<{ Authorization: string } | EmptyObject> => {
     let token = getAccessToken();
 
-    if (!isAccessTokenValid()) {
+    if (token && isAccessTokenExpired(token)) {
         const refreshTokenResponseStatus = await renewAccessTokenHandler();
 
         handleRedirect(refreshTokenResponseStatus);

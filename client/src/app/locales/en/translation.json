@@ -20,12 +20,11 @@
   "header": {
     "toggleMenu": "Toggle menu",
     "title": "English Tutor AI",
-    "myAccount": "My Account",
     "profile": "Profile",
     "signOut": "Sign out"
   },
   "signInWith": {
-    "Google": "Sign In With Google",
-    "Facebook": "Sign In With Facebook"
+    "google": "Sign In With Google",
+    "facebook": "Sign In With Facebook"
   }
 }

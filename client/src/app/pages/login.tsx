@@ -11,8 +11,8 @@ import {routeLinks} from "@/app/components/layout/routes/routeLink.ts";
 import {applyNewIdentity} from "@/app/infrastructure/services/auth/identityService.ts";
 import {login} from "@/app/infrastructure/services/auth/loginService.ts";
 import {GoogleSignInButton} from "@/app/components/component/auth/googleSignInButton.tsx";
-import {isAccessTokenValid} from "@/app/infrastructure/utils/tokenUtils.ts";
 import {FacebookSignInButton} from "@/app/components/component/auth/facebookSignInButton.tsx";
+import {contextStore} from "@/app/infrastructure/stores/contextStore.ts";
 
 const Login = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -28,7 +28,7 @@ const Login = () => {
     });
 
     useEffect(() => {
-        if (isAccessTokenValid()) {
+        if (contextStore.isAuthenticated) {
             navigate(routeLinks.home, { replace: true })
         }
     }, [navigate]);
