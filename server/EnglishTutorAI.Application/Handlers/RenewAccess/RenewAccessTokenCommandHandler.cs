@@ -15,10 +15,11 @@ public class RenewAccessTokenCommandHandler : IRequestHandler<RenewAccessTokenCo
         _jwtAuthService = jwtAuthService;
     }
 
-    public Task<Result<string>> Handle(RenewAccessTokenCommand request, CancellationToken cancellationToken)
+    public async Task<Result<string>> Handle(RenewAccessTokenCommand request, CancellationToken cancellationToken)
     {
-        var result = _jwtAuthService.RenewAccessToken();
-        _unitOfWork.Commit();
+        var result = await _jwtAuthService.RenewAccessToken();
+
+        await _unitOfWork.Commit();
 
         return result;
     }
