@@ -1,6 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using EnglishTutorAI.Api.Extensions;
+using EnglishTutorAI.Api.Middlewares;
 using EnglishTutorAI.Domain.Entities;
 using EnglishTutorAI.Infrastructure;
 using EnglishTutorAI.Infrastructure.DependencyInjection;
@@ -47,6 +48,8 @@ var app = builder.Build();
 
 app.UseCors();
 app.UseRouting();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
 app.UseHttpsRedirection();
 
