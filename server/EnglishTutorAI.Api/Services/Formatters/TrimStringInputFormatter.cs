@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
+using EnglishTutorAI.Application.Constants;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
@@ -11,7 +12,7 @@ public class TrimStringInputFormatter : TextInputFormatter
 {
     public TrimStringInputFormatter()
     {
-        SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/json"));
+        SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse(ContentTypes.Json));
         SupportedEncodings.Add(Encoding.UTF8);
         SupportedEncodings.Add(Encoding.Unicode);
     }
