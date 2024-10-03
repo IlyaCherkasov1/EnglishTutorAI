@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 namespace EnglishTutorAI.Application.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
-[UsedImplicitly(ImplicitUseKindFlags.Assign)]
+[MeansImplicitUse(ImplicitUseKindFlags.Assign)]
 public class DependencyAttribute : Attribute
 {
     public DependencyLifetime Lifetime { get; }
