@@ -1,6 +1,6 @@
 import {getDocumentDetails, splitDocumentContent} from "@/app/api/document/documentApi.ts";
-import BackButton from "@/app/components/component/buttons/backButton.tsx";
-import {DocumentDetail} from "@/app/components/component/documentDetail.tsx";
+import BackButton from "@/app/components/buttons/backButton.tsx";
+import {DocumentDetail} from "@/app/components/document/documentDetail.tsx";
 import {useState} from "react";
 import {DocumentResponse} from "@/app/dataModels/document/documentResponse.ts";
 import {useParams} from "react-router-dom";

@@ -1,31 +1,28 @@
 import {FormProvider, useForm} from "react-hook-form";
-import {LoginSchema, TLoginSchema} from "@/app/infrastructure/schemas";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useEffect, useState} from "react";
-import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/app/components/ui/form.tsx";
+import {FormControl, FormDescription, FormItem, FormLabel, FormMessage} from "@/app/components/ui/form.tsx";
 import {Input} from "@/app/components/ui/input.tsx";
-import {FormError} from "@/app/components/component/form-error.tsx";
-import {SignInButton} from "@/app/components/component/buttons/signInButton.tsx";
+import {FormError} from "@/app/components/formStates/form-error.tsx";
+import {SignInButton} from "@/app/components/buttons/signInButton.tsx";
 import {Link, useNavigate} from "react-router-dom";
 import {routeLinks} from "@/app/components/layout/routes/routeLink.ts";
 import {applyNewIdentity} from "@/app/infrastructure/services/auth/identityService.ts";
 import {login} from "@/app/infrastructure/services/auth/loginService.ts";
-import {GoogleSignInButton} from "@/app/components/component/auth/googleSignInButton.tsx";
-import {FacebookSignInButton} from "@/app/components/component/auth/facebookSignInButton.tsx";
+import {GoogleSignInButton} from "@/app/components/auth/googleSignInButton.tsx";
+import {FacebookSignInButton} from "@/app/components/auth/facebookSignInButton.tsx";
 import {contextStore} from "@/app/infrastructure/stores/contextStore.ts";
+import {LoginSchema, TLoginSchema} from "@/app/infrastructure/zodSchemas/loginSchema.ts";
 
 const Login = () => {
     const [error, setError] = useState<string | undefined>("");
     const navigate = useNavigate();
-    const methods = useForm();
 
-    const form = useForm<TLoginSchema>({
+    const methods = useForm<TLoginSchema>({
         resolver: zodResolver(LoginSchema),
-        defaultValues: {
-            email: "",
-            password: "",
-        }
     });
+
+    const { handleSubmit, register, formState: { errors, isSubmitting } } = methods;
 
     useEffect(() => {
         if (contextStore.isAuthenticated) {
@@ -48,43 +45,44 @@ const Login = () => {
 
     return (
         <FormProvider {...methods}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto max-w-md space-y-6 py-12">
+
+            <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-md space-y-6 py-12">
                 <div className="space-y-2 text-center">
                     <h1 className="text-3xl font-bold">Welcome</h1>
                     <FormDescription>Sign up or log in to continue</FormDescription>
                 </div>
                 <div className="space-y-4">
                     <div className="space-y-2">
-                        <FormField control={form.control} name="email" render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Email</FormLabel>
-                                <FormControl>
-                                    <Input {...field}
-                                           disabled={form.formState.isSubmitting}
-                                           placeholder="john.doe@example.com"
-                                           type="email"/>
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}/>
+                        <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                                <Input
+                                    {...register("email")}
+                                    name="email"
+                                    disabled={isSubmitting}
+                                    placeholder="john.doe@example.com"
+                                    type="email" />
+                            </FormControl>
+                            <FormMessage>{errors.email?.message}</FormMessage>
+                        </FormItem>
                     </div>
                     <div className="space-y-2">
-                        <FormField control={form.control} name="password" render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Password</FormLabel>
-                                <FormControl>
-                                    <Input {...field}
-                                           disabled={form.formState.isSubmitting}
-                                           placeholder="*******"
-                                           type="password"/>
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}/>
+                        <FormItem>
+                            <FormLabel>Password</FormLabel>
+                            <FormControl>
+                                <Input
+                                    {...register("password")}
+                                    name="password"
+                                    disabled={isSubmitting}
+                                    placeholder="*******"
+                                    type="password" />
+                            </FormControl>
+                            <FormMessage>{errors.password?.message}</FormMessage>
+                        </FormItem>
                     </div>
-                    <FormError message={error}/>
+                    <FormError message={error} />
                     <div className="grid gap-4">
-                        <SignInButton isSubmitting={form.formState.isSubmitting} />
+                        <SignInButton isSubmitting={isSubmitting} />
                         <GoogleSignInButton />
                         <FacebookSignInButton />
                     </div>

@@ -1,5 +1,5 @@
 import {FileIcon} from "lucide-react";
-import {DeleteDocumentModal} from "@/app/components/component/modals/deleteDocumentModal.tsx";
+import {DeleteDocumentModal} from "@/app/components/modals/deleteDocumentModal.tsx";
 import { Link } from 'react-router-dom';
 import {deleteDocument} from "@/app/api/document/documentApi.ts";
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem.ts";

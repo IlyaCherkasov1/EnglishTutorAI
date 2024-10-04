@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {getAllDocuments} from "@/app/api/document/documentApi.ts";
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem.ts";
-import {DocumentsList} from "@/app/components/component/document/documentsList.tsx";
+import {DocumentsList} from "@/app/components/document/documentsList.tsx";
 import useAsyncEffect from "use-async-effect";
 
 const Home = () => {
