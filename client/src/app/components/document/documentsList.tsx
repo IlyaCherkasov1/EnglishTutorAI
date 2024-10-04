@@ -1,6 +1,6 @@
 import {useState} from "react";
+import {DocumentListItemComponent} from "@/app/components/document/documentListItemComponent.tsx";
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem.ts";
-import {DocumentListItemComponent} from "@/app/components/component/document/documentListItemComponent.tsx";
 
 interface Props {
     allDocuments: DocumentListItem[];

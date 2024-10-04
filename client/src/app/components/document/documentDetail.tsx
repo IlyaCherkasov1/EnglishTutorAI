@@ -4,34 +4,36 @@ import {useTranslation} from "react-i18next";
 import {saveCurrentLine} from "@/app/api/document/documentApi.ts";
 import {Button} from "@/app/components/ui/button.tsx";
 import {Textarea} from "@/app/components/ui/textarea.tsx";
-import DocumentCorrectionOutput from "@/app/components/component/document/documentCorrectionOutput.tsx";
-import {useForm} from "react-hook-form";
+import DocumentCorrectionOutput from "@/app/components/document/documentCorrectionOutput.tsx";
+import {FormProvider, useForm} from "react-hook-form";
 import {correctText} from "@/app/api/languageModel/languageModelApi.ts";
-import ChatBotToggle from "@/app/components/component/chatBotToggle.tsx";
+import ChatBotToggle from "@/app/components/chatBot/chatBotToggle.tsx";
+import {DocumentDetailsSchema, TDocumentDetailsSchema} from "@/app/infrastructure/zodSchemas/documentDetailsSchema.ts";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {FormMessage} from "@/app/components/ui/form.tsx";
 
 interface Props {
     document: DocumentResponse;
     sentences: string[];
 }
 
-export function DocumentDetail(props: Props) {
+export const DocumentDetail = (props: Props) => {
     const [currentLine, setCurrentLine] = useState(props.document.currentLine || 0);
     const [correctedText, setCorrectedText] = useState('');
     const [translatedText, setTranslatedText] = useState('');
     const [isCorrected, setIsCorrected] = useState(false);
     const [isDisplayCorrectionOutput, setIsDisplayCorrectionOutput] = useState(false);
+    const { t } = useTranslation();
+
+    const methods = useForm<TDocumentDetailsSchema>({
+        resolver: zodResolver(DocumentDetailsSchema),
+    });
+
+    const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = methods;
 
     const isDocumentFinished = useMemo(() => {
         return currentLine >= props.sentences.length;
     }, [currentLine, props.sentences.length]);
-
-    const { t } = useTranslation();
-
-    const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm({
-        defaultValues: {
-            translatedText: ''
-        }
-    });
 
     const onSubmit = async (data: { translatedText: string }) => {
         const { translatedText } = data;
@@ -88,28 +90,30 @@ export function DocumentDetail(props: Props) {
                             </div>
                         ) :
                         (
-                            <form className="flex flex-col mb-4" onSubmit={handleSubmit(onSubmit)}>
-                                <Textarea
-                                    {...register('translatedText')}
-                                    placeholder={t('enterYourText')}
-                                    disabled={isSubmitting}
-                                />
-                                <div className="flex justify-end mt-2">
-                                    <Button type="submit" disabled={isSubmitting}>{t('send')}</Button>
-                                </div>
-                                {isSubmitting && <div
-                                    className="text-center mt-4">{t('loading')}...</div>}
-                            </form>
-                )}
-                {isDisplayCorrectionOutput ?
-                    <DocumentCorrectionOutput
-                        originalText={translatedText}
-                        correctedText={correctedText}
-                        isCorrected={isCorrected}/>
+                            <FormProvider {...methods}>
+                                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mb-4">
+                                    <Textarea
+                                        {...register('translatedText', { required: true })}
+                                        placeholder={t('enterYourText')}
+                                        disabled={isSubmitting} />
+                                    <FormMessage>{errors.translatedText?.message}</FormMessage>
+                                    <div className="flex justify-end mt-2">
+                                        <Button type="submit" disabled={isSubmitting}>{t('send')}</Button>
+                                    </div>
+                                    {isSubmitting && <div
+                                        className="text-center mt-4">{t('loading')}...</div>}
+                                </form>
+                            </FormProvider>
+                        )}
+                    {isDisplayCorrectionOutput ?
+                        <DocumentCorrectionOutput
+                            originalText={translatedText}
+                            correctedText={correctedText}
+                            isCorrected={isCorrected} />
                         : null
                     }
                 </div>
-                <ChatBotToggle threadId={props.document.threadId}/>
+                <ChatBotToggle threadId={props.document.threadId} />
             </div>
         </div>
     )

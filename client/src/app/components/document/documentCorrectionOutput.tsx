@@ -1,5 +1,5 @@
 import {useTranslation} from "react-i18next";
-import DiffComponent from "@/app/components/component/diffComponent.tsx";
+import DiffComponent from "@/app/components/chatBot/diffComponent.tsx";
 
 interface Props {
     originalText: string;

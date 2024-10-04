@@ -1,11 +1,11 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import DocumentDetails from "@/app/pages/documentDetails.tsx";
-import Register from "@/app/pages/register.tsx";
-import Login from "@/app/pages/login.tsx";
-import AdminPanel from "@/app/pages/adminPanel.tsx";
-import Home from "@/app/pages/home.tsx";
+import {AuthGuard} from "@/app/components/auth/authGuard.tsx";
+import Login from "@/app/components/auth/login.tsx";
+import Register from "@/app/components/auth/register.tsx";
 import {MainLayout} from "@/app/components/layout/mainLayout.tsx";
-import {AuthGuard} from "@/app/components/component/auth/authGuard.tsx";
+import {AdminPanel} from "@/app/components/pages/adminPanel.tsx";
+import Home from "@/app/components/pages/home.tsx";
+import DocumentDetails from "@/app/components/document/documentDetails.tsx";
 
 function App() {
     return (
