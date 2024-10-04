@@ -15,13 +15,13 @@ interface Props {
 }
 
 export function DocumentDetail(props: Props) {
-    const [currentLine, setCurrentLine] = useState(props.document.currentLine | 0);
+    const [currentLine, setCurrentLine] = useState(props.document.currentLine || 0);
     const [correctedText, setCorrectedText] = useState('');
-    const [translatedText] = useState('');
+    const [translatedText, setTranslatedText] = useState('');
     const [isCorrected, setIsCorrected] = useState(false);
     const [isDisplayCorrectionOutput, setIsDisplayCorrectionOutput] = useState(false);
 
-    const IsDocumentFinished = useMemo(() => {
+    const isDocumentFinished = useMemo(() => {
         return currentLine >= props.sentences.length;
     }, [currentLine, props.sentences.length]);
 
@@ -37,11 +37,12 @@ export function DocumentDetail(props: Props) {
         const { translatedText } = data;
 
         const { isCorrected, correctedText } = await correctText({
-            originalText: translatedText,
-            translatedText: props.sentences[currentLine],
+            originalText: props.sentences[currentLine],
+            translatedText: translatedText,
             threadId: props.document.threadId,
         })
 
+        setTranslatedText(translatedText);
         setIsCorrected(isCorrected);
         setIsDisplayCorrectionOutput(true);
 
@@ -81,7 +82,7 @@ export function DocumentDetail(props: Props) {
                             </span>
                         ))}
                     </div>
-                    {IsDocumentFinished ? (
+                    {isDocumentFinished ? (
                             <div className="flex justify-end mt-2">
                                 <Button onClick={handleStartAgain}>{t('startAgain')}</Button>
                             </div>
@@ -90,7 +91,6 @@ export function DocumentDetail(props: Props) {
                             <form className="flex flex-col mb-4" onSubmit={handleSubmit(onSubmit)}>
                                 <Textarea
                                     {...register('translatedText')}
-                                    name="textarea-value"
                                     placeholder={t('enterYourText')}
                                     disabled={isSubmitting}
                                 />
