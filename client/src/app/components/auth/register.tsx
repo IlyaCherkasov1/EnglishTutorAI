@@ -1,18 +1,20 @@
 import {FormProvider, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useState} from "react";
-import {FormControl, FormDescription, FormItem, FormLabel, FormMessage} from "@/app/components/ui/form.tsx";
+import {FormControl, FormItem, FormLabel, FormMessage} from "@/app/components/ui/form.tsx";
 import {Input} from "@/app/components/ui/input.tsx";
 import {FormError} from "@/app/components/formStates/form-error.tsx";
 import {FormSuccess} from "@/app/components/formStates/form-success.tsx";
 import {handleUserRegistration} from "@/app/infrastructure/services/auth/registrationService.ts";
 import {Link} from "react-router-dom";
-import {RegisterSchema, TRegisterSchema} from "@/app/infrastructure/zodSchemas/registerSchema.ts";
 import {SignUpButton} from "@/app/components/buttons/signUpButton.tsx";
+import {useTranslation} from "react-i18next";
+import {RegisterSchema, TRegisterSchema} from "@/app/infrastructure/validationSchemas/registerSchema.ts";
 
 const Register = () => {
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
+    const { t } = useTranslation();
 
     const methods = useForm<TRegisterSchema>({
         resolver: zodResolver(RegisterSchema),
@@ -35,13 +37,12 @@ const Register = () => {
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-md space-y-6 py-12">
                 <div className="space-y-2 text-center">
-                    <h1 className="text-3xl font-bold">Create an account</h1>
-                    <FormDescription>Sign up or log in to continue</FormDescription>
+                    <h1 className="text-3xl font-bold">{t('createAnAccount')}</h1>
                 </div>
                 <div className="space-y-4">
                     <div className="space-y-2">
                         <FormItem>
-                            <FormLabel>Name</FormLabel>
+                            <FormLabel>{t('name')}</FormLabel>
                             <FormControl>
                                 <Input
                                     {...register("firstName")}
@@ -53,7 +54,7 @@ const Register = () => {
                     </div>
                     <div className="space-y-2">
                         <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel>{t('email')}</FormLabel>
                             <FormControl>
                                 <Input {...register("email")}
                                        disabled={isSubmitting}
@@ -65,7 +66,7 @@ const Register = () => {
                     </div>
                     <div className="space-y-2">
                         <FormItem>
-                            <FormLabel>Password</FormLabel>
+                            <FormLabel>{t('password')}</FormLabel>
                             <FormControl>
                                 <Input {...register("password")}
                                        disabled={isSubmitting}
@@ -82,7 +83,7 @@ const Register = () => {
                     </div>
                 </div>
                 <p className="mt-2 text-center text-sm text-gray-500">
-                    Already have an account?
+                    {t('alreadyHaveAccount')}
                     <span className="mr-1"></span>
                     <Link to={"/auth/login"} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                         Login

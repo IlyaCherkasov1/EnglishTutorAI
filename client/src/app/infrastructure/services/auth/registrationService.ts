@@ -1,5 +1,6 @@
 import {registerUser} from "@/app/api/identity/identityApi.ts";
-import {RegisterSchema, TRegisterSchema} from "@/app/infrastructure/zodSchemas/registerSchema.ts";
+import {RegisterSchema, TRegisterSchema} from "@/app/infrastructure/validationSchemas/registerSchema.ts";
+import {getLocalizedMessage} from "@/app/infrastructure/utils/localizerUtils.ts";
 
 export const handleUserRegistration = async (values: TRegisterSchema) => {
     const validatedFields = RegisterSchema.safeParse(values);
@@ -19,12 +20,12 @@ export const handleUserRegistration = async (values: TRegisterSchema) => {
             if (errors.length > 0) {
                 return { error: errors[0] };
             } else {
-                return { error: "Registration failed. Please try again." };
+                return { error: getLocalizedMessage('registrationFailed') };
             }
         } else {
-            return { success: "Registration was successful! Check your email" };
+            return { success: getLocalizedMessage('registrationSuccessful') };
         }
     } catch {
-        return { error: "Something went wrong. Please try again." };
+        return { error: getLocalizedMessage('somethingWentWrong')  };
     }
 }

@@ -8,9 +8,9 @@ import DocumentCorrectionOutput from "@/app/components/document/documentCorrecti
 import {FormProvider, useForm} from "react-hook-form";
 import {correctText} from "@/app/api/languageModel/languageModelApi.ts";
 import ChatBotToggle from "@/app/components/chatBot/chatBotToggle.tsx";
-import {DocumentDetailsSchema, TDocumentDetailsSchema} from "@/app/infrastructure/zodSchemas/documentDetailsSchema.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {FormMessage} from "@/app/components/ui/form.tsx";
+import {DocumentDetailsSchema, TDocumentDetailsSchema} from "@/app/infrastructure/validationSchemas/documentDetailsSchema.ts";
 
 interface Props {
     document: DocumentResponse;
