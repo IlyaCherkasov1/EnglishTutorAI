@@ -10,12 +10,15 @@ import {
     DialogTrigger
 } from "@/app/components/ui/dialog.tsx";
 import {Button} from "@/app/components/ui/button.tsx";
+import {useTranslation} from "react-i18next";
 
 interface Props {
     onConfirm: () => void;
 }
 
 export const DeleteDocumentModal = ({ onConfirm }: Props) => {
+    const { t } = useTranslation();
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -26,18 +29,18 @@ export const DeleteDocumentModal = ({ onConfirm }: Props) => {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Удалить документ</DialogTitle>
-                    <DialogDescription>Вы уверены, что хотите удалить этот документ?</DialogDescription>
+                    <DialogTitle>{t('deleteDocument')}</DialogTitle>
+                    <DialogDescription>{t('confirmDelete')}</DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     <p id="document-name" className="text-gray-900 dark:text-gray-50"/>
                 </div>
                 <DialogFooter>
                     <DialogClose asChild>
-                        <Button variant="destructive" onClick={onConfirm}>Удалить</Button>
+                        <Button variant="destructive" onClick={onConfirm}>{t('delete')}</Button>
                     </DialogClose>
                     <DialogClose asChild>
-                        <Button variant="outline">Отмена</Button>
+                        <Button variant="outline">{t('cancel')}</Button>
                     </DialogClose>
                 </DialogFooter>
             </DialogContent>

@@ -1,11 +1,12 @@
 import * as z from "zod";
+import {getLocalizedMessage} from "@/app/infrastructure/utils/localizerUtils.ts";
 
 export const LoginSchema = z.object({
     email: z.string().email({
-        message: "Invalid email address",
+        message: getLocalizedMessage('invalidEmailAddress')
     }),
     password: z.string().min(1, {
-        message: "Password is required",
+        message: getLocalizedMessage('fieldRequired')
     })
 })
 

@@ -12,11 +12,13 @@ import {login} from "@/app/infrastructure/services/auth/loginService.ts";
 import {GoogleSignInButton} from "@/app/components/auth/googleSignInButton.tsx";
 import {FacebookSignInButton} from "@/app/components/auth/facebookSignInButton.tsx";
 import {contextStore} from "@/app/infrastructure/stores/contextStore.ts";
-import {LoginSchema, TLoginSchema} from "@/app/infrastructure/zodSchemas/loginSchema.ts";
+import {useTranslation} from "react-i18next";
+import {LoginSchema, TLoginSchema} from "@/app/infrastructure/validationSchemas/loginSchema.ts";
 
 const Login = () => {
     const [error, setError] = useState<string | undefined>("");
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const methods = useForm<TLoginSchema>({
         resolver: zodResolver(LoginSchema),
@@ -48,13 +50,13 @@ const Login = () => {
 
             <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-md space-y-6 py-12">
                 <div className="space-y-2 text-center">
-                    <h1 className="text-3xl font-bold">Welcome</h1>
-                    <FormDescription>Sign up or log in to continue</FormDescription>
+                    <h1 className="text-3xl font-bold">{t('welcome')}</h1>
+                    <FormDescription>{t('signUpOrLogInToContinue')}</FormDescription>
                 </div>
                 <div className="space-y-4">
                     <div className="space-y-2">
                         <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel>{t('email')}</FormLabel>
                             <FormControl>
                                 <Input
                                     {...register("email")}
@@ -68,7 +70,7 @@ const Login = () => {
                     </div>
                     <div className="space-y-2">
                         <FormItem>
-                            <FormLabel>Password</FormLabel>
+                            <FormLabel>{t('password')}</FormLabel>
                             <FormControl>
                                 <Input
                                     {...register("password")}
@@ -88,7 +90,7 @@ const Login = () => {
                     </div>
                 </div>
                 <p className="mt-2 text-center text-sm text-gray-500">
-                    Do not have an account?
+                    {t('doNotHaveAccount')}
                     <span className="mr-1"></span>
                     <Link to="/auth/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                         Register

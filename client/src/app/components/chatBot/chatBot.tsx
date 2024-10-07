@@ -89,18 +89,18 @@ export const ChatBot = (props: Props) => {
                             <div className="flex items-center w-full space-x-2">
                                 <Input
                                     className="flex-1 rounded-full px-4 py-2"
-                                    placeholder="Write your message..."
+                                    placeholder={t('writeYourMessage')}
                                     type="text"
                                     {...register("message", { required: true })}
                                     disabled={isSubmitting}
                                 />
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? t('Sending...') : t('Send')}
+                                    {isSubmitting ? t('sending...') : t('send')}
                                 </Button>
                             </div>
                         </form>
                         {isSubmitting &&
-                            <div className="text-center mt-4">{t('Loading')}...</div>} {/* Show loading indicator */}
+                            <div className="text-center mt-4">{t('loading')}...</div>} {/* Show loading indicator */}
                     </div>
                 </div>
             </main>

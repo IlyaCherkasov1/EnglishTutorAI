@@ -3,10 +3,10 @@ import {useTranslation} from "react-i18next";
 import {Textarea} from "@/app/components/ui/textarea.tsx";
 import {addDocument} from "@/app/api/document/documentApi.ts";
 import {Button} from "@/app/components/ui/button.tsx";
-import {AdminPanelSchema, TAdminPanelSchema} from "@/app/infrastructure/zodSchemas/adminPanelSchema.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Input} from "@/app/components/ui/input.tsx";
 import {FormMessage} from "@/app/components/ui/form.tsx";
+import {AdminPanelSchema, TAdminPanelSchema} from "@/app/infrastructure/validationSchemas/adminPanelSchema.ts";
 
 type FormValues = {
     title: string;
@@ -34,7 +34,6 @@ export const AdminPanel = () => {
                 <Input
                     {...register("title")}
                     type="text"
-                    placeholder="Required"
                     className={`block w-1/5 p-2 border ${errors.title ? 'border-red-500' : 'border-gray-300'} rounded`}
                     disabled={isSubmitting}
                 />
@@ -47,7 +46,7 @@ export const AdminPanel = () => {
                 />
                 <FormMessage>{errors.content?.message}</FormMessage>
                 <Button disabled={isSubmitting} type="submit">
-                    {isSubmitting ? t('Submitting...') : t('Submit')}
+                    {isSubmitting ? t('submitting...') : t('submit')}
                 </Button>
 
                 {isSubmitting &&
