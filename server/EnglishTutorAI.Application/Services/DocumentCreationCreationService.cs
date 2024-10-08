@@ -12,16 +12,11 @@ public class DocumentCreationCreationService : IDocumentCreationService
 {
     private readonly IRepository<Document> _documentRepository;
     private readonly IAssistantClient _assistantClient;
-    private readonly string _assistantId;
 
-    public DocumentCreationCreationService(
-        IRepository<Document> documentRepository,
-        IAssistantClient assistantClient,
-        IOptionsMonitor<OpenAiConfig> openAiConfig)
+    public DocumentCreationCreationService(IRepository<Document> documentRepository, IAssistantClient assistantClient)
     {
         _documentRepository = documentRepository;
         _assistantClient = assistantClient;
-        _assistantId = openAiConfig.CurrentValue.EnglishTutorAssistantId!;
     }
 
     public async Task AddDocument(DocumentCreationRequest creationRequest)
@@ -30,7 +25,8 @@ public class DocumentCreationCreationService : IDocumentCreationService
         {
             Title = creationRequest.Title,
             Content = creationRequest.Content,
-            ThreadId = (await _assistantClient.CreateThread()).Id
+            StudyTopic = creationRequest.StudyTopic,
+            ThreadId = (await _assistantClient.CreateThread()).Id,
         };
 
         await _documentRepository.Add(document);
