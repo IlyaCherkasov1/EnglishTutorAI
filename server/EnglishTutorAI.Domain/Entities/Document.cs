@@ -1,4 +1,5 @@
-﻿using EnglishTutorAI.Domain.Interfaces;
+﻿using EnglishTutorAI.Domain.Enums;
+using EnglishTutorAI.Domain.Interfaces;
 
 namespace EnglishTutorAI.Domain.Entities;
 
@@ -13,4 +14,6 @@ public class Document : Entity, IHasCreatedAt
     public required string ThreadId { get; set; }
 
     public int CurrentLine { get; set; }
+
+    public required StudyTopic StudyTopic { get; init; }
 }

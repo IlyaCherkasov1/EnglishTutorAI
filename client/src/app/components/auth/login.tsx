@@ -47,7 +47,6 @@ const Login = () => {
 
     return (
         <FormProvider {...methods}>
-
             <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-md space-y-6 py-12">
                 <div className="space-y-2 text-center">
                     <h1 className="text-3xl font-bold">{t('welcome')}</h1>

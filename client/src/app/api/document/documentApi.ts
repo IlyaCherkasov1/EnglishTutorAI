@@ -8,7 +8,7 @@ import {httpGet, httpPost} from "@/app/infrastructure/requestApi.ts";
 
 const documentsResource = "document";
 
-export const addDocument = async (request: DocumentCreationRequest ) => {
+export const addDocument = async (request: DocumentCreationRequest) => {
     return httpPost({
         url: `${documentsResource}/add-document`,
         body: request,
