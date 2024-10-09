@@ -19,8 +19,8 @@ export const DocumentsList = (props: Props) => {
 
     return (
         <main>
-            <div className="bg-gray-100">
-                <ul className="divide-y divide-gray-200">
+            <div className="flex justify-center items-center">
+                <div className="grid grid-cols-3 gap-5 w-full m-5">
                     {documents.map(document => (
                         <DocumentListItemComponent
                             key={document.id}
@@ -28,7 +28,7 @@ export const DocumentsList = (props: Props) => {
                             onDelete={handleDeleteDocument}
                         />
                     ))}
-                </ul>
+                </div>
             </div>
         </main>
     );
