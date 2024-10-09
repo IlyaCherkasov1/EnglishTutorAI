@@ -10,7 +10,9 @@ public class ApplicationMappingProfile : Profile
     public ApplicationMappingProfile()
     {
         CreateMap<Document, DocumentResponse>();
-        CreateMap<Document, DocumentListItem>();
+        CreateMap<Document, DocumentListItem>()
+            .ForMember(d => d.StudyTopic, o => o.MapFrom(s => s.StudyTopic.ToString()));
+
         CreateMap<ChatMessage, ChatMessageResponse>();
         CreateMap<IdentityUser, IdentityUserResponse>();
     }

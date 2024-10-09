@@ -24,7 +24,7 @@ export const DeleteDocumentModal = ({ onConfirm }: Props) => {
             <DialogTrigger asChild>
                 <div className="h-6 w-6 flex items-center justify-center text-gray-400
                      hover:text-red-500 transition-colors duration-300" aria-label="delete">
-                    <Trash2 className="h-4 w-4"/>
+                    <Trash2 className="h-4 w-4 absolute top-2 right-2"/>
                 </div>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">

@@ -7,4 +7,8 @@ public class DocumentListItem
     public string? Title { get; set; }
 
     public DateTime CreatedAt { get; set; }
+
+    public required string Content { get; set; }
+
+    public required string StudyTopic { get; init; }
 }
