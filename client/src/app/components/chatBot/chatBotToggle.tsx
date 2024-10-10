@@ -18,13 +18,13 @@ const ChatBotToggle = (props: Props) => {
 
     return (
         <>
-            <div className="p-4 bg-white shadow fixed bottom-0 left-0 right-0">
+            {isChatBotVisible && <ChatBot threadId={props.threadId} />})
+            <footer className="fixed p-4 bottom-0 left-0 right-0 bg-white shadow">
                 <Button className="rounded-full px-4 py-2" onClick={handleButtonClick} variant="secondary">
                     <MessageCircle className="mr-2 h-5 w-5"/>
                     {t('askAI')}
                 </Button>
-            </div>
-            {isChatBotVisible && <ChatBot threadId={props.threadId} />})
+            </footer>
         </>
     )
 };

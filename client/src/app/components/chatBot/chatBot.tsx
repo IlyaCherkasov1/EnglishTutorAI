@@ -99,8 +99,6 @@ export const ChatBot = (props: Props) => {
                                 </Button>
                             </div>
                         </form>
-                        {isSubmitting &&
-                            <div className="text-center mt-4">{t('loading')}...</div>} {/* Show loading indicator */}
                     </div>
                 </div>
             </main>

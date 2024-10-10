@@ -1,5 +1,4 @@
 import {getDocumentDetails, splitDocumentContent} from "@/app/api/document/documentApi.ts";
-import BackButton from "@/app/components/buttons/backButton.tsx";
 import {DocumentDetail} from "@/app/components/document/documentDetail.tsx";
 import {useState} from "react";
 import {DocumentResponse} from "@/app/dataModels/document/documentResponse.ts";
@@ -24,9 +23,6 @@ const DocumentDetails = () => {
 
     return (
         <div className="flex flex-col h-screen">
-            <div className="p-4">
-                <BackButton />
-            </div>
             <DocumentDetail document={document} sentences={sentences} />
         </div>
     )
