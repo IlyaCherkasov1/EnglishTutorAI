@@ -32,11 +32,6 @@ public class Routes
         public const string SendMessage = "send-message";
     }
 
-    public static class UserRoute
-    {
-        public const string GetUser = "get-user";
-    }
-
     public static class Identity
     {
         public const string Register = "register";

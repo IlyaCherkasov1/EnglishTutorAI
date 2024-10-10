@@ -1,70 +1,74 @@
-﻿using System.Text.Json;
+﻿using System.ClientModel;
+using System.ClientModel.Primitives;
 using EnglishTutorAI.Application.Attributes;
 using EnglishTutorAI.Application.Configurations;
 using EnglishTutorAI.Application.Interfaces;
-using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Specifications;
-using EnglishTutorAI.Domain.Entities;
 using EnglishTutorAI.Domain.Enums;
 using Microsoft.Extensions.Options;
 using OpenAI;
 using OpenAI.Assistants;
-using OpenAI.Threads;
-using Message = OpenAI.Threads.Message;
+using ChatMessage = EnglishTutorAI.Domain.Entities.ChatMessage;
 
 namespace EnglishTutorAI.Application.Services;
 
 [ScopedDependency]
-public class AssistantClient : IAssistantClient
+public class AssistantClientService : IAssistantClientService
 {
-    private readonly OpenAIClient _api;
     private readonly IRepository<ChatMessage> _chatMessageRepository;
+    private readonly AssistantClient _assistantClient;
 
-    public AssistantClient(
+    public AssistantClientService(
         IOptionsMonitor<OpenAiConfig> openAiConfig,
         IHttpClientFactory httpClientFactory,
         IRepository<ChatMessage> chatMessageRepository)
     {
         _chatMessageRepository = chatMessageRepository;
         var customHttpClient = httpClientFactory.CreateClient();
-        _api = new OpenAIClient(openAiConfig.CurrentValue.Key, client: customHttpClient);
+        var options = new OpenAIClientOptions
+        {
+            Transport = new HttpClientPipelineTransport(customHttpClient)
+        };
+
+        _assistantClient = new AssistantClient(new ApiKeyCredential(openAiConfig.CurrentValue.Key!), options);
     }
 
-    public async Task<AssistantResponse> RetrieveAssistant(string assistantId)
+    public async Task<AssistantThread> CreateThread()
     {
-        var assistant = await _api.AssistantsEndpoint.RetrieveAssistantAsync(assistantId);
+        var clientResult = await _assistantClient.CreateThreadAsync();
 
-        return assistant;
-    }
-
-    public async Task<ThreadResponse> CreateThread()
-    {
-        var thread = await _api.ThreadsEndpoint.CreateThreadAsync();
-
-        return thread;
+        return clientResult.Value;
     }
 
     public async Task AddMessageToThread(string threadId, string content)
     {
-        var textMessage = new Message(content);
-        await _api.ThreadsEndpoint.CreateMessageAsync(threadId, textMessage);
+        await _assistantClient.CreateMessageAsync(threadId, MessageRole.User, [content]);
     }
 
-    public async Task<RunResponse> CreateRunRequest(string assistantId, string threadId)
+    public async Task CreateRunRequest(string assistantId, string threadId)
     {
-        var createRunRequest = new CreateRunRequest(assistantId);
-        var run = await _api.ThreadsEndpoint.CreateRunAsync(threadId, createRunRequest);
+        var run = await _assistantClient.CreateRunAsync(threadId, assistantId);
 
-        return await run.WaitForStatusChangeAsync();
+        do
+        {
+            Thread.Sleep(TimeSpan.FromSeconds(1));
+            run = await _assistantClient.GetRunAsync(threadId, run.Value.Id);
+        } while (!run.Value.Status.IsTerminal);
     }
 
-    public async Task<string> GenerateLastMessage(GenerateLastMessageModel model)
+    public async Task<string> GetLastMessage(string threadId)
     {
-        var messagesResponse = await model.Run.ListMessagesAsync();
-        var lastMessage = messagesResponse.Items.Last();
-        List<MessageContentResponse> response = JsonSerializer.Deserialize<List<MessageContentResponse>>(lastMessage.Content);
+        var messages = _assistantClient.GetMessagesAsync(threadId);
 
-        return response.First().Text.Value;
+        await foreach (var message in messages)
+        {
+            if (message.Content.Count > 0)
+            {
+                return message.Content[0].Text;
+            }
+        }
+
+        throw new InvalidOperationException("No messages available in the thread.");
     }
 
     public async Task<IReadOnlyList<ChatMessage>> GetAllMessages(string threadId, ChatType chatType)

@@ -9,7 +9,7 @@ public class ChatMessage : Entity, IHasCreatedAt
 
     public required string Content { get; init; }
 
-    public required DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
     public ChatType ChatType { get; init; }
 
