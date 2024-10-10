@@ -19,7 +19,6 @@ public class ChatMessageAddService : IChatMessageAddService
         var chatMessage = new ChatMessage
         {
             Content = model.Content,
-            CreatedAt = DateTime.UtcNow,
             ThreadId = model.ThreadId,
             ConversationRole = model.Role,
             ChatType = model.ChatType,

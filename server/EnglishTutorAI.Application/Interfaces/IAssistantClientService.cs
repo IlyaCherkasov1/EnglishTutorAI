@@ -2,16 +2,14 @@
 using EnglishTutorAI.Domain.Entities;
 using EnglishTutorAI.Domain.Enums;
 using OpenAI.Assistants;
-using OpenAI.Threads;
 
 namespace EnglishTutorAI.Application.Interfaces;
 
-public interface IAssistantClient
+public interface IAssistantClientService
 {
-    Task<AssistantResponse> RetrieveAssistant(string assistantId);
-    Task<ThreadResponse> CreateThread();
+    Task<AssistantThread> CreateThread();
     Task AddMessageToThread(string threadId, string content);
-    Task<RunResponse> CreateRunRequest(string assistantId, string threadId);
-    Task<string> GenerateLastMessage(GenerateLastMessageModel model);
+    Task CreateRunRequest(string assistantId, string threadId);
+    Task<string> GetLastMessage(string threadId);
     Task<IReadOnlyList<ChatMessage>> GetAllMessages(string threadId, ChatType chatType);
 }

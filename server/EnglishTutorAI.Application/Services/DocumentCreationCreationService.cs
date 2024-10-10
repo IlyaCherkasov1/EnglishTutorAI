@@ -11,12 +11,12 @@ namespace EnglishTutorAI.Application.Services;
 public class DocumentCreationCreationService : IDocumentCreationService
 {
     private readonly IRepository<Document> _documentRepository;
-    private readonly IAssistantClient _assistantClient;
+    private readonly IAssistantClientService _assistantClientService;
 
-    public DocumentCreationCreationService(IRepository<Document> documentRepository, IAssistantClient assistantClient)
+    public DocumentCreationCreationService(IRepository<Document> documentRepository, IAssistantClientService assistantClientService)
     {
         _documentRepository = documentRepository;
-        _assistantClient = assistantClient;
+        _assistantClientService = assistantClientService;
     }
 
     public async Task AddDocument(DocumentCreationRequest creationRequest)
@@ -26,7 +26,7 @@ public class DocumentCreationCreationService : IDocumentCreationService
             Title = creationRequest.Title,
             Content = creationRequest.Content,
             StudyTopic = creationRequest.StudyTopic,
-            ThreadId = (await _assistantClient.CreateThread()).Id,
+            ThreadId = (await _assistantClientService.CreateThread()).Id,
         };
 
         await _documentRepository.Add(document);
