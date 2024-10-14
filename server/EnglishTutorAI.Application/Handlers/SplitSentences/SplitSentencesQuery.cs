@@ -2,7 +2,7 @@
 
 namespace EnglishTutorAI.Application.Handlers.SplitSentences;
 
-public class SplitSentencesQuery : IRequest<List<string>>
+public class SplitSentencesQuery : IRequest<IEnumerable<string>>
 {
     public string Text { get; }
 

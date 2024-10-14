@@ -2,5 +2,5 @@
 
 public interface ISentenceSplitterService
 {
-    Task<List<string>> Split(string text);
+    Task<IEnumerable<string>> Split(string text);
 }

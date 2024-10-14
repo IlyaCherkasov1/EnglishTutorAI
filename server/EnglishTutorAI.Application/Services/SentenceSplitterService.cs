@@ -7,11 +7,11 @@ namespace EnglishTutorAI.Application.Services;
 [ScopedDependency]
 public class SentenceSplitterService : ISentenceSplitterService
 {
-    public Task<List<string>> Split(string text)
+    public Task<IEnumerable<string>> Split(string text)
     {
         var pattern = @"(?<=[.!?])\s+(?=[A-ZА-ЯЁ])";
         var matches = Regex.Split(text, pattern);
-        var sentences = matches.Select(match => match.Trim()).ToList();
+        var sentences = matches.Select(match => match.Trim());
 
         return Task.FromResult(sentences);
     }

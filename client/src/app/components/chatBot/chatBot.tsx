@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
-import {getConversationThread} from "@/app/api/document/documentApi.ts";
 import {ConversationRole} from "@/app/dataModels/enums/conversationRole.ts";
 import {sendMessage} from "@/app/api/languageModel/languageModelApi.ts";
 import {Bot} from "lucide-react";
@@ -8,10 +7,10 @@ import {Input} from "@/app/components/ui/input.tsx";
 import {Button} from "@/app/components/ui/button.tsx";
 import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
-import useAsyncEffect from "use-async-effect";
 
 interface Props {
     threadId: string;
+    chatMessageResponse: ChatMessageResponse[];
 }
 
 type Message = {
@@ -25,25 +24,19 @@ type FormValues = {
 
 export const ChatBot = (props: Props) => {
     const [messages, setMessages] = useState<Message[]>([]);
-    const [chatMessageResponse, setChatMessageResponse] = useState<ChatMessageResponse[]>();
     const { t } = useTranslation();
     const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm<FormValues>();
 
-    useAsyncEffect(async () => {
-        const response = await getConversationThread(props.threadId);
-        setChatMessageResponse(response);
-    }, [props.threadId]);
-
     useEffect(() => {
-        if (chatMessageResponse) {
-            const newMessages = chatMessageResponse.map((chatMessage) => ({
+        if (props.chatMessageResponse) {
+            const newMessages = props.chatMessageResponse.map((chatMessage) => ({
                 sender: chatMessage.conversationRole,
                 text: chatMessage.content,
             }));
 
             setMessages((prevMessages) => [...prevMessages, ...newMessages]);
         }
-    }, [chatMessageResponse]);
+    }, [props.chatMessageResponse]);
 
     const onSubmit = async (data: FormValues) => {
         const userMessage: Message = {
