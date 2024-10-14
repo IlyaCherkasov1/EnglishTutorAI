@@ -3,7 +3,7 @@ using MediatR;
 
 namespace EnglishTutorAI.Application.Handlers.SplitSentences;
 
-public class SplitSentencesQueryHandler : IRequestHandler<SplitSentencesQuery, List<string>>
+public class SplitSentencesQueryHandler : IRequestHandler<SplitSentencesQuery, IEnumerable<string>>
 {
     private readonly ISentenceSplitterService _sentenceSplitterService;
 
@@ -12,7 +12,7 @@ public class SplitSentencesQueryHandler : IRequestHandler<SplitSentencesQuery, L
         _sentenceSplitterService = sentenceSplitterService;
     }
 
-    public Task<List<string>> Handle(SplitSentencesQuery request, CancellationToken cancellationToken)
+    public Task<IEnumerable<string>> Handle(SplitSentencesQuery request, CancellationToken cancellationToken)
     {
         return _sentenceSplitterService.Split(request.Text);
     }

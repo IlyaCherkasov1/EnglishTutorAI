@@ -33,7 +33,7 @@ public class DocumentController : ControllerBase
     }
 
     [HttpGet(Routes.Document.GetDocument)]
-    public Task<IReadOnlyList<DocumentListItem>> Get()
+    public Task<IEnumerable<DocumentListItem>> Get()
     {
         return _mediator.Send(new GetDocumentsQuery());
     }
@@ -45,7 +45,7 @@ public class DocumentController : ControllerBase
     }
 
     [HttpPost(Routes.Document.SplitDocumentContent)]
-    public Task<List<string>> SplitDocumentContent(SplitDocumentContentRequest request)
+    public Task<IEnumerable<string>> SplitDocumentContent(SplitDocumentContentRequest request)
     {
         return _mediator.Send(new SplitSentencesQuery(request.Text!));
     }
@@ -57,7 +57,7 @@ public class DocumentController : ControllerBase
     }
 
     [HttpGet(Routes.Document.GetConversationThread)]
-    public Task<IReadOnlyList<ChatMessageResponse>> GetConversationThread(string threadId)
+    public Task<IEnumerable<ChatMessageResponse>> GetConversationThread(string threadId)
     {
         return _mediator.Send(new GetConversationThreadCommand(threadId));
     }

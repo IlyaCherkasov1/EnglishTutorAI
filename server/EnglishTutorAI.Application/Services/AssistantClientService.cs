@@ -1,9 +1,13 @@
 ﻿using System.ClientModel;
 using System.ClientModel.Primitives;
+using AutoMapper;
 using EnglishTutorAI.Application.Attributes;
 using EnglishTutorAI.Application.Configurations;
 using EnglishTutorAI.Application.Interfaces;
+using EnglishTutorAI.Application.Models;
+using EnglishTutorAI.Application.Models.Common;
 using EnglishTutorAI.Application.Specifications;
+using EnglishTutorAI.Application.Utils;
 using EnglishTutorAI.Domain.Enums;
 using Microsoft.Extensions.Options;
 using OpenAI;
@@ -71,18 +75,22 @@ public class AssistantClientService : IAssistantClientService
         throw new InvalidOperationException("No messages available in the thread.");
     }
 
-    public async Task<IReadOnlyList<ChatMessage>> GetAllMessages(string threadId, ChatType chatType)
+    public async Task<IEnumerable<ChatMessage>> GetAllMessages(string threadId)
     {
-        var messages = await _chatMessageRepository.List(new ChatMessagesByThreadIdSpecification(threadId, chatType));
+        var userMessages = await _chatMessageRepository.List(new ChatMessagesByThreadIdSpecification(
+            threadId, ConversationRole.User));
 
-        var userMessages = messages.Where(m => m.ConversationRole == ConversationRole.User).ToList();
-        var botMessages = messages.Where(m => m.ConversationRole == ConversationRole.Assistant).ToList();
+        var assistantMessages = await _chatMessageRepository.List(new ChatMessagesByThreadIdSpecification(
+            threadId, ConversationRole.Assistant));
+
+        if (userMessages.Count != assistantMessages.Count)
+        {
+            throw new InvalidOperationException("The number of user messages does not match the number of assistant messages.");
+        }
 
         var orderedMessages = userMessages
-            .Select((m, i) => new { Message = m, Index = i })
-            .SelectMany(x => new[] { x.Message, botMessages.ElementAtOrDefault(x.Index) })
-            .Where(m => m != null)
-            .ToList();
+            .Zip(assistantMessages, (userMsg, assistantMsg) => new[] { userMsg, assistantMsg })
+            .SelectMany(x => x);
 
         return orderedMessages;
     }

@@ -32,7 +32,7 @@ namespace EnglishTutorAI.Application.Services
             _textExtractionService = textExtractionService;
             _chatMessageAddService = chatMessageAddService;
             _messageGenerationService = messageGenerationService;
-            _assistantId = openAiConfig.CurrentValue.EnglishTutorAssistantId!;
+            _assistantId = openAiConfig.CurrentValue.EnglishFixerAssistantId!;
         }
 
         public async Task<(bool IsCorrected, string CorrectedText)> Correct(TextGenerationRequest request)

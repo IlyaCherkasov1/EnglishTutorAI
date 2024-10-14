@@ -5,7 +5,7 @@ using MediatR;
 
 namespace EnglishTutorAI.Application.Handlers.GetDocuments;
 
-public class GetDocumentsQueryHandler : IRequestHandler<GetDocumentsQuery, IReadOnlyList<DocumentListItem>>
+public class GetDocumentsQueryHandler : IRequestHandler<GetDocumentsQuery, IEnumerable<DocumentListItem>>
 {
     private readonly IDocumentRetrievalService _documentRetrievalService;
     private readonly IMapper _mapper;
@@ -16,10 +16,10 @@ public class GetDocumentsQueryHandler : IRequestHandler<GetDocumentsQuery, IRead
         _mapper = mapper;
     }
 
-    public async Task<IReadOnlyList<DocumentListItem>> Handle(GetDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<DocumentListItem>> Handle(GetDocumentsQuery request, CancellationToken cancellationToken)
     {
         var result = await _documentRetrievalService.GetAllDocuments();
 
-        return _mapper.Map<IReadOnlyList<DocumentListItem>>(result);
+        return _mapper.Map<IEnumerable<DocumentListItem>>(result);
     }
 }

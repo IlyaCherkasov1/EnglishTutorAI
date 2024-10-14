@@ -7,5 +7,5 @@ public interface IDocumentRetrievalService
 {
     Task<Document> GetDocumentById(Guid id);
 
-    Task<IReadOnlyList<Document>> GetAllDocuments();
+    Task<IEnumerable<Document>> GetAllDocuments();
 }

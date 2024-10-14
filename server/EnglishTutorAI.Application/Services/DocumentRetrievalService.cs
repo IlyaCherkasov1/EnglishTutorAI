@@ -20,7 +20,7 @@ public class DocumentRetrievalService : IDocumentRetrievalService
         return _documentRepository.GetById(id);
     }
 
-    public async Task<IReadOnlyList<Document>> GetAllDocuments()
+    public async Task<IEnumerable<Document>> GetAllDocuments()
     {
         return await _documentRepository.List(new DocumentListByCreatedAtSpecification());
     }
