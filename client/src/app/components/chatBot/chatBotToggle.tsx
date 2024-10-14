@@ -3,9 +3,11 @@ import {useState} from "react";
 import {Button} from "@/app/components/ui/button.tsx";
 import {MessageCircle} from "lucide-react";
 import {ChatBot} from "@/app/components/chatBot/chatBot.tsx";
+import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
 
 export interface Props {
     threadId: string;
+    chatMessageResponse: ChatMessageResponse[];
 }
 
 const ChatBotToggle = (props: Props) => {
@@ -18,7 +20,7 @@ const ChatBotToggle = (props: Props) => {
 
     return (
         <>
-            {isChatBotVisible && <ChatBot threadId={props.threadId} />})
+            {isChatBotVisible && <ChatBot chatMessageResponse={props.chatMessageResponse} threadId={props.threadId} />})
             <footer className="fixed p-4 bottom-0 left-0 right-0 bg-white shadow">
                 <Button className="rounded-full px-4 py-2" onClick={handleButtonClick} variant="secondary">
                     <MessageCircle className="mr-2 h-5 w-5"/>

@@ -1,7 +1,7 @@
 import {DocumentResponse} from "@/app/dataModels/document/documentResponse.ts";
 import {useMemo, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {saveCurrentLine} from "@/app/api/document/documentApi.ts";
+import {getConversationThread, saveCurrentLine} from "@/app/api/document/documentApi.ts";
 import {Button} from "@/app/components/ui/button.tsx";
 import {Textarea} from "@/app/components/ui/textarea.tsx";
 import DocumentCorrectionOutput from "@/app/components/document/documentCorrectionOutput.tsx";
@@ -11,6 +11,8 @@ import ChatBotToggle from "@/app/components/chatBot/chatBotToggle.tsx";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {FormMessage} from "@/app/components/ui/form.tsx";
 import {DocumentDetailsSchema, TDocumentDetailsSchema} from "@/app/infrastructure/validationSchemas/documentDetailsSchema.ts";
+import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
+import useAsyncEffect from "use-async-effect";
 
 interface Props {
     document: DocumentResponse;
@@ -23,7 +25,13 @@ export const DocumentDetail = (props: Props) => {
     const [translatedText, setTranslatedText] = useState('');
     const [isCorrected, setIsCorrected] = useState(false);
     const [isDisplayCorrectionOutput, setIsDisplayCorrectionOutput] = useState(false);
+    const [chatMessageResponse, setChatMessageResponse] = useState<ChatMessageResponse[]>([]);
     const { t } = useTranslation();
+
+    useAsyncEffect(async () => {
+        const response = await  getConversationThread(props.document.threadId);
+        setChatMessageResponse(response);
+    }, [props.document.threadId]);
 
     const methods = useForm<TDocumentDetailsSchema>({
         resolver: zodResolver(DocumentDetailsSchema),
@@ -113,7 +121,7 @@ export const DocumentDetail = (props: Props) => {
                         : null
                     }
                 </div>
-                <ChatBotToggle threadId={props.document.threadId} />
+                <ChatBotToggle chatMessageResponse={chatMessageResponse} threadId={props.document.threadId} />
             </div>
         </div>
     )
