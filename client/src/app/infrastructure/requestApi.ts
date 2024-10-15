@@ -2,6 +2,7 @@ import {EmptyObject} from "react-hook-form";
 import {clearAccessToken, getAccessToken} from "@/app/infrastructure/services/auth/accessTokenService.ts";
 import {isAccessTokenExpired, renewAccessTokenHandler} from "@/app/infrastructure/services/auth/identityService.ts";
 import {routeLinks} from "@/app/components/layout/routes/routeLink.ts";
+import {notifications} from "@/app/components/toast/toast.tsx";
 
 export type HttpRequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -24,6 +25,7 @@ export const apiRootUrl = import.meta.env.VITE_APP_API_URL;
 
 const headerNames = {
     authenticate: "www-authenticate",
+    exceptionTraceId: "X-Trace-Id",
 };
 
 const contentTypes = {
@@ -82,6 +84,10 @@ const handleSucceededResponse = async <TResult>(response: Response): Promise<TRe
 
 const handleFailedResponse = async <TResult>(response: Response): Promise<TResult> => {
     const handleHeaderStatus = await handleHeaders(response);
+
+    if (handleHeaderStatus === responseHandlingStatuses.unhandled) {
+        notifications.defaultError(response.headers.get(headerNames.exceptionTraceId));
+    }
 
     if (handleHeaderStatus === responseHandlingStatuses.unauthorized) {
         clearAccessToken();

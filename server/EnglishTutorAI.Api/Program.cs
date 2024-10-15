@@ -40,7 +40,8 @@ services.AddCors(options =>
         policyBuilder.WithOrigins(allowedOrigins)
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .AllowCredentials();
+            .AllowCredentials()
+            .WithExposedHeaders("X-Trace-Id");
     });
 });
 

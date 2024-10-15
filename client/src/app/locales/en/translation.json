@@ -62,5 +62,7 @@
     "Entertainment": "Entertainment"
   },
   "category": "Category",
-  "selectCategory": "Select category"
+  "selectCategory": "Select category",
+  "error": "Error",
+  "defaultRequestError": "Something went wrong. Please contact your administrator"
 }
