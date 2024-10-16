@@ -7,6 +7,8 @@ import {Input} from "@/app/components/ui/input.tsx";
 import {Button} from "@/app/components/ui/button.tsx";
 import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
+import {HubConnectionBuilder} from "@microsoft/signalr";
+import useAsyncEffect from "use-async-effect";
 
 interface Props {
     threadId: string;
@@ -14,8 +16,8 @@ interface Props {
 }
 
 type Message = {
-    sender: ConversationRole,
-    text: string,
+    sender: ConversationRole;
+    text: string;
 };
 
 type FormValues = {
@@ -24,8 +26,13 @@ type FormValues = {
 
 export const ChatBot = (props: Props) => {
     const [messages, setMessages] = useState<Message[]>([]);
+    const [assistantTypingMessage, setAssistantTypingMessage] = useState<string>("");
+    const [assistantTyping, setAssistantTyping] = useState<boolean>(false);
     const { t } = useTranslation();
     const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm<FormValues>();
+    const connection = new HubConnectionBuilder()
+        .withUrl('https://localhost:7008/assistantHub')
+        .build();
 
     useEffect(() => {
         if (props.chatMessageResponse) {
@@ -38,23 +45,42 @@ export const ChatBot = (props: Props) => {
         }
     }, [props.chatMessageResponse]);
 
+    useAsyncEffect(async () => {
+        await connection.start();
+        await connection.invoke('JoinChat', props.threadId);
+
+        connection.on('ReceiveMessage', (message: string) => {
+            setAssistantTyping(true);
+            setAssistantTypingMessage(prev => prev + message);
+        });
+
+
+        return () => {
+            connection.stop();
+        };
+    }, []);
+
     const onSubmit = async (data: FormValues) => {
         const userMessage: Message = {
             sender: ConversationRole.User,
             text: data.message,
         };
-        setMessages([...messages, userMessage]);
+
+        setMessages(prevMessages => [...prevMessages, userMessage]);
 
         const assistantResponse = await sendMessage({
             message: data.message,
             threadId: props.threadId,
         });
 
-        const botMessage: Message = {
+        const assistantMessage: Message = {
             sender: ConversationRole.Assistant,
             text: assistantResponse,
         };
-        setMessages(prevMessages => [...prevMessages, botMessage]);
+
+        setAssistantTyping(false);
+        setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+
         reset();
     };
 
@@ -75,6 +101,12 @@ export const ChatBot = (props: Props) => {
                                         <p className="text-sm">{message.text}</p>
                                     </div>
                                 ))}
+                                {assistantTyping && (
+                                    <div className='relative p-4 flex items-start ml-3'>
+                                        <Bot className="absolute -left-6 top-4 h-5 w-5 text-gray-500 animate-pulse" />
+                                        <p className="text-sm">{assistantTypingMessage}</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <form onSubmit={handleSubmit(onSubmit)}
@@ -96,5 +128,6 @@ export const ChatBot = (props: Props) => {
                 </div>
             </main>
         </div>
-    );
+    )
+        ;
 };

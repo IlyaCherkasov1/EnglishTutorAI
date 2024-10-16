@@ -1,14 +1,12 @@
 ﻿using System.ClientModel;
 using System.ClientModel.Primitives;
-using AutoMapper;
 using EnglishTutorAI.Application.Attributes;
 using EnglishTutorAI.Application.Configurations;
+using EnglishTutorAI.Application.Hubs;
 using EnglishTutorAI.Application.Interfaces;
-using EnglishTutorAI.Application.Models;
-using EnglishTutorAI.Application.Models.Common;
 using EnglishTutorAI.Application.Specifications;
-using EnglishTutorAI.Application.Utils;
 using EnglishTutorAI.Domain.Enums;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
 using OpenAI;
 using OpenAI.Assistants;
@@ -21,13 +19,16 @@ public class AssistantClientService : IAssistantClientService
 {
     private readonly IRepository<ChatMessage> _chatMessageRepository;
     private readonly AssistantClient _assistantClient;
+    private readonly IHubContext<AssistantHub> _assistantHubContext;
 
     public AssistantClientService(
         IOptionsMonitor<OpenAiConfig> openAiConfig,
         IHttpClientFactory httpClientFactory,
-        IRepository<ChatMessage> chatMessageRepository)
+        IRepository<ChatMessage> chatMessageRepository,
+        IHubContext<AssistantHub> assistantHubContext)
     {
         _chatMessageRepository = chatMessageRepository;
+        _assistantHubContext = assistantHubContext;
         var customHttpClient = httpClientFactory.CreateClient();
         var options = new OpenAIClientOptions
         {
@@ -51,13 +52,15 @@ public class AssistantClientService : IAssistantClientService
 
     public async Task CreateRunRequest(string assistantId, string threadId)
     {
-        var run = await _assistantClient.CreateRunAsync(threadId, assistantId);
+        var responseStream = _assistantClient.CreateRunStreamingAsync(threadId, assistantId);
 
-        do
+        await foreach (var streamedMessage in responseStream)
         {
-            Thread.Sleep(TimeSpan.FromSeconds(1));
-            run = await _assistantClient.GetRunAsync(threadId, run.Value.Id);
-        } while (!run.Value.Status.IsTerminal);
+            if (streamedMessage is MessageContentUpdate contentUpdate)
+            {
+                await _assistantHubContext.Clients.Group(threadId).SendAsync("ReceiveMessage", contentUpdate.Text);
+            }
+        }
     }
 
     public async Task<string> GetLastMessage(string threadId)

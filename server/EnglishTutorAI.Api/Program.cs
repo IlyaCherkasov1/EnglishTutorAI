@@ -2,6 +2,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using EnglishTutorAI.Api.Extensions;
 using EnglishTutorAI.Api.Middlewares;
+using EnglishTutorAI.Application.Hubs;
 using EnglishTutorAI.Domain.Entities;
 using EnglishTutorAI.Infrastructure;
 using EnglishTutorAI.Infrastructure.DependencyInjection;
@@ -31,6 +32,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 
 services.InstallServicesInAssembly(builder.Configuration);
 services.AddAuthorizationBuilder();
+services.AddSignalR();
 
 var allowedOrigins = configuration.GetSection("AllowedOrigins").Get<string[]>()!;
 services.AddCors(options =>
@@ -56,6 +58,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapHub<AssistantHub>("/assistantHub");
 
 if (app.Environment.IsDevelopment())
 {
