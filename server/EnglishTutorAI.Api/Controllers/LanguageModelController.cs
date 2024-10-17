@@ -23,11 +23,9 @@ public class LanguageModelController : ControllerBase
     }
 
     [HttpPost(Routes.Assistant.GenerateChatCompletion)]
-    public async Task<IActionResult> CorrectText(TextGenerationRequest request)
+    public async Task<TextCorrectionResult> CorrectText(TextGenerationRequest request)
     {
-        var (isCorrected, correctedText) = await _mediator.Send(new TextCorrectionCommand(request));
-
-        return Ok(new { IsCorrected = isCorrected, CorrectedText = correctedText });
+        return await _mediator.Send(new TextCorrectionCommand(request));
     }
 
     [HttpPost(Routes.Assistant.SendMessage)]

@@ -46,18 +46,18 @@ export const DocumentDetail = (props: Props) => {
     const onSubmit = async (data: { translatedText: string }) => {
         const { translatedText } = data;
 
-        const { isCorrected, correctedText } = await correctText({
+        const result = await correctText({
             originalText: props.sentences[currentLine],
             translatedText: translatedText,
             threadId: props.document.threadId,
         })
 
         setTranslatedText(translatedText);
-        setIsCorrected(isCorrected);
+        setIsCorrected(result.isCorrected);
         setIsDisplayCorrectionOutput(true);
 
-        if (isCorrected) {
-            setCorrectedText(correctedText);
+        if (result.isCorrected) {
+            setCorrectedText(result.correctedText);
         } else {
             await moveToNextLine();
         }
@@ -108,8 +108,6 @@ export const DocumentDetail = (props: Props) => {
                                     <div className="flex justify-end mt-2">
                                         <Button type="submit" disabled={isSubmitting}>{t('send')}</Button>
                                     </div>
-                                    {isSubmitting && <div
-                                        className="text-center mt-4">{t('loading')}...</div>}
                                 </form>
                             </FormProvider>
                         )}
