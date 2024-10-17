@@ -4,6 +4,7 @@ using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Models.TextGeneration;
 using EnglishTutorAI.Domain.Enums;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using OpenAI.Assistants;
 
@@ -18,31 +19,42 @@ namespace EnglishTutorAI.Application.Services
         private readonly ITextExtractionService _textExtractionService;
         private readonly IChatMessageAddService _chatMessageAddService;
         private readonly ITextCorrectionMessageGenerationService _messageGenerationService;
+        private readonly ISingleEntryCache _singleEntryCache;
 
         public TextCorrectionService(
             IAssistantClientService assistantClientService,
             IOptionsMonitor<OpenAiConfig> openAiConfig,
             ITextComparisonService textComparisonService,
             ITextExtractionService textExtractionService,
-             IChatMessageAddService chatMessageAddService,
-            ITextCorrectionMessageGenerationService messageGenerationService)
+            IChatMessageAddService chatMessageAddService,
+            ITextCorrectionMessageGenerationService messageGenerationService,
+            ISingleEntryCache singleEntryCache)
         {
             _assistantClientService = assistantClientService;
             _textComparisonService = textComparisonService;
             _textExtractionService = textExtractionService;
             _chatMessageAddService = chatMessageAddService;
             _messageGenerationService = messageGenerationService;
+            _singleEntryCache = singleEntryCache;
             _assistantId = openAiConfig.CurrentValue.EnglishFixerAssistantId!;
         }
 
-        public async Task<(bool IsCorrected, string CorrectedText)> Correct(TextGenerationRequest request)
+        public async Task<TextCorrectionResult> Correct(TextGenerationRequest request)
         {
-            await GenerateAndAddUserMessageAsync(request);
-            await _assistantClientService.CreateRunRequest(_assistantId, request.ThreadId);
-            var correctedText = await GenerateCorrectedMessageAsync(request.ThreadId, request.TranslatedText);
+            var correctedText = _singleEntryCache.Get(request.OriginalText);
+
+            if (correctedText == null)
+            {
+                await GenerateAndAddUserMessageAsync(request);
+                await _assistantClientService.CreateRunRequest(_assistantId, request.ThreadId);
+                correctedText = await GenerateCorrectedMessageAsync(request.ThreadId, request.TranslatedText);
+
+                _singleEntryCache.Set(request.OriginalText, correctedText);
+            }
+
             var isCorrected = _textComparisonService.HasTextChanged(request.TranslatedText, correctedText);
 
-            return (isCorrected, correctedText);
+            return new TextCorrectionResult(correctedText, isCorrected);
         }
 
         private async Task GenerateAndAddUserMessageAsync(TextGenerationRequest request)

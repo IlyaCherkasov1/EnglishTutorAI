@@ -33,6 +33,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 services.InstallServicesInAssembly(builder.Configuration);
 services.AddAuthorizationBuilder();
 services.AddSignalR();
+services.AddMemoryCache();
 
 var allowedOrigins = configuration.GetSection("AllowedOrigins").Get<string[]>()!;
 services.AddCors(options =>
