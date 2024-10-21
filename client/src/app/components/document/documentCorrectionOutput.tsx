@@ -2,7 +2,7 @@ import {useTranslation} from "react-i18next";
 import DiffComponent from "@/app/components/chatBot/diffComponent.tsx";
 
 interface Props {
-    originalText: string;
+    translatedText: string;
     correctedText: string;
     isCorrected: boolean;
 }
@@ -16,7 +16,7 @@ const DocumentCorrectionOutput = (props: Props) => {
                 {props.isCorrected ? (
                     <>
                         <h3 className="font-bold mb-2">{t('correctedText')}:</h3>
-                        <DiffComponent originalText={props.originalText} correctedText={props.correctedText} />
+                        <DiffComponent translatedText={props.translatedText} correctedText={props.correctedText} />
                     </>
                 ) : (
                     <h3 className="font-bold mb-2">{t('translationSuccessMessage')}</h3>

@@ -3,15 +3,15 @@ namespace EnglishTutorAI.Application.Models;
 
 public class DocumentResponse
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 
-    public string? Title { get; set; }
+    public required string Title { get; init; }
 
-    public string? Content { get; set; }
+    public required string Content { get; init; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; init; }
 
-    public string? ThreadId { get; set; }
+    public required string ThreadId { get; init; }
 
-    public int CurrentLine { get; set; }
+    public int CurrentLine { get; init; }
 }

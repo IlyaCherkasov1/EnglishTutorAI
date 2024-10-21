@@ -9,9 +9,9 @@ namespace EnglishTutorAI.Application.Services;
 public class DeleteDocumentService : IDeleteDocumentService
 {
     private readonly IRepository<Document> _documentRepository;
-    private readonly IRepository<ChatMessage> _chatMessageRepository;
+    private readonly IRepository<DialogMessage> _chatMessageRepository;
 
-    public DeleteDocumentService(IRepository<Document> documentRepository, IRepository<ChatMessage> chatRepository)
+    public DeleteDocumentService(IRepository<Document> documentRepository, IRepository<DialogMessage> chatRepository)
     {
         _documentRepository = documentRepository;
         _chatMessageRepository = chatRepository;
@@ -22,7 +22,7 @@ public class DeleteDocumentService : IDeleteDocumentService
         var document = await _documentRepository.GetById(documentId);
         _documentRepository.Delete(document);
 
-        var chatList = await _chatMessageRepository.List(new ChatMessageByThreadIdSpecification(document.ThreadId));
+        var chatList = await _chatMessageRepository.List(new DialogMessageByThreadIdSpecification(document.ThreadId));
         _chatMessageRepository.DeleteRange(chatList);
     }
 }

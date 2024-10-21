@@ -13,6 +13,10 @@ public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<Guid>, 
     }
 
     public DbSet<Document> Documents { get; set; }
-    public DbSet<ChatMessage> ChatMessages { get; set; }
+
+    public DbSet<DialogMessage> DialogMessages { get; set; }
+
     public DbSet<UserSession> UserSessions { get; set; }
+
+    public DbSet<LinguaFixMessage> LinguaFixMessages { get; set; }
 }

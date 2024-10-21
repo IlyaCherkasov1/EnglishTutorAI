@@ -16,4 +16,6 @@ public class Document : Entity, IHasCreatedAt
     public int CurrentLine { get; set; }
 
     public required StudyTopic StudyTopic { get; init; }
+
+    public ICollection<LinguaFixMessage> LinguaFixMessages { get; } =  new List<LinguaFixMessage>();
 }

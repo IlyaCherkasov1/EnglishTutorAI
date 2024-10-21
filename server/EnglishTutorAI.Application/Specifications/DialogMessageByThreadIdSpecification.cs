@@ -3,9 +3,9 @@ using EnglishTutorAI.Domain.Entities;
 
 namespace EnglishTutorAI.Application.Specifications;
 
-public class ChatMessageByThreadIdSpecification : Specification<ChatMessage>
+public class DialogMessageByThreadIdSpecification : Specification<DialogMessage>
 {
-    public ChatMessageByThreadIdSpecification(string threadId)
+    public DialogMessageByThreadIdSpecification(string threadId)
         : base(c => c.ThreadId == threadId)
     {
     }
