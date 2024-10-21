@@ -3,10 +3,9 @@ using EnglishTutorAI.Application.Configurations;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Models.TextGeneration;
+using EnglishTutorAI.Domain.Entities;
 using EnglishTutorAI.Domain.Enums;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using OpenAI.Assistants;
 
 namespace EnglishTutorAI.Application.Services
 {
@@ -17,25 +16,25 @@ namespace EnglishTutorAI.Application.Services
         private readonly IAssistantClientService _assistantClientService;
         private readonly ITextComparisonService _textComparisonService;
         private readonly ITextExtractionService _textExtractionService;
-        private readonly IChatMessageAddService _chatMessageAddService;
         private readonly ITextCorrectionMessageGenerationService _messageGenerationService;
         private readonly ISingleEntryCache _singleEntryCache;
+        private readonly IRepository<LinguaFixMessage> _linguaFixMessageRepository;
 
         public TextCorrectionService(
             IAssistantClientService assistantClientService,
             IOptionsMonitor<OpenAiConfig> openAiConfig,
             ITextComparisonService textComparisonService,
             ITextExtractionService textExtractionService,
-            IChatMessageAddService chatMessageAddService,
             ITextCorrectionMessageGenerationService messageGenerationService,
-            ISingleEntryCache singleEntryCache)
+            ISingleEntryCache singleEntryCache,
+            IRepository<LinguaFixMessage> linguaFixMessageRepository)
         {
             _assistantClientService = assistantClientService;
             _textComparisonService = textComparisonService;
             _textExtractionService = textExtractionService;
-            _chatMessageAddService = chatMessageAddService;
             _messageGenerationService = messageGenerationService;
             _singleEntryCache = singleEntryCache;
+            _linguaFixMessageRepository = linguaFixMessageRepository;
             _assistantId = openAiConfig.CurrentValue.EnglishFixerAssistantId!;
         }
 
@@ -47,11 +46,12 @@ namespace EnglishTutorAI.Application.Services
             {
                 await GenerateAndAddUserMessageAsync(request);
                 await _assistantClientService.CreateRunRequest(_assistantId, request.ThreadId);
-                correctedText = await GenerateCorrectedMessageAsync(request.ThreadId, request.TranslatedText);
+                correctedText = await GenerateCorrectedMessageAsync(request);
 
                 _singleEntryCache.Set(request.OriginalText, correctedText);
             }
 
+            await AddMessageToLinguaFixRepository(request, ConversationRole.User);
             var isCorrected = _textComparisonService.HasTextChanged(request.TranslatedText, correctedText);
 
             return new TextCorrectionResult(correctedText, isCorrected);
@@ -61,19 +61,26 @@ namespace EnglishTutorAI.Application.Services
         {
             var message = await _messageGenerationService.GenerateMessageAsync(request);
             await _assistantClientService.AddMessageToThread(request.ThreadId, message);
-            await _chatMessageAddService.Add(new AddChatMessageModel(
-                request.ThreadId, request.TranslatedText, ChatType.TextCorrection, ConversationRole.User));
         }
 
-        private async Task<string> GenerateCorrectedMessageAsync(string threadId, string originalText)
+        private async Task<string> GenerateCorrectedMessageAsync(TextGenerationRequest request)
         {
-            var correctedText = await _assistantClientService.GetLastMessage(threadId);
-            var cleanCorrectedText = _textExtractionService.ExtractCleanText(correctedText, originalText);
-
-            await _chatMessageAddService.Add(new AddChatMessageModel(
-                threadId, cleanCorrectedText, ChatType.TextCorrection, ConversationRole.Assistant));
+            var correctedText = await _assistantClientService.GetLastMessage(request.ThreadId);
+            var cleanCorrectedText = _textExtractionService.ExtractCleanText(correctedText, request.OriginalText);
+            await AddMessageToLinguaFixRepository(request, ConversationRole.Assistant);
 
             return cleanCorrectedText;
+        }
+
+        private async Task AddMessageToLinguaFixRepository(TextGenerationRequest request, ConversationRole role)
+        {
+            await _linguaFixMessageRepository.Add(new LinguaFixMessage
+            {
+                ThreadId = request.ThreadId,
+                Content = request.TranslatedText,
+                ConversationRole = role,
+                DocumentId = request.DocumentId,
+            });
         }
     }
 }

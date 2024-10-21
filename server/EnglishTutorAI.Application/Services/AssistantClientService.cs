@@ -5,30 +5,30 @@ using EnglishTutorAI.Application.Configurations;
 using EnglishTutorAI.Application.Hubs;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Specifications;
+using EnglishTutorAI.Domain.Entities;
 using EnglishTutorAI.Domain.Enums;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
 using OpenAI;
 using OpenAI.Assistants;
-using ChatMessage = EnglishTutorAI.Domain.Entities.ChatMessage;
 
 namespace EnglishTutorAI.Application.Services;
 
 [ScopedDependency]
 public class AssistantClientService : IAssistantClientService
 {
-    private readonly IRepository<ChatMessage> _chatMessageRepository;
+    private readonly IRepository<DialogMessage> _dialogMessageRepository;
     private readonly AssistantClient _assistantClient;
     private readonly IHubContext<AssistantHub> _assistantHubContext;
 
     public AssistantClientService(
         IOptionsMonitor<OpenAiConfig> openAiConfig,
         IHttpClientFactory httpClientFactory,
-        IRepository<ChatMessage> chatMessageRepository,
-        IHubContext<AssistantHub> assistantHubContext)
+        IHubContext<AssistantHub> assistantHubContext,
+        IRepository<DialogMessage> dialogMessageRepository)
     {
-        _chatMessageRepository = chatMessageRepository;
         _assistantHubContext = assistantHubContext;
+        _dialogMessageRepository = dialogMessageRepository;
         var customHttpClient = httpClientFactory.CreateClient();
         var options = new OpenAIClientOptions
         {
@@ -78,12 +78,12 @@ public class AssistantClientService : IAssistantClientService
         throw new InvalidOperationException("No messages available in the thread.");
     }
 
-    public async Task<IEnumerable<ChatMessage>> GetAllMessages(string threadId)
+    public async Task<IEnumerable<DialogMessage>> GetAllMessages(string threadId)
     {
-        var userMessages = await _chatMessageRepository.List(new ChatMessagesByThreadIdSpecification(
+        var userMessages = await _dialogMessageRepository.List(new DialogMessagesByThreadIdSpecification(
             threadId, ConversationRole.User));
 
-        var assistantMessages = await _chatMessageRepository.List(new ChatMessagesByThreadIdSpecification(
+        var assistantMessages = await _dialogMessageRepository.List(new DialogMessagesByThreadIdSpecification(
             threadId, ConversationRole.Assistant));
 
         if (userMessages.Count != assistantMessages.Count)

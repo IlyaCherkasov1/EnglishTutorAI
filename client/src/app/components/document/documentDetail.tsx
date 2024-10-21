@@ -20,12 +20,12 @@ interface Props {
 }
 
 export const DocumentDetail = (props: Props) => {
-    const [currentLine, setCurrentLine] = useState(props.document.currentLine || 0);
+    const [currentLine, setCurrentLine] = useState(props.document.currentLine);
     const [correctedText, setCorrectedText] = useState('');
     const [translatedText, setTranslatedText] = useState('');
-    const [isCorrected, setIsCorrected] = useState(false);
-    const [isDisplayCorrectionOutput, setIsDisplayCorrectionOutput] = useState(false);
     const [chatMessageResponse, setChatMessageResponse] = useState<ChatMessageResponse[]>([]);
+    const [isCorrected, setIsCorrected] = useState(false);
+
     const { t } = useTranslation();
 
     useAsyncEffect(async () => {
@@ -50,11 +50,11 @@ export const DocumentDetail = (props: Props) => {
             originalText: props.sentences[currentLine],
             translatedText: translatedText,
             threadId: props.document.threadId,
+            documentId: props.document.id,
         })
 
         setTranslatedText(translatedText);
         setIsCorrected(result.isCorrected);
-        setIsDisplayCorrectionOutput(true);
 
         if (result.isCorrected) {
             setCorrectedText(result.correctedText);
@@ -67,10 +67,6 @@ export const DocumentDetail = (props: Props) => {
         setCurrentLine((prevLine) => prevLine + 1);
         await saveCurrentLine({ currentLine: currentLine + 1, documentId: props.document.id });
         reset();
-
-        if (currentLine >= props.sentences.length - 1) {
-            setIsDisplayCorrectionOutput(false);
-        }
     };
 
     const handleStartAgain = async () => {
@@ -111,11 +107,12 @@ export const DocumentDetail = (props: Props) => {
                                 </form>
                             </FormProvider>
                         )}
-                    {isDisplayCorrectionOutput ?
+                    {translatedText ?
                         <DocumentCorrectionOutput
-                            originalText={translatedText}
+                            translatedText={translatedText}
                             correctedText={correctedText}
-                            isCorrected={isCorrected} />
+                            isCorrected={isCorrected}
+                        />
                         : null
                     }
                 </div>

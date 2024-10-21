@@ -13,7 +13,7 @@ public class ApplicationMappingProfile : Profile
         CreateMap<Document, DocumentListItem>()
             .ForMember(d => d.StudyTopic, o => o.MapFrom(s => s.StudyTopic.ToString()));
 
-        CreateMap<ChatMessage, ChatMessageResponse>();
+        CreateMap<DialogMessage, ChatMessageResponse>();
         CreateMap<IdentityUser, IdentityUserResponse>();
     }
 }

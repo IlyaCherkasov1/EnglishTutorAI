@@ -2,12 +2,12 @@ import React from 'react';
 import * as Diff from 'diff';
 
 interface DiffComponentProps {
-    originalText: string;
+    translatedText: string;
     correctedText: string;
 }
 
-const DiffComponent: React.FC<DiffComponentProps> = ({ originalText, correctedText }) => {
-    const diff = Diff.diffWords(originalText, correctedText);
+const DiffComponent: React.FC<DiffComponentProps> = ({ translatedText, correctedText }) => {
+    const diff = Diff.diffWords(translatedText, correctedText);
 
     return (
         <div>

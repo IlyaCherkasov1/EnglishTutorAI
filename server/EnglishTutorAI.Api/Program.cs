@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Extensions;
 using EnglishTutorAI.Api.Middlewares;
 using EnglishTutorAI.Application.Hubs;
@@ -44,7 +45,7 @@ services.AddCors(options =>
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials()
-            .WithExposedHeaders("X-Trace-Id");
+            .WithExposedHeaders(CustomHeaders.ExceptionTraceId);
     });
 });
 
