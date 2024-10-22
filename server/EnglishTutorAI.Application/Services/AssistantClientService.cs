@@ -52,13 +52,24 @@ public class AssistantClientService : IAssistantClientService
 
     public async Task CreateRunRequest(string assistantId, string threadId)
     {
+        var run = await _assistantClient.CreateRunAsync(threadId, assistantId);
+
+        do
+        {
+            Thread.Sleep(TimeSpan.FromSeconds(1));
+            run = await _assistantClient.GetRunAsync(threadId, run.Value.Id);
+        } while (!run.Value.Status.IsTerminal);
+    }
+
+    public async Task CreateRunRequestWithStreaming(string assistantId, string threadId, string groupId)
+    {
         var responseStream = _assistantClient.CreateRunStreamingAsync(threadId, assistantId);
 
         await foreach (var streamedMessage in responseStream)
         {
             if (streamedMessage is MessageContentUpdate contentUpdate)
             {
-                await _assistantHubContext.Clients.Group(threadId).SendAsync("ReceiveMessage", contentUpdate.Text);
+                await _assistantHubContext.Clients.Group(groupId).SendAsync("ReceiveMessage", contentUpdate.Text);
             }
         }
     }
@@ -88,7 +99,8 @@ public class AssistantClientService : IAssistantClientService
 
         if (userMessages.Count != assistantMessages.Count)
         {
-            throw new InvalidOperationException("The number of user messages does not match the number of assistant messages.");
+            throw new InvalidOperationException(
+                "The number of user messages does not match the number of assistant messages.");
         }
 
         var orderedMessages = userMessages

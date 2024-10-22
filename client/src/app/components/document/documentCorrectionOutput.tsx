@@ -1,10 +1,13 @@
 import {useTranslation} from "react-i18next";
 import DiffComponent from "@/app/components/chatBot/diffComponent.tsx";
+import {ExplanationCard} from "@/app/components/chatBot/explanationCard.tsx";
 
 interface Props {
     translatedText: string;
     correctedText: string;
     isCorrected: boolean;
+    threadId: string;
+    currentLine: number;
 }
 
 const DocumentCorrectionOutput = (props: Props) => {
@@ -22,6 +25,14 @@ const DocumentCorrectionOutput = (props: Props) => {
                     <h3 className="font-bold mb-2">{t('translationSuccessMessage')}</h3>
                 )}
             </div>
+            {props.isCorrected && (
+                <div className="mt-4">
+                    <ExplanationCard
+                        threadId={props.threadId}
+                        currentLine={props.currentLine}
+                        isCorrected={props.isCorrected} />
+                </div>
+            )}
         </div>
     );
 };

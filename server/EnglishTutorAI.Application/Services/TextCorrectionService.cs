@@ -47,7 +47,6 @@ namespace EnglishTutorAI.Application.Services
                 await GenerateAndAddUserMessageAsync(request);
                 await _assistantClientService.CreateRunRequest(_assistantId, request.ThreadId);
                 correctedText = await GenerateCorrectedMessageAsync(request);
-
                 _singleEntryCache.Set(request.OriginalText, correctedText);
             }
 

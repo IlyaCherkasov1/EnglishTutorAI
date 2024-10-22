@@ -18,7 +18,7 @@ public class SendMessageToAssistantCommandHandler : IRequestHandler<SendMessageT
 
     public async Task<string> Handle(SendMessageToAssistantCommand request, CancellationToken cancellationToken)
     {
-        var result = await _sendAssistantMessageService.SendMessageAndRun(request.SendMessageRequest);
+        var result = await _sendAssistantMessageService.SendMessage(request.SendMessageRequest);
         await _unitOfWork.Commit();
 
         return result;

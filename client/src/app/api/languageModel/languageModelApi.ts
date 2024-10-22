@@ -19,3 +19,10 @@ export const sendMessage = async (request: SendMessageRequest): Promise<string> 
         body: request,
     })
 }
+
+export const sendMessageWithSave = async (request: SendMessageRequest): Promise<string> => {
+    return httpPost({
+        url: `${resources}/send-message-with-save`,
+        body: request,
+    })
+}

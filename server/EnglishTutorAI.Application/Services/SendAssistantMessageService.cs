@@ -25,20 +25,25 @@ public class SendAssistantMessageService : ISendAssistantMessageService
         _assistantId = openAiConfig.CurrentValue.EnglishTutorAssistantId!;
     }
 
-    public async Task<string> SendMessageAndRun(SendMessageRequest request)
-    {
-        await SendMessage(request);
-        await _assistantClientService.CreateRunRequest(_assistantId, request.ThreadId);
-        var response = await _assistantClientService.GetLastMessage(request.ThreadId);
-        await AddMessageToDialogRepository(request.ThreadId, response, ConversationRole.Assistant);
+    public Task<string> SendMessage(SendMessageRequest request) =>
+        SendMessageInternal(request);
 
-        return response;
-    }
+    public Task<string> SendMessageAndSaveToTheRepository(SendMessageRequest request) =>
+        SendMessageInternal(request, saveToRepository: true);
 
-    private async Task SendMessage(SendMessageRequest request)
+    private async Task<string> SendMessageInternal(SendMessageRequest request, bool saveToRepository = false)
     {
         await _assistantClientService.AddMessageToThread(request.ThreadId, request.Message);
-        await AddMessageToDialogRepository(request.ThreadId, request.Message, ConversationRole.User);
+        await _assistantClientService.CreateRunRequestWithStreaming(_assistantId, request.ThreadId, request.GroupId);
+        var response = await _assistantClientService.GetLastMessage(request.ThreadId);
+
+        if (saveToRepository)
+        {
+            await AddMessageToDialogRepository(request.ThreadId, request.Message, ConversationRole.User);
+            await AddMessageToDialogRepository(request.ThreadId, response, ConversationRole.Assistant);
+        }
+
+        return response;
     }
 
     private async Task AddMessageToDialogRepository(string threadId, string content, ConversationRole role)

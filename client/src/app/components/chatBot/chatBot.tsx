@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
 import {ConversationRole} from "@/app/dataModels/enums/conversationRole.ts";
-import {sendMessage} from "@/app/api/languageModel/languageModelApi.ts";
+import {sendMessageWithSave} from "@/app/api/languageModel/languageModelApi.ts";
 import {Bot} from "lucide-react";
 import {Input} from "@/app/components/ui/input.tsx";
 import {Button} from "@/app/components/ui/button.tsx";
@@ -9,6 +9,7 @@ import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
 import {HubConnectionBuilder} from "@microsoft/signalr";
 import useAsyncEffect from "use-async-effect";
+import Markdown from "react-markdown";
 
 interface Props {
     threadId: string;
@@ -68,9 +69,10 @@ export const ChatBot = (props: Props) => {
 
         setMessages(prevMessages => [...prevMessages, userMessage]);
 
-        const assistantResponse = await sendMessage({
+        const assistantResponse = await sendMessageWithSave({
             message: data.message,
             threadId: props.threadId,
+            groupId: props.threadId,
         });
 
         const assistantMessage: Message = {
@@ -98,13 +100,13 @@ export const ChatBot = (props: Props) => {
                                                  ? 'ml-3' : 'self-end bg-gray-100 rounded-3xl'}`}>
                                         {message.sender === ConversationRole.Assistant &&
                                             <Bot className="absolute -left-6 top-4 h-5 w-5 text-gray-500" />}
-                                        <p className="text-sm">{message.text}</p>
+                                        <Markdown className="text-sm">{message.text}</Markdown>
                                     </div>
                                 ))}
                                 {assistantTyping && (
                                     <div className='relative p-4 flex items-start ml-3'>
                                         <Bot className="absolute -left-6 top-4 h-5 w-5 text-gray-500 animate-pulse" />
-                                        <p className="text-sm">{assistantTypingMessage}</p>
+                                        <Markdown className="text-sm">{assistantTypingMessage}</Markdown>
                                     </div>
                                 )}
                             </div>

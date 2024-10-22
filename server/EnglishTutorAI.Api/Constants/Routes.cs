@@ -30,6 +30,7 @@ public class Routes
     {
         public const string GenerateChatCompletion = "correct-text";
         public const string SendMessage = "send-message";
+        public const string SendMessageWithSave = "send-message-with-save";
     }
 
     public static class Identity

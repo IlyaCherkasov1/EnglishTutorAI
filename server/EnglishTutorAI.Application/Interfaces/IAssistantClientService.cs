@@ -11,6 +11,7 @@ public interface IAssistantClientService
     Task<AssistantThread> CreateThread();
     Task AddMessageToThread(string threadId, string content);
     Task CreateRunRequest(string assistantId, string threadId);
+    Task CreateRunRequestWithStreaming(string assistantId, string threadId, string groupId);
     Task<string> GetLastMessage(string threadId);
     Task<IEnumerable<DialogMessage>> GetAllMessages(string threadId);
 }

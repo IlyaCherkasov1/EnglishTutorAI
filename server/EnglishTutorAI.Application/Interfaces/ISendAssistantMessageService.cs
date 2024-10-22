@@ -4,5 +4,7 @@ namespace EnglishTutorAI.Application.Interfaces;
 
 public interface ISendAssistantMessageService
 {
-    public Task<string> SendMessageAndRun(SendMessageRequest request);
+    Task<string> SendMessageAndSaveToTheRepository(SendMessageRequest request);
+
+    Task<string> SendMessage(SendMessageRequest request);
 }
