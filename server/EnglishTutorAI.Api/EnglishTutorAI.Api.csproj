@@ -25,11 +25,4 @@
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="OpenAI-DotNet">
-        <HintPath>..\EnglishTutorAI.Application\libs\OpenAI-DotNet.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
 </Project>

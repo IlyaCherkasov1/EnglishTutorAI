@@ -34,7 +34,7 @@ public class ExternalAuthController : ControllerBase
 
         if (!result.IsSucceeded)
         {
-            return StatusCode(401, new { message = string.Join(", ", result.Errors) });
+            return StatusCode(401, new { message = string.Join(", ", result.Errors!) });
         }
 
         return Redirect(returnUrl);
