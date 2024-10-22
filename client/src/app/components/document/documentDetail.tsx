@@ -10,7 +10,10 @@ import {correctText} from "@/app/api/languageModel/languageModelApi.ts";
 import ChatBotToggle from "@/app/components/chatBot/chatBotToggle.tsx";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {FormMessage} from "@/app/components/ui/form.tsx";
-import {DocumentDetailsSchema, TDocumentDetailsSchema} from "@/app/infrastructure/validationSchemas/documentDetailsSchema.ts";
+import {
+    DocumentDetailsSchema,
+    TDocumentDetailsSchema
+} from "@/app/infrastructure/validationSchemas/documentDetailsSchema.ts";
 import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
 import useAsyncEffect from "use-async-effect";
 
@@ -29,7 +32,7 @@ export const DocumentDetail = (props: Props) => {
     const { t } = useTranslation();
 
     useAsyncEffect(async () => {
-        const response = await  getConversationThread(props.document.threadId);
+        const response = await getConversationThread(props.document.threadId);
         setChatMessageResponse(response);
     }, [props.document.threadId]);
 
@@ -72,6 +75,7 @@ export const DocumentDetail = (props: Props) => {
     const handleStartAgain = async () => {
         await saveCurrentLine({ currentLine: 0, documentId: props.document.id });
         setCurrentLine(0);
+        setTranslatedText('');
     }
 
     return (
@@ -89,11 +93,11 @@ export const DocumentDetail = (props: Props) => {
                         ))}
                     </div>
                     {isDocumentFinished ? (
-                            <div className="flex justify-end mt-2">
-                                <Button onClick={handleStartAgain}>{t('startAgain')}</Button>
-                            </div>
-                        ) :
-                        (
+                        <div className="flex justify-end mt-2">
+                            <Button onClick={handleStartAgain}>{t('startAgain')}</Button>
+                        </div>
+                    ) : (
+                        <>
                             <FormProvider {...methods}>
                                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mb-4">
                                     <Textarea
@@ -106,15 +110,17 @@ export const DocumentDetail = (props: Props) => {
                                     </div>
                                 </form>
                             </FormProvider>
-                        )}
-                    {translatedText ?
-                        <DocumentCorrectionOutput
-                            translatedText={translatedText}
-                            correctedText={correctedText}
-                            isCorrected={isCorrected}
-                        />
-                        : null
-                    }
+                            {translatedText.length > 0 &&
+                                <DocumentCorrectionOutput
+                                    translatedText={translatedText}
+                                    correctedText={correctedText}
+                                    isCorrected={isCorrected}
+                                    threadId={props.document.threadId}
+                                    currentLine={currentLine}
+                                />
+                            }
+                        </>
+                    )}
                 </div>
                 <ChatBotToggle chatMessageResponse={chatMessageResponse} threadId={props.document.threadId} />
             </div>

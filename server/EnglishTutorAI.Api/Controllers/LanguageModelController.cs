@@ -2,6 +2,7 @@
 using EnglishTutorAI.Api.Controllers.Attributes;
 using EnglishTutorAI.Application.Handlers.GenerateSentences;
 using EnglishTutorAI.Application.Handlers.SendMessageToAssistant;
+using EnglishTutorAI.Application.Handlers.SendMessageToAssistantWithSave;
 using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Models.TextGeneration;
 using MediatR;
@@ -32,5 +33,11 @@ public class LanguageModelController : ControllerBase
     public async Task<string> SendMessage(SendMessageRequest request)
     {
         return await _mediator.Send(new SendMessageToAssistantCommand(request));
+    }
+
+    [HttpPost(Routes.Assistant.SendMessageWithSave)]
+    public async Task<string> SendMessageWithSave(SendMessageRequest request)
+    {
+        return await _mediator.Send(new SendMessageToAssistantWithSaveCommand(request));
     }
 }

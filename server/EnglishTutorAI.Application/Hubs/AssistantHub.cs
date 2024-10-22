@@ -8,4 +8,9 @@ public class AssistantHub : Hub
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, threadId);
     }
+
+    public async Task JoinExplanationChat(string threadId)
+    {
+        await Groups.AddToGroupAsync(Context.ConnectionId, $"{threadId}-Explanation");
+    }
 }
