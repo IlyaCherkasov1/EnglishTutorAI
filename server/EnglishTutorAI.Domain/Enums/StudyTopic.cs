@@ -2,12 +2,13 @@
 
 public enum StudyTopic
 {
+    None,
     Other,
     Travel,
-    WorkAndCareers,
+    Work,
     Education,
-    HealthAndFitness,
-    FoodAndCooking,
+    Health,
+    Food,
     Technology,
     Environment,
     Sports,

@@ -4,6 +4,7 @@ import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/app/compon
 import {formatDateToISO} from "@/app/infrastructure/helpers/dateHelpers.ts";
 import {DeleteDocumentModal} from "@/app/components/modals/deleteDocumentModal.tsx";
 import {Link} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 interface Props {
     document: DocumentListItem;
@@ -11,6 +12,8 @@ interface Props {
 }
 
 export const DocumentListItemComponent = ({ document, onDelete }: Props) => {
+    const { t } = useTranslation();
+
     const handleDelete = async (documentId: string) => {
         await deleteDocument(documentId);
         onDelete(documentId);
@@ -32,7 +35,7 @@ export const DocumentListItemComponent = ({ document, onDelete }: Props) => {
                     </p>
                     <div className="flex mt-6">
                         <p className="text-sm bg-gray-200 px-2 py-1 rounded-full">
-                            {document.studyTopic}
+                            {t(`studyTopics.${document.studyTopic}`)}
                         </p>
                     </div>
                 </CardContent>

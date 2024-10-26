@@ -51,10 +51,10 @@
   "studyTopics": {
     "Other": "Other",
     "Travel": "Travel",
-    "WorkAndCareers": "Work and Careers",
+    "Work": "Work",
     "Education": "Education",
-    "HealthAndFitness": "Health and Fitness",
-    "FoodAndCooking": "Food and Cooking",
+    "Health": "Health",
+    "Food": "Food",
     "Technology": "Technology",
     "Environment": "Environment",
     "Sports": "Sports",
@@ -65,5 +65,7 @@
   "selectCategory": "Select category",
   "error": "Error",
   "defaultRequestError": "Something went wrong. Please contact your administrator",
-  "Explanation": "Explanation"
+  "explanation": "Explanation",
+  "noDocumentsAvailable": "There are no documents available",
+  "clearAllFilters": "Clear all filters"
 }
