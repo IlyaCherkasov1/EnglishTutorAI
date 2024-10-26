@@ -11,11 +11,12 @@ internal static class SpecificationQueryHelper<T> where T : Entity
         var query = ApplyCriteria(inputQuery, specification);
         query = ApplyIncludes(query, specification);
         query = ApplyOrdering(query, specification);
+        query = ApplyPaging(query, specification);
 
         return query;
     }
 
-    private static IQueryable<T> ApplyCriteria(IQueryable<T> query, ISpecification<T> specification)
+    public static IQueryable<T> ApplyCriteria(IQueryable<T> query, ISpecification<T> specification)
     {
         if (specification.Criteria != null)
         {
@@ -59,5 +60,26 @@ internal static class SpecificationQueryHelper<T> where T : Entity
         query = orderedQuery ?? query;
 
         return query;
+    }
+
+    private static IQueryable<T> ApplyPaging(IQueryable<T> query, ISpecification<T> specification)
+    {
+        if (specification.IsPagingEnabled)
+        {
+            query = query.Skip(specification.Skip)
+                .Take(specification.Take);
+        }
+
+        return query;
+    }
+
+    public static IQueryable<TResult> BuildDataTransformQuery<TResult>(
+        IQueryable<T> inputQuery,
+        IDataTransformSpecification<T, TResult> dataTransformSpecification)
+    {
+        var query = BuildQuery(inputQuery, dataTransformSpecification);
+        var transformQuery = query.Select(dataTransformSpecification.Selector);
+
+        return transformQuery;
     }
 }

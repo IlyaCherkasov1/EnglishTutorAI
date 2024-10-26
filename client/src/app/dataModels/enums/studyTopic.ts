@@ -1,10 +1,10 @@
 export enum StudyTopic {
     Other,
     Travel,
-    WorkAndCareers,
+    Work,
     Education,
-    HealthAndFitness,
-    FoodAndCooking,
+    Health,
+    Food,
     Technology,
     Environment,
     Sports,

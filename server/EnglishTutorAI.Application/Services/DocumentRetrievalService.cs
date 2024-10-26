@@ -1,6 +1,5 @@
 ﻿using EnglishTutorAI.Application.Attributes;
 using EnglishTutorAI.Application.Interfaces;
-using EnglishTutorAI.Application.Specifications;
 using EnglishTutorAI.Domain.Entities;
 
 namespace EnglishTutorAI.Application.Services;
@@ -18,10 +17,5 @@ public class DocumentRetrievalService : IDocumentRetrievalService
     public Task<Document> GetDocumentById(Guid id)
     {
         return _documentRepository.GetById(id);
-    }
-
-    public async Task<IEnumerable<Document>> GetAllDocuments()
-    {
-        return await _documentRepository.List(new DocumentListByCreatedAtSpecification());
     }
 }

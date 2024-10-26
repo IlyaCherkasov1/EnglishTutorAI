@@ -8,6 +8,8 @@ using EnglishTutorAI.Application.Handlers.GetDocuments;
 using EnglishTutorAI.Application.Handlers.SaveProgress;
 using EnglishTutorAI.Application.Handlers.SplitSentences;
 using EnglishTutorAI.Application.Models;
+using EnglishTutorAI.Application.Models.Common;
+using EnglishTutorAI.Application.Models.Documents;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,9 +35,9 @@ public class DocumentController : ControllerBase
     }
 
     [HttpGet(Routes.Document.GetDocument)]
-    public Task<IEnumerable<DocumentListItem>> Get()
+    public Task<SearchResult<DocumentListItem>> Get([FromQuery]DocumentsSearchModel model)
     {
-        return _mediator.Send(new GetDocumentsQuery());
+        return _mediator.Send(new GetDocumentsQuery(model));
     }
 
     [HttpGet(Routes.Document.GetDocumentDetails)]

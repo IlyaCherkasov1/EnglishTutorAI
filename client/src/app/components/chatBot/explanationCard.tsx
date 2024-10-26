@@ -67,7 +67,7 @@ export const ExplanationCard = (props: Props) => {
     return (
         <Accordion type="single" collapsible>
             <AccordionItem value="item-1">
-                <AccordionTrigger className="text-lg" onClick={accordionTriggerHandler}>{t('Explanation')}
+                <AccordionTrigger className="text-lg" onClick={accordionTriggerHandler}>{t('explanation')}
                 </AccordionTrigger>
                 <AccordionContent>
                     <Markdown className="text-sm">{assistantTypingMessage}</Markdown>

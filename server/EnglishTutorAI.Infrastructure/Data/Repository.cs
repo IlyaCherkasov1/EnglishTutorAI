@@ -1,5 +1,6 @@
 using EnglishTutorAI.Application.Attributes;
 using EnglishTutorAI.Application.Interfaces;
+using EnglishTutorAI.Application.Models.Common;
 using EnglishTutorAI.Application.Specifications.Configurations;
 using EnglishTutorAI.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,14 @@ public class Repository<T> : IRepository<T> where T : Entity
     public async Task<T?> GetSingleOrDefault(ISpecification<T> specification)
     {
         var queryable = ApplySpecification(specification);
+        var entities = await queryable.ToListAsync();
+
+        return entities.SingleOrDefault();
+    }
+
+    public async Task<TResult?> GetSingleOrDefault<TResult>(IDataTransformSpecification<T, TResult> specification)
+    {
+        var queryable = ApplyDataTransformSpecification(specification);
         var entities = await queryable.ToListAsync();
 
         return entities.SingleOrDefault();
@@ -123,6 +132,31 @@ public class Repository<T> : IRepository<T> where T : Entity
         Context.RemoveRange(entities);
     }
 
+    public async Task<SearchResult<T>> Search(ISpecification<T> specification)
+    {
+        var items = await ApplySpecification(specification).ToListAsync();
+        var totalCount = await GetTotalCountWithoutPagingSpecification(specification);
+
+        return new SearchResult<T>
+        {
+            Items = items,
+            TotalCount = totalCount
+        };
+    }
+
+    public async Task<SearchResult<TResult>> Search<TResult>(IDataTransformSpecification<T, TResult> specification)
+    {
+        var items = await ApplyDataTransformSpecification(specification).ToListAsync();
+        var totalCount = await GetTotalCountWithoutPagingSpecification(specification);
+
+        return new SearchResult<TResult>
+        {
+            Items = items,
+            TotalCount = totalCount,
+        };
+    }
+
+
     private async Task<IReadOnlyList<T>> ListInternal(ISpecification<T> specification)
     {
         var queryable = ApplySpecification(specification);
@@ -143,5 +177,18 @@ public class Repository<T> : IRepository<T> where T : Entity
     private IQueryable<T> ApplySpecification(ISpecification<T> spec)
     {
         return SpecificationQueryHelper<T>.BuildQuery(Context.Set<T>().AsQueryable(), spec);
+    }
+
+    private IQueryable<TResult> ApplyDataTransformSpecification<TResult>(
+        IDataTransformSpecification<T, TResult> dataTransformSpecification)
+    {
+        return SpecificationQueryHelper<T>.BuildDataTransformQuery(
+            Context.Set<T>().AsQueryable(),
+            dataTransformSpecification);
+    }
+
+    private async Task<int> GetTotalCountWithoutPagingSpecification(ISpecification<T> spec)
+    {
+        return await SpecificationQueryHelper<T>.ApplyCriteria(Context.Set<T>().AsQueryable(), spec).CountAsync();
     }
 }

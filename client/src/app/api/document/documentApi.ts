@@ -1,10 +1,12 @@
 import {DocumentResponse} from "@/app/dataModels/document/documentResponse.ts";
 import {DocumentCreationRequest} from "@/app/dataModels/document/documentCreationRequest.ts";
-import {DocumentListItem} from "@/app/dataModels/document/documentListItem.ts";
 import {SplitDocumentContentRequest} from "@/app/dataModels/splitDocumentContentRequest.tsx";
 import {SaveCurrentLineRequest} from "@/app/dataModels/document/saveCurrentLineRequest.ts";
 import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
 import {httpGet, httpPost} from "@/app/infrastructure/requestApi.ts";
+import {DocumentSearchResult} from "@/app/dataModels/document/documentSearchResult.ts";
+import {DocumentSearchRequest} from "@/app/dataModels/document/documentSearchRequest.ts";
+import qs from "qs";
 
 const documentsResource = "document";
 
@@ -15,8 +17,8 @@ export const addDocument = async (request: DocumentCreationRequest) => {
     });
 }
 
-export const getAllDocuments = async (): Promise<DocumentListItem[]> => {
-    return httpGet({ url: `${documentsResource}/get-documents` })
+export const getDocuments = async (request: DocumentSearchRequest): Promise<DocumentSearchResult> => {
+    return httpGet({ url: `${documentsResource}/get-documents?${qs.stringify(request)}` })
 }
 
 export const getDocumentDetails = async (id: string): Promise<DocumentResponse> => {
