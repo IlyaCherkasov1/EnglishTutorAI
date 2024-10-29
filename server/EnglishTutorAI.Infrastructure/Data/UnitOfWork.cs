@@ -1,8 +1,10 @@
-﻿using EnglishTutorAI.Application.Attributes;
+﻿using System.Data;
+using EnglishTutorAI.Application.Attributes;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace EnglishTutorAI.Infrastructure.Data;
 
@@ -26,6 +28,13 @@ public class UnitOfWork : IUnitOfWork
     {
         SetCommonProperties();
         return _context.SaveChangesAsync();
+    }
+
+    public IDbTransaction BeginTransaction()
+    {
+        var transaction = _context.Database.BeginTransaction();
+
+        return transaction.GetDbTransaction();
     }
 
     private void SetCommonProperties()
