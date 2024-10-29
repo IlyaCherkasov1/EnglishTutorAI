@@ -5,6 +5,7 @@ import {formatDateToISO} from "@/app/infrastructure/helpers/dateHelpers.ts";
 import {DeleteDocumentModal} from "@/app/components/modals/deleteDocumentModal.tsx";
 import {Link} from "react-router-dom";
 import {useTranslation} from "react-i18next";
+import {contextStore} from "@/app/infrastructure/stores/contextStore.ts";
 
 interface Props {
     document: DocumentListItem;
@@ -40,11 +41,12 @@ export const DocumentListItemComponent = ({ document, onDelete }: Props) => {
                     </div>
                 </CardContent>
                 <CardFooter>
-                <p className="text-gray-500 mb-1">
-                    {formatDateToISO(document.createdAt)}
-                </p>
+                    <p className="text-gray-500 mb-1">
+                        {formatDateToISO(document.createdAt)}
+                    </p>
                 </CardFooter>
-                <DeleteDocumentModal onConfirm={() => handleDelete(document.id)} />
+                {contextStore.isAdminRole && (
+                    <DeleteDocumentModal onConfirm={() => handleDelete(document.id)} />)}
             </>
         </Card>
     );

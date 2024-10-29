@@ -7,6 +7,9 @@ import {AdminPanel} from "@/app/components/pages/adminPanel.tsx";
 import Home from "@/app/components/pages/home.tsx";
 import DocumentDetails from "@/app/components/document/documentDetails.tsx";
 import {NotificationContainer} from "@/app/components/toast/notificationContainer";
+import {userRoles} from "@/app/infrastructure/constants/userRoles.ts";
+import {RequireRole} from "@/app/components/auth/requireRole.tsx";
+import {AccessDenied} from "@/app/components/pages/accessDenied.tsx";
 
 function App() {
     return (
@@ -17,8 +20,10 @@ function App() {
                     <Route path="/auth/register" element={<Register />} />
                     <Route path="/" element={<MainLayout />}>
                         <Route index element={<Home />} />
-                        <Route path="/adminPanel" element={<AdminPanel />} />
+                        <Route path="/adminPanel"
+                               element={<RequireRole role={userRoles.admin}><AdminPanel /> </RequireRole>} />
                         <Route path="/documents/:documentId" element={<DocumentDetails />} />
+                        <Route path="/access-denied" element={<AccessDenied />} />
                     </Route>
                 </Routes>
             </AuthGuard>

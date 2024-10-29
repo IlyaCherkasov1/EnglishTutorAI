@@ -5,5 +5,5 @@ namespace EnglishTutorAI.Application.Interfaces;
 
 public interface IClaimsService
 {
-    List<Claim> CreateUserClaims(User user);
+    List<Claim> CreateUserClaims(User user, IList<string> roles);
 }

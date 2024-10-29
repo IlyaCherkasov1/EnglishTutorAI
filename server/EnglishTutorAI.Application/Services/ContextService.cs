@@ -22,12 +22,14 @@ public class ContextService : IContextService
     public async Task<ContextResponse> Load()
     {
         var userPrincipal = _httpContextAccessor.HttpContext!.User;
-        var user = await _userManager.GetUserAsync(userPrincipal);
+        var user = (await _userManager.GetUserAsync(userPrincipal))!;
+        var roles = await _userManager.GetRolesAsync(user);
 
         return new ContextResponse
         {
-            FirstName = user?.FirstName,
+            FirstName = user.FirstName,
             IsAuthenticated = userPrincipal.Identity!.IsAuthenticated,
+            RoleName = roles,
         };
     }
 }

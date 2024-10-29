@@ -1,5 +1,6 @@
 ﻿using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Controllers.Attributes;
+using EnglishTutorAI.Application.Constants;
 using EnglishTutorAI.Application.Handlers.AddDocument;
 using EnglishTutorAI.Application.Handlers.DeleteDocument;
 using EnglishTutorAI.Application.Handlers.GetConversationThread;
@@ -29,6 +30,7 @@ public class DocumentController : ControllerBase
     }
 
     [HttpPost(Routes.Document.AddDocument)]
+    [Authorize(Roles = UserRoles.Admin)]
     public Task AddDocument(DocumentCreationRequest request)
     {
         return _mediator.Send(new AddDocumentCommand(request));
@@ -65,6 +67,7 @@ public class DocumentController : ControllerBase
     }
 
     [HttpPost(Routes.Document.DeleteDocument)]
+    [Authorize(Roles = UserRoles.Admin)]
     public Task DeleteDocument(Guid documentId)
     {
         return _mediator.Send(new DeleteDocumentCommand(documentId));
