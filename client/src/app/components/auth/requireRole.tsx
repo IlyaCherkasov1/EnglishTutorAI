@@ -16,5 +16,9 @@ export const RequireRole = ({ role, children }: Props) => {
         }
     }, [role, navigate]);
 
-    return <>{children}</>;
+    if (contextStore.roleName?.includes(role) && contextStore.isContextLoaded) {
+        return <>{children}</>;
+    }
+
+    return null;
 };
