@@ -48,7 +48,12 @@ public class IdentityService : IIdentityService
             return ResultBuilder.BuildFailed(result.Errors.Select(e => e.Description));
         }
 
-        await _userManager.AddToRoleAsync(user, UserRoles.User);
+        var roleResult = await _userManager.AddToRoleAsync(user, UserRoles.User);
+
+        if (!roleResult.Succeeded)
+        {
+            return ResultBuilder.BuildFailed(roleResult.Errors.Select(e => e.Description));
+        }
 
         return ResultBuilder.BuildSucceeded();
     }

@@ -1,22 +1,30 @@
 ﻿using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models.Common;
-using EnglishTutorAI.Application.Services;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 
 namespace EnglishTutorAI.Application.Handlers.Register;
 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result>
 {
     private readonly IIdentityService _identityService;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public RegisterCommandHandler(IIdentityService identityService)
+    public RegisterCommandHandler(IIdentityService identityService, IUnitOfWork unitOfWork)
     {
         _identityService = identityService;
+        _unitOfWork = unitOfWork;
     }
 
-    public Task<Result> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        return _identityService.RegisterUser(request.Request);
+        using var transaction = _unitOfWork.BeginTransaction();
+        var result = await _identityService.RegisterUser(request.Request);
+
+        if (result.IsSucceeded)
+        {
+            transaction.Commit();
+        }
+
+        return result;
     }
 }
