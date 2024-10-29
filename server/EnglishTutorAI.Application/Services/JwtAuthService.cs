@@ -75,7 +75,8 @@ public class JwtAuthService : IJwtAuthService
             return ResultBuilder.BuildFailed<string>("user not found");
         }
 
-        var claims = _claimsService.CreateUserClaims(user);
+        var roles = await _userManager.GetRolesAsync(user);
+        var claims = _claimsService.CreateUserClaims(user, roles);
         var newAccessToken = GenerateAccessToken(claims);
 
         return ResultBuilder.BuildSucceeded(newAccessToken);

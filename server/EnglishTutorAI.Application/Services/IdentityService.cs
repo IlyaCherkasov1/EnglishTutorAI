@@ -1,4 +1,5 @@
 ﻿using EnglishTutorAI.Application.Attributes;
+using EnglishTutorAI.Application.Constants;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models.Common;
 using EnglishTutorAI.Application.Models.Requests;
@@ -47,6 +48,8 @@ public class IdentityService : IIdentityService
             return ResultBuilder.BuildFailed(result.Errors.Select(e => e.Description));
         }
 
+        await _userManager.AddToRoleAsync(user, UserRoles.User);
+
         return ResultBuilder.BuildSucceeded();
     }
 
@@ -66,7 +69,8 @@ public class IdentityService : IIdentityService
             return ResultBuilder.BuildFailed<string>("Invalid password");
         }
 
-        var claims = _claimsService.CreateUserClaims(user);
+        var roles = await _userManager.GetRolesAsync(user);
+        var claims = _claimsService.CreateUserClaims(user, roles);
         var accessToken = _jwtAuthService.GenerateAccessToken(claims);
         await _sessionService.CreateSession(user.Id);
 

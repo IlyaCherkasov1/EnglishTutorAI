@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
 
-services.AddIdentity<User, IdentityRole<Guid>>(options =>
+services.AddIdentity<User, Role>(options =>
     {
         options.User.RequireUniqueEmail = true;
         options.SignIn.RequireConfirmedEmail = false;
@@ -50,6 +50,8 @@ services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+await app.ApplyMigrationsAndSeedAsync();
 
 app.UseCors();
 app.UseRouting();

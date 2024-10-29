@@ -1,5 +1,4 @@
 ﻿using EnglishTutorAI.Application.Configurations;
-using EnglishTutorAI.Application.Models;
 
 namespace EnglishTutorAI.Api.Extensions;
 
@@ -15,6 +14,7 @@ public static IServiceCollection AddSettings(this IServiceCollection services, I
         services.Configure<RefreshTokenSettings>(configuration.GetSection(nameof(RefreshTokenSettings)));
         services.Configure<GoogleKeys>(configuration.GetSection(nameof(GoogleKeys)));
         services.Configure<FacebookKeys>(configuration.GetSection(nameof(FacebookKeys)));
+        services.Configure<AdminUserOptions>(configuration.GetSection(nameof(AdminUserOptions)));
 
         return services;
     }

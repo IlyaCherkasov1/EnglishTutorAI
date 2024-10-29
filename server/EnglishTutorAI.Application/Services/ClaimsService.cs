@@ -9,13 +9,14 @@ namespace EnglishTutorAI.Application.Services;
 [ScopedDependency]
 public class ClaimsService : IClaimsService
 {
-    public List<Claim> CreateUserClaims(User user)
+    public List<Claim> CreateUserClaims(User user, IList<string> roles)
     {
         var claims = new List<Claim>
         {
             new(ClaimTypes.Email, user.Email!),
             new(ClaimTypes.NameIdentifier, user.Id.ToString())
         };
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
         return claims;
     }
