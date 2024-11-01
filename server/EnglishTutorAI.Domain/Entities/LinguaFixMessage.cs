@@ -5,9 +5,9 @@ namespace EnglishTutorAI.Domain.Entities;
 
 public class LinguaFixMessage : Entity, IHasCreatedAt
 {
-    public required ConversationRole ConversationRole { get; init; }
+    public required string TranslatedText { get; init; }
 
-    public required string Content { get; init; }
+    public required string CorrectedText { get; init; }
 
     public DateTime CreatedAt { get; set; }
 

@@ -10,6 +10,7 @@ import {NotificationContainer} from "@/app/components/toast/notificationContaine
 import {userRoles} from "@/app/infrastructure/constants/userRoles.ts";
 import {RequireRole} from "@/app/components/auth/requireRole.tsx";
 import {AccessDenied} from "@/app/components/pages/accessDenied.tsx";
+import {MistakeHistory} from "@/app/components/pages/mistakeHistory.tsx";
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                                element={<RequireRole role={userRoles.admin}><AdminPanel /> </RequireRole>} />
                         <Route path="/documents/:documentId" element={<DocumentDetails />} />
                         <Route path="/access-denied" element={<AccessDenied />} />
+                        <Route path="/history" element={<MistakeHistory />} />
                     </Route>
                 </Routes>
             </AuthGuard>

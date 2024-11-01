@@ -6,6 +6,7 @@ using EnglishTutorAI.Application.Handlers.DeleteDocument;
 using EnglishTutorAI.Application.Handlers.GetConversationThread;
 using EnglishTutorAI.Application.Handlers.GetDocumentDetails;
 using EnglishTutorAI.Application.Handlers.GetDocuments;
+using EnglishTutorAI.Application.Handlers.GetMistakeItem;
 using EnglishTutorAI.Application.Handlers.SaveProgress;
 using EnglishTutorAI.Application.Handlers.SplitSentences;
 using EnglishTutorAI.Application.Models;
@@ -40,6 +41,12 @@ public class DocumentController : ControllerBase
     public Task<SearchResult<DocumentListItem>> Get([FromQuery]DocumentsSearchModel model)
     {
         return _mediator.Send(new GetDocumentsQuery(model));
+    }
+
+    [HttpGet(Routes.Document.GetMistakesHistory)]
+    public Task<IEnumerable<MistakeHistoryItems>> GetMistakeHistoryItems([FromQuery]PaginationSearchModel model)
+    {
+        return _mediator.Send(new GetMistakeHistoryItemQuery(model));
     }
 
     [HttpGet(Routes.Document.GetDocumentDetails)]
