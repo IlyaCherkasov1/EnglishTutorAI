@@ -5,6 +5,7 @@ import {HubConnectionBuilder} from "@microsoft/signalr";
 import useAsyncEffect from "use-async-effect";
 import Markdown from "react-markdown";
 import {useTranslation} from "react-i18next";
+import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
 
 interface Props {
     threadId: string;
@@ -14,6 +15,7 @@ interface Props {
 
 export const ExplanationCard = (props: Props) => {
     const [assistantTypingMessage, setAssistantTypingMessage] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const { t } = useTranslation();
     const connection = new HubConnectionBuilder()
         .withUrl('https://localhost:7008/assistantHub')
@@ -25,6 +27,7 @@ export const ExplanationCard = (props: Props) => {
 
         connection.on('ReceiveMessage', (message: string) => {
             setAssistantTypingMessage(prev => prev + message);
+            setIsLoading(false);
         });
 
         return () => {
@@ -52,6 +55,8 @@ export const ExplanationCard = (props: Props) => {
         if (cachedMessage) {
             setAssistantTypingMessage(cachedMessage);
         } else {
+            setIsLoading(true);
+
             const response = await sendMessage({
                 message: "explain mistakes of the last message",
                 threadId: props.threadId,
@@ -70,7 +75,13 @@ export const ExplanationCard = (props: Props) => {
                 <AccordionTrigger className="text-lg" onClick={accordionTriggerHandler}>{t('explanation')}
                 </AccordionTrigger>
                 <AccordionContent>
-                    <Markdown className="text-sm">{assistantTypingMessage}</Markdown>
+                    {isLoading ? (
+                        <div className="flex justify-center">
+                            <LoadingSpinner />
+                        </div>
+                    ) : (
+                        <Markdown className="text-sm">{assistantTypingMessage}</Markdown>
+                    )}
                 </AccordionContent>
             </AccordionItem>
         </Accordion>

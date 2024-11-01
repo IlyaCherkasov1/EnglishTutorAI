@@ -10,6 +10,7 @@ import {useForm} from "react-hook-form";
 import {HubConnectionBuilder} from "@microsoft/signalr";
 import useAsyncEffect from "use-async-effect";
 import Markdown from "react-markdown";
+import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
 
 interface Props {
     threadId: string;
@@ -29,6 +30,7 @@ export const ChatBot = (props: Props) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [assistantTypingMessage, setAssistantTypingMessage] = useState<string>("");
     const [assistantTyping, setAssistantTyping] = useState<boolean>(false);
+    const [isProcessingResponse, setIsProcessingResponse] = useState<boolean>(false);
     const { t } = useTranslation();
     const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm<FormValues>();
     const connection = new HubConnectionBuilder()
@@ -53,8 +55,8 @@ export const ChatBot = (props: Props) => {
         connection.on('ReceiveMessage', (message: string) => {
             setAssistantTyping(true);
             setAssistantTypingMessage(prev => prev + message);
+            setIsProcessingResponse(false);
         });
-
 
         return () => {
             connection.stop();
@@ -68,6 +70,7 @@ export const ChatBot = (props: Props) => {
         };
 
         setMessages(prevMessages => [...prevMessages, userMessage]);
+        setIsProcessingResponse(true);
 
         const assistantResponse = await sendMessageWithSave({
             message: data.message,
@@ -103,6 +106,11 @@ export const ChatBot = (props: Props) => {
                                         <Markdown className="text-sm">{message.text}</Markdown>
                                     </div>
                                 ))}
+                                {isProcessingResponse && (
+                                    <div className='flex justify-center mt-4'>
+                                        <LoadingSpinner />
+                                    </div>
+                                )}
                                 {assistantTyping && (
                                     <div className='relative p-4 flex items-start ml-3'>
                                         <Bot className="absolute -left-6 top-4 h-5 w-5 text-gray-500 animate-pulse" />
