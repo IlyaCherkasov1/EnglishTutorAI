@@ -58,6 +58,14 @@ public class Repository<T> : IRepository<T> where T : Entity
         return ListInternal(specification);
     }
 
+    public async Task<IReadOnlyList<TResult>> List<TResult>(
+        IDataTransformSpecification<T, TResult> dataTransformSpecification)
+    {
+        var queryable = ApplyDataTransformSpecification(dataTransformSpecification);
+
+        return await queryable.ToListAsync();
+    }
+
     public async Task<T> Add(T entity)
     {
         SetEntityId(entity);
