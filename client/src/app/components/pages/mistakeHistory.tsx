@@ -7,6 +7,7 @@ import {formatDateToISO} from "@/app/infrastructure/helpers/dateHelpers.ts";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {MistakeHistoryItems} from "@/app/dataModels/mistakeHistoryItems.ts";
 import {useTranslation} from "react-i18next";
+import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
 
 export const MistakeHistory = () => {
     const [mistakeHistoryItems, setMistakeHistoryItems] = useState<Array<MistakeHistoryItems>>([]);
@@ -46,7 +47,7 @@ export const MistakeHistory = () => {
                     dataLength={mistakeHistoryItems.length}
                     next={loadMoreItems}
                     hasMore={hasMore}
-                    loader={<h4>{t('loading')}</h4>}
+                    loader={<LoadingSpinner />}
                     className="flex flex-col items-center gap-4r">
                     {mistakeHistoryItems?.map(item => (
                         <Card className="w-4/5 mb-4" key={item.id}>

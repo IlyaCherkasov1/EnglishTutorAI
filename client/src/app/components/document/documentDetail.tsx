@@ -1,5 +1,5 @@
 import {DocumentResponse} from "@/app/dataModels/document/documentResponse.ts";
-import {useMemo, useState} from "react";
+import React, {useMemo, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {getConversationThread, saveCurrentLine} from "@/app/api/document/documentApi.ts";
 import {Button} from "@/app/components/ui/button.tsx";
@@ -16,6 +16,7 @@ import {
 } from "@/app/infrastructure/validationSchemas/documentDetailsSchema.ts";
 import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
 import useAsyncEffect from "use-async-effect";
+import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
 
 interface Props {
     document: DocumentResponse;
@@ -78,6 +79,13 @@ export const DocumentDetail = (props: Props) => {
         setTranslatedText('');
     }
 
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            handleSubmit(onSubmit)();
+        }
+    };
+
     return (
         <div>
             <div className="flex-1 overflow-auto">
@@ -97,17 +105,23 @@ export const DocumentDetail = (props: Props) => {
                             <Button onClick={handleStartAgain}>{t('startAgain')}</Button>
                         </div>
                     ) : (
-                        <>
+                        <div>
                             <FormProvider {...methods}>
                                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mb-4">
                                     <Textarea
                                         {...register('translatedText', { required: true })}
                                         placeholder={t('enterYourText')}
-                                        disabled={isSubmitting} />
+                                        disabled={isSubmitting}
+                                        onKeyDown={handleKeyDown} />
                                     <FormMessage>{errors.translatedText?.message}</FormMessage>
                                     <div className="flex justify-end mt-2">
                                         <Button type="submit" disabled={isSubmitting}>{t('send')}</Button>
                                     </div>
+                                    {isSubmitting && (
+                                        <div className="flex items-center justify-center mt-2">
+                                            <LoadingSpinner />
+                                        </div>
+                                    )}
                                 </form>
                             </FormProvider>
                             {translatedText.length > 0 &&
@@ -119,7 +133,7 @@ export const DocumentDetail = (props: Props) => {
                                     currentLine={currentLine}
                                 />
                             }
-                        </>
+                        </div>
                     )}
                 </div>
                 <ChatBotToggle chatMessageResponse={chatMessageResponse} threadId={props.document.threadId} />

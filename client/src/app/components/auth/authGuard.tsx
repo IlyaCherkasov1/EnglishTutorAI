@@ -8,6 +8,7 @@ import {contextStore} from '@/app/infrastructure/stores/contextStore.ts';
 import {contextService} from '@/app/infrastructure/services/contextService.ts';
 import {observer} from "mobx-react-lite";
 import useAsyncEffect from "use-async-effect";
+import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
 
 interface AuthGuardProps {
     children: React.ReactNode;
@@ -44,7 +45,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = observer(({ children }) => {
     }, [location.pathname, navigate]);
 
     if (loading) {
-        return;
+        return <LoadingSpinner />;
     }
 
     return <>{children}</>;
