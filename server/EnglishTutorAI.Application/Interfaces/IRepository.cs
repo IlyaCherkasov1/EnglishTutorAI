@@ -18,6 +18,8 @@ public interface IRepository<T> where T : Entity
 
     Task<IReadOnlyList<T>> List(ISpecification<T> specification);
 
+    Task<IReadOnlyList<TResult>> List<TResult>(IDataTransformSpecification<T, TResult> dataTransformSpecification);
+
     Task<T> Add(T entity);
 
     Task Add(IEnumerable<T> entities);

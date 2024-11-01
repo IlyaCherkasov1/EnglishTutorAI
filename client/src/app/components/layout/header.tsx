@@ -1,49 +1,57 @@
-import { Menu, User } from "lucide-react"
-import { Link } from "react-router-dom";
-
-import { HeaderButton } from "@/app/components/ui/headerButton.tsx"
+import {User} from "lucide-react";
+import {HeaderButton} from "@/app/components/ui/headerButton";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/app/components/ui/dropdown-menu"
-import {performLogOut} from "@/app/infrastructure/services/auth/identityService.ts";
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/app/components/ui/dropdown-menu";
+import {performLogOut} from "@/app/infrastructure/services/auth/identityService";
 import {useTranslation} from "react-i18next";
-import {contextStore} from "@/app/infrastructure/stores/contextStore.ts";
+import {contextStore} from "@/app/infrastructure/stores/contextStore";
+import {Link} from "react-router-dom";
 
 export const Header = () => {
-  const { t } = useTranslation();
+    const { t } = useTranslation();
 
-  return (
-    <header className="flex items-center justify-between px-6 py-4 bg-gray-200 border-b">
-      <div className="flex items-center space-x-4">
-        <HeaderButton variant="ghost" size="icon" className="md:hidden">
-          <Menu className="h-6 w-6" />
-          <span className="sr-only">{t("header.toggleMenu")}</span>
-        </HeaderButton>
-        <Link to="/" className="flex items-center space-x-2">
-          <span className="text-2xl font-bold">{t("header.title")}</span>
-        </Link>
-      </div>
-      <div className="flex items-center space-x-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <HeaderButton variant="ghost" size="icon" className="rounded-full">
-              <User className="h-5 w-5" />
-              <span className="sr-only">{t("header.myAccount")}</span>
-            </HeaderButton>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>{contextStore.firstName}</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>{t("header.profile")}</DropdownMenuItem>
-            <DropdownMenuItem onClick={performLogOut}>{t("header.signOut")}</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-    </header>
-  )
-}
+    return (
+        <header className="bg-gray-100 border-b">
+            <div className="grid grid-rows-[100px_1px_50px] px-7">
+                <div className="flex items-center justify-between">
+                    <Link to="/" className="flex items-center">
+                        <img src="/logo.svg" alt="Company Logo" className="h-20 w-20" />
+                        <span className="text-xl">{t("header.title")}</span>
+                    </Link>
+                    <div className="flex items-center">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <HeaderButton variant="ghost" size="icon" className="rounded-full">
+                                    <User className="h-5 w-5" />
+                                    <span className="sr-only">{t("header.myAccount")}</span>
+                                </HeaderButton>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>{contextStore.firstName}</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem>{t("header.profile")}</DropdownMenuItem>
+                                <DropdownMenuItem onClick={performLogOut}>{t("header.signOut")}</DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
+                </div>
+                <div className="ml-4">
+                    <nav className="flex space-x-8">
+                        <Link to="/" className="block py-2 text-gray-700 hover:text-black">
+                            Home
+                        </Link>
+                        <Link to="/history" className="block py-2 text-gray-700 hover:text-black">
+                            History
+                        </Link>
+                    </nav>
+                </div>
+            </div>
+        </header>
+    );
+};

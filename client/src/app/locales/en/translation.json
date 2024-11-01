@@ -70,5 +70,7 @@
   "clearAllFilters": "Clear all filters",
   "accessDenied": "Access Denied",
   "youDoNotHavePermission": "You do not have permission to view this page.",
-  "goBackHome": "Go back to Home"
+  "goBackHome": "Go back to Home",
+  "history": "History",
+  "noRecords": "There are no records yet."
 }

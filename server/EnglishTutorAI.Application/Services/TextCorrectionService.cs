@@ -50,7 +50,6 @@ namespace EnglishTutorAI.Application.Services
                 _singleEntryCache.Set(request.OriginalText, correctedText);
             }
 
-            await AddMessageToLinguaFixRepository(request, ConversationRole.User);
             var isCorrected = _textComparisonService.HasTextChanged(request.TranslatedText, correctedText);
 
             return new TextCorrectionResult(correctedText, isCorrected);
@@ -66,20 +65,16 @@ namespace EnglishTutorAI.Application.Services
         {
             var correctedText = await _assistantClientService.GetLastMessage(request.ThreadId);
             var cleanCorrectedText = _textExtractionService.ExtractCleanText(correctedText, request.OriginalText);
-            await AddMessageToLinguaFixRepository(request, ConversationRole.Assistant);
 
-            return cleanCorrectedText;
-        }
-
-        private async Task AddMessageToLinguaFixRepository(TextGenerationRequest request, ConversationRole role)
-        {
             await _linguaFixMessageRepository.Add(new LinguaFixMessage
             {
                 ThreadId = request.ThreadId,
-                Content = request.TranslatedText,
-                ConversationRole = role,
+                TranslatedText = request.TranslatedText,
+                CorrectedText = correctedText,
                 DocumentId = request.DocumentId,
             });
+
+            return cleanCorrectedText;
         }
     }
 }

@@ -3,11 +3,7 @@ using EnglishTutorAI.Domain.Enums;
 
 namespace EnglishTutorAI.Application.Models.Documents;
 
-public class DocumentsSearchModel : IPageable
+public class DocumentsSearchModel : PaginationSearchModel, IPageable
 {
     public StudyTopic StudyTopic { get; init; }
-
-    public int PageNumber { get; init; }
-
-    public int PageSize { get; init; }
 }
