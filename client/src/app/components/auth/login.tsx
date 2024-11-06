@@ -6,7 +6,7 @@ import {Input} from "@/app/components/ui/input.tsx";
 import {FormError} from "@/app/components/formStates/form-error.tsx";
 import {SignInButton} from "@/app/components/buttons/signInButton.tsx";
 import {Link, useNavigate} from "react-router-dom";
-import {routeLinks} from "@/app/components/layout/routes/routeLink.ts";
+import {routes} from "@/app/components/layout/routes/routeLink.ts";
 import {applyNewIdentity} from "@/app/infrastructure/services/auth/identityService.ts";
 import {login} from "@/app/infrastructure/services/auth/loginService.ts";
 import {GoogleSignInButton} from "@/app/components/auth/googleSignInButton.tsx";
@@ -28,7 +28,7 @@ const Login = () => {
 
     useEffect(() => {
         if (contextStore.isAuthenticated) {
-            navigate(routeLinks.home, { replace: true })
+            navigate(routes.home, { replace: true })
         }
     }, [navigate]);
 
@@ -39,7 +39,7 @@ const Login = () => {
 
         if (result.isSuccess) {
             await applyNewIdentity(result.data);
-            navigate(routeLinks.home, { replace: true });
+            navigate(routes.home, { replace: true });
         } else {
             setError(result.error);
         }
@@ -91,7 +91,7 @@ const Login = () => {
                 <p className="mt-2 text-center text-sm text-gray-500">
                     {t('doNotHaveAccount')}
                     <span className="mr-1"></span>
-                    <Link to="/auth/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                    <Link to={routes.register} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                         Register
                     </Link>
                 </p>

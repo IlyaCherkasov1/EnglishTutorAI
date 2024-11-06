@@ -11,21 +11,22 @@ import {userRoles} from "@/app/infrastructure/constants/userRoles.ts";
 import {RequireRole} from "@/app/components/auth/requireRole.tsx";
 import {AccessDenied} from "@/app/components/pages/accessDenied.tsx";
 import {MistakeHistory} from "@/app/components/pages/mistakeHistory.tsx";
+import {routes} from "@/app/components/layout/routes/routeLink.ts";
 
 function App() {
     return (
         <BrowserRouter>
             <AuthGuard>
                 <Routes>
-                    <Route path="/auth/login" element={<Login />} />
-                    <Route path="/auth/register" element={<Register />} />
-                    <Route path="/" element={<MainLayout />}>
+                    <Route path={routes.login} element={<Login />} />
+                    <Route path={routes.register} element={<Register />} />
+                    <Route path={routes.home} element={<MainLayout />}>
                         <Route index element={<Home />} />
-                        <Route path="/adminPanel"
+                        <Route path={routes.adminPanel}
                                element={<RequireRole role={userRoles.admin}><AdminPanel /> </RequireRole>} />
-                        <Route path="/documents/:documentId" element={<DocumentDetails />} />
-                        <Route path="/access-denied" element={<AccessDenied />} />
-                        <Route path="/history" element={<MistakeHistory />} />
+                        <Route path={routes.document.documentDetails} element={<DocumentDetails />} />
+                        <Route path={routes.accessDenied} element={<AccessDenied />} />
+                        <Route path={routes.history} element={<MistakeHistory />} />
                     </Route>
                 </Routes>
             </AuthGuard>

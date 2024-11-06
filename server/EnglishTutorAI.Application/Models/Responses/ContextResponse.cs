@@ -4,7 +4,7 @@ public class ContextResponse
 {
     public bool IsAuthenticated { get; init; }
 
-    public required string FirstName { get; init; }
+    public  string FirstName { get; init; } = string.Empty;
 
-    public required IList<string> RoleName { get; init; }
+    public IList<string> RoleName { get; init; } = new List<string>();
 }

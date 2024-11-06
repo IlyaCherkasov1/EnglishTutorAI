@@ -18,7 +18,7 @@ public class DocumentListSearchSpecification : DataTransformSpecification<Docume
             CreatedAt = d.CreatedAt,
         })
     {
-        if (model.StudyTopic != default)
+        if (model.StudyTopic != StudyTopic.All)
         {
             ApplyCriteria(d => d.StudyTopic == model.StudyTopic);
         }

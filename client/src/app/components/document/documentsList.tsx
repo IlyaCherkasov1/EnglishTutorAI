@@ -4,7 +4,7 @@ import {DocumentListItem} from "@/app/dataModels/document/documentListItem.ts";
 import {useTranslation} from "react-i18next";
 
 interface Props {
-    allDocuments: DocumentListItem[] | null;
+    allDocuments: DocumentListItem[];
 }
 
 export const DocumentsList = (props: Props) => {
@@ -24,13 +24,13 @@ export const DocumentsList = (props: Props) => {
             <div className="flex justify-center items-center">
                 <div className="grid grid-cols-3 gap-5 w-full m-5">
                     {documents && documents.length > 0 ?
-                        documents.map(document => (
+                        documents.map(document =>
                             <DocumentListItemComponent
                                 key={document.id}
                                 document={document}
                                 onDelete={handleDeleteDocument}
-                            />
-                        )) : <p className='text-gray-400'>{t('noDocumentsAvailable')}</p>
+                            />)
+                        : <p className='text-gray-400'>{t('noDocumentsAvailable')}</p>
                     }
                 </div>
             </div>

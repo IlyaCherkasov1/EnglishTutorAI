@@ -58,7 +58,8 @@
     "Environment": "Environment",
     "Sports": "Sports",
     "Shopping": "Shopping",
-    "Entertainment": "Entertainment"
+    "Entertainment": "Entertainment",
+    "All": "All"
   },
   "category": "Category",
   "selectCategory": "Select category",
@@ -71,5 +72,6 @@
   "youDoNotHavePermission": "You do not have permission to view this page.",
   "goBackHome": "Go back to Home",
   "history": "History",
-  "noRecords": "There are no records yet."
+  "noRecords": "There are no records yet.",
+  "home": "Home"
 }

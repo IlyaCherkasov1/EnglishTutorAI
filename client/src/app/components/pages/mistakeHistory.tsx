@@ -1,13 +1,13 @@
 import {Card, CardContent, CardFooter, CardHeader} from "../ui/card"
 import {getMistakeHistoryItems} from "@/app/api/document/documentApi.ts";
-import useAsyncEffect from "use-async-effect";
 import {useState} from "react";
 import DiffComponent from "@/app/components/chatBot/diffComponent.tsx";
 import {formatDateToISO} from "@/app/infrastructure/helpers/dateHelpers.ts";
-import InfiniteScroll from "react-infinite-scroll-component";
 import {MistakeHistoryItems} from "@/app/dataModels/mistakeHistoryItems.ts";
 import {useTranslation} from "react-i18next";
 import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
+import {Constants} from "@/app/infrastructure/common/constants.ts";
+import {InfiniteScroll} from "@/app/components/pagination/InfiniteScroll.tsx";
 
 export const MistakeHistory = () => {
     const [mistakeHistoryItems, setMistakeHistoryItems] = useState<Array<MistakeHistoryItems>>([]);
@@ -16,7 +16,8 @@ export const MistakeHistory = () => {
     const { t } = useTranslation();
 
     const loadMoreItems = async () => {
-        const historyItems = await getMistakeHistoryItems({ pageNumber: page, pageSize: 10 });
+        const historyItems = await getMistakeHistoryItems(
+            { pageNumber: page, pageSize: Constants.mistakeHistoryPageSize });
 
         if (historyItems.length === 0) {
             setHasMore(false);
@@ -26,29 +27,17 @@ export const MistakeHistory = () => {
         }
     };
 
-    useAsyncEffect(async () => {
-        await loadMoreItems();
-    }, []);
-
-    if (mistakeHistoryItems.length === 0) {
-        return (
-            <div className="flex flex-col items-center">
-                <h1 className="text-4xl text-gray-900 mb-3">{t('history')}</h1>
-                <p className="text-lg text-gray-600">{t('noRecords')}</p>
-            </div>
-        );
-    }
-
     return (
-        <>
-            <div className="flex flex-col items-center">
-                <h1 className="text-4xl text-gray-900 mb-3">{t('history')}</h1>
-                <InfiniteScroll
-                    dataLength={mistakeHistoryItems.length}
-                    next={loadMoreItems}
-                    hasMore={hasMore}
-                    loader={<LoadingSpinner />}
-                    className="flex flex-col items-center gap-4r">
+        <div className="flex flex-col items-center">
+            <h1 className="text-4xl text-gray-900 mb-3">{t('history')}</h1>
+            <InfiniteScroll
+                loadMore={loadMoreItems}
+                hasMore={hasMore}
+                loader={<LoadingSpinner />}>
+                <div className="flex flex-col items-center">
+                    {mistakeHistoryItems.length === 0 && !hasMore && (
+                        <p className="text-gray-500 mt-4">{t('noRecords')}</p>
+                    )}
                     {mistakeHistoryItems?.map(item => (
                         <Card className="w-4/5 mb-4" key={item.id}>
                             <CardHeader>
@@ -64,8 +53,8 @@ export const MistakeHistory = () => {
                             </CardFooter>
                         </Card>
                     ))}
-                </InfiniteScroll>
-            </div>
-        </>
+                </div>
+            </InfiniteScroll>
+        </div>
     )
 }

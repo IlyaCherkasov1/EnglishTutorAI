@@ -1,4 +1,5 @@
-﻿using EnglishTutorAI.Api.Constants;
+﻿using System.Collections;
+using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Controllers.Attributes;
 using EnglishTutorAI.Application.Constants;
 using EnglishTutorAI.Application.Handlers.AddDocument;
@@ -38,7 +39,7 @@ public class DocumentController : ControllerBase
     }
 
     [HttpGet(Routes.Document.GetDocument)]
-    public Task<SearchResult<DocumentListItem>> Get([FromQuery]DocumentsSearchModel model)
+    public Task<IEnumerable<DocumentListItem>> Get([FromQuery]DocumentsSearchModel model)
     {
         return _mediator.Send(new GetDocumentsQuery(model));
     }

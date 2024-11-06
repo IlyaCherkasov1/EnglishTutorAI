@@ -12,6 +12,8 @@ import {performLogOut} from "@/app/infrastructure/services/auth/identityService"
 import {useTranslation} from "react-i18next";
 import {contextStore} from "@/app/infrastructure/stores/contextStore";
 import {Link} from "react-router-dom";
+import {Navbar} from "@/app/components/layout/navbar.tsx";
+import {routes} from "@/app/components/layout/routes/routeLink.ts";
 
 export const Header = () => {
     const { t } = useTranslation();
@@ -20,7 +22,7 @@ export const Header = () => {
         <header className="bg-gray-100 border-b">
             <div className="grid grid-rows-[100px_1px_50px] px-7">
                 <div className="flex items-center justify-between">
-                    <Link to="/" className="flex items-center">
+                    <Link to={routes.home} className="flex items-center">
                         <img src="/logo.svg" alt="Company Logo" className="h-20 w-20" />
                         <span className="text-xl">{t("header.title")}</span>
                     </Link>
@@ -41,16 +43,7 @@ export const Header = () => {
                         </DropdownMenu>
                     </div>
                 </div>
-                <div className="ml-4">
-                    <nav className="flex space-x-8">
-                        <Link to="/" className="block py-2 text-gray-700 hover:text-black">
-                            Home
-                        </Link>
-                        <Link to="/history" className="block py-2 text-gray-700 hover:text-black">
-                            History
-                        </Link>
-                    </nav>
-                </div>
+                <Navbar />
             </div>
         </header>
     );

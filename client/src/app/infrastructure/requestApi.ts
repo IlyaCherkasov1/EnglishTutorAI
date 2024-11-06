@@ -1,7 +1,7 @@
 import {EmptyObject} from "react-hook-form";
 import {clearAccessToken, getAccessToken} from "@/app/infrastructure/services/auth/accessTokenService.ts";
 import {isAccessTokenExpired, renewAccessTokenHandler} from "@/app/infrastructure/services/auth/identityService.ts";
-import {routeLinks} from "@/app/components/layout/routes/routeLink.ts";
+import {routes} from "@/app/components/layout/routes/routeLink.ts";
 import {notifications} from "@/app/components/toast/toast.tsx";
 
 export type HttpRequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
@@ -148,7 +148,7 @@ const handleRedirect = (status: number) => {
     switch (status) {
         case responseHandlingStatuses.unauthorized:
         case responseHandlingStatuses.unauthenticated:
-            redirectToPage = routeLinks.login;
+            redirectToPage = routes.login;
             break;
     }
 
