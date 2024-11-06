@@ -10,6 +10,7 @@ import {Link} from "react-router-dom";
 import {SignUpButton} from "@/app/components/buttons/signUpButton.tsx";
 import {useTranslation} from "react-i18next";
 import {RegisterSchema, TRegisterSchema} from "@/app/infrastructure/validationSchemas/registerSchema.ts";
+import {routes} from "@/app/components/layout/routes/routeLink.ts";
 
 const Register = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -85,7 +86,7 @@ const Register = () => {
                 <p className="mt-2 text-center text-sm text-gray-500">
                     {t('alreadyHaveAccount')}
                     <span className="mr-1"></span>
-                    <Link to={"/auth/login"} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                    <Link to={routes.login} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                         Login
                     </Link>
                 </p>

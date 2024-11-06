@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import {routes} from "@/app/components/layout/routes/routeLink.ts";
 
 export const AccessDenied = () => {
     const { t } = useTranslation();
@@ -12,7 +13,7 @@ export const AccessDenied = () => {
             <p className="text-lg text-gray-700 mb-8">
                 {t('youDoNotHavePermission')}
             </p>
-            <Link to="/" className="text-blue-500 underline">
+            <Link to={routes.home} className="text-blue-500 underline">
                 {t('goBackHome')}
             </Link>
         </div>

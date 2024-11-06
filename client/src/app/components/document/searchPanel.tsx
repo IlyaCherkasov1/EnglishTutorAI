@@ -2,35 +2,22 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/a
 import {useTranslation} from "react-i18next";
 import {getEnumValues} from "@/app/infrastructure/utils/enumUtils.ts";
 import {StudyTopic} from "@/app/dataModels/enums/studyTopic.ts";
-import {useLocation, useNavigate} from "react-router-dom";
-import {objectToQueryString, queryStringToObject} from "@/app/infrastructure/utils/paramsUtils.ts";
-import {useEffect, useState} from "react";
 import {Button} from "@/app/components/ui/button.tsx";
 
-const getStudyTopicFromUrl = () => {
-    const params = queryStringToObject(window.location.search);
-    return params["studyTopic"] || '';
-};
+interface Props {
+    selectedCategory: string;
+    onCategoryChange: (category: string) => void;
+}
 
-export const SearchPanel = () => {
+export const SearchPanel = (props: Props) => {
     const { t } = useTranslation();
-    const navigate = useNavigate();
-    const location = useLocation();
-    const [selectedCategory, setSelectedCategory] = useState(getStudyTopicFromUrl);
-
-    useEffect(() => {
-        setSelectedCategory(getStudyTopicFromUrl());
-    }, [location.search]);
 
     const handleCategoryChange = (category: string) => {
-        const queryString = objectToQueryString({ studyTopic: category });
-        setSelectedCategory(category);
-        navigate(`?${queryString}`, { replace: true });
+        props.onCategoryChange(category);
     };
 
     const handleResetFilters = () => {
-        setSelectedCategory('');
-        navigate('?');
+        props.onCategoryChange(StudyTopic[StudyTopic.All]);
     };
 
     return (
@@ -39,7 +26,7 @@ export const SearchPanel = () => {
             <div className="flex items-center space-x-3">
                 <span className="text-gray-800 font-semibold">{t('category')}</span>
                 <div className="relative">
-                    <Select value={selectedCategory} onValueChange={handleCategoryChange}>
+                    <Select value={props.selectedCategory} onValueChange={handleCategoryChange}>
                         <SelectTrigger
                             className="w-48 bg-gray-50 border border-gray-300 rounded-md px-4 py-2 hover:shadow-sm transition-shadow">
                             <SelectValue placeholder={t('selectCategory')} />

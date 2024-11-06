@@ -14,4 +14,5 @@ public enum StudyTopic
     Sports,
     Shopping,
     Entertainment,
+    All
 }
