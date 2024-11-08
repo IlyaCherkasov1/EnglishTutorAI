@@ -7,5 +7,5 @@ namespace EnglishTutorAI.Application.Interfaces;
 
 public interface IDocumentRetrievalService
 {
-    Task<Document> GetDocumentById(Guid id);
+    Task<DocumentResponse> GetDocumentById(Guid id);
 }

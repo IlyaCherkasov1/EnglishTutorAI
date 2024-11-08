@@ -22,6 +22,12 @@ export const DocumentListItemComponent = ({ document, onDelete }: Props) => {
 
     return (
         <Card key={document.id} className="w-full shadow-lg">
+            {document.isDocumentFinished && (
+                <div className="absolute bottom-2 right-2 bg-green-600 opacity-100 text-white text-xs
+                        font-semibold px-2 py-1 rounded-full">
+                    {t("completed")}
+                </div>
+            )}
             <>
                 <CardHeader>
                     <CardTitle>

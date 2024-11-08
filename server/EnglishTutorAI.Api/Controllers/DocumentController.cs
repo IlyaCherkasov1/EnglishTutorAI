@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using EnglishTutorAI.Api.Constants;
+﻿using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Controllers.Attributes;
 using EnglishTutorAI.Application.Constants;
 using EnglishTutorAI.Application.Handlers.AddDocument;
@@ -9,9 +8,7 @@ using EnglishTutorAI.Application.Handlers.GetDocumentDetails;
 using EnglishTutorAI.Application.Handlers.GetDocuments;
 using EnglishTutorAI.Application.Handlers.GetMistakeItem;
 using EnglishTutorAI.Application.Handlers.SaveProgress;
-using EnglishTutorAI.Application.Handlers.SplitSentences;
 using EnglishTutorAI.Application.Models;
-using EnglishTutorAI.Application.Models.Common;
 using EnglishTutorAI.Application.Models.Documents;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -54,12 +51,6 @@ public class DocumentController : ControllerBase
     public Task<DocumentResponse> GetDocumentDetails(Guid id)
     {
         return _mediator.Send(new GetDocumentDetailsQuery(id));
-    }
-
-    [HttpPost(Routes.Document.SplitDocumentContent)]
-    public Task<IEnumerable<string>> SplitDocumentContent(SplitDocumentContentRequest request)
-    {
-        return _mediator.Send(new SplitSentencesQuery(request.Text!));
     }
 
     [HttpPost(Routes.Document.SaveCurrentLine)]

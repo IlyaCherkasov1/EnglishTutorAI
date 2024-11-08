@@ -13,9 +13,10 @@ public class DocumentListSearchSpecification : DataTransformSpecification<Docume
         {
             Id = d.Id,
             Title = d.Title,
-            Content = d.Content,
+            Content = string.Join(' ', d.Sentences.Select(s => s.Text).Take(2)),
             StudyTopic = d.StudyTopic.ToString(),
             CreatedAt = d.CreatedAt,
+            IsDocumentFinished = d.CurrentLine >= d.Sentences.Count,
         })
     {
         if (model.StudyTopic != StudyTopic.All)
@@ -23,6 +24,7 @@ public class DocumentListSearchSpecification : DataTransformSpecification<Docume
             ApplyCriteria(d => d.StudyTopic == model.StudyTopic);
         }
 
+        AddInclude(d => d.Sentences);
         ApplyOrderByDescending(d => d.CreatedAt);
         ApplyPaging(model.PageNumber, model.PageSize);
     }

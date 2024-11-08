@@ -4,4 +4,5 @@ export interface DocumentListItem {
     createdAt: Date;
     content: string;
     studyTopic: string;
+    isDocumentFinished: boolean;
 }

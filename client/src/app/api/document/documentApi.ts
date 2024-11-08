@@ -1,6 +1,5 @@
 import {DocumentResponse} from "@/app/dataModels/document/documentResponse.ts";
 import {DocumentCreationRequest} from "@/app/dataModels/document/documentCreationRequest.ts";
-import {SplitDocumentContentRequest} from "@/app/dataModels/splitDocumentContentRequest.tsx";
 import {SaveCurrentLineRequest} from "@/app/dataModels/document/saveCurrentLineRequest.ts";
 import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
 import {httpGet, httpPost} from "@/app/infrastructure/requestApi.ts";
@@ -29,13 +28,6 @@ export const getMistakeHistoryItems = async (request: Pageable): Promise<Array<M
 
 export const getDocumentDetails = async (id: string): Promise<DocumentResponse> => {
     return httpGet({ url: `${documentsResource}/get-document-details/${id}` })
-}
-
-export const splitDocumentContent = async (request: SplitDocumentContentRequest): Promise<string[]> => {
-    return httpPost({
-        url: `${documentsResource}/split-document-content`,
-        body: request,
-    });
 }
 
 export const saveCurrentLine = async (request: SaveCurrentLineRequest): Promise<void> =>{

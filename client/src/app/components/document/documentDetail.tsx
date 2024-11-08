@@ -20,7 +20,6 @@ import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
 
 interface Props {
     document: DocumentResponse;
-    sentences: string[];
 }
 
 export const DocumentDetail = (props: Props) => {
@@ -37,21 +36,18 @@ export const DocumentDetail = (props: Props) => {
         setChatMessageResponse(response);
     }, [props.document.threadId]);
 
-    const methods = useForm<TDocumentDetailsSchema>({
-        resolver: zodResolver(DocumentDetailsSchema),
-    });
-
-    const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = methods;
+    const methods = useForm<TDocumentDetailsSchema>({ resolver: zodResolver(DocumentDetailsSchema) });
+    const { register, handleSubmit, reset, setFocus, formState: { errors, isSubmitting } } = methods;
 
     const isDocumentFinished = useMemo(() => {
-        return currentLine >= props.sentences.length;
-    }, [currentLine, props.sentences.length]);
+        return currentLine >= props.document.sentences.length;
+    }, [currentLine, props.document.sentences.length]);
 
     const onSubmit = async (data: { translatedText: string }) => {
         const { translatedText } = data;
 
         const result = await correctText({
-            originalText: props.sentences[currentLine],
+            originalText: props.document.sentences[currentLine],
             translatedText: translatedText,
             threadId: props.document.threadId,
             documentId: props.document.id,
@@ -65,12 +61,16 @@ export const DocumentDetail = (props: Props) => {
         } else {
             await moveToNextLine();
         }
+
+        setFocus("translatedText");
     }
 
     const moveToNextLine = async () => {
         setCurrentLine((prevLine) => prevLine + 1);
         await saveCurrentLine({ currentLine: currentLine + 1, documentId: props.document.id });
+
         reset();
+        setFocus("translatedText");
     };
 
     const handleStartAgain = async () => {
@@ -92,7 +92,7 @@ export const DocumentDetail = (props: Props) => {
                 <div className="max-w-4xl mx-auto p-4">
                     <h1 className="text-3xl font-bold mb-6">{props.document.title}</h1>
                     <div className="bg-gray-100 p-4 rounded-md mb-4">
-                        {props.sentences.map((line, index) => (
+                        {props.document.sentences.map((line, index) => (
                             <span
                                 key={index}
                                 className={`mr-1 ${index === currentLine ? 'text-black' : 'text-gray-400'}`}>
