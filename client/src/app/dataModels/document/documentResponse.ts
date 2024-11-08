@@ -1,7 +1,7 @@
 export interface DocumentResponse {
     id: string;
     title: string;
-    content: string;
+    sentences: Array<string>;
     createdAt: Date;
     threadId: string;
     currentLine: number;

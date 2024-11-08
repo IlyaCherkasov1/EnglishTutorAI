@@ -12,11 +12,16 @@ public class DocumentCreationCreationService : IDocumentCreationService
 {
     private readonly IRepository<Document> _documentRepository;
     private readonly IAssistantClientService _assistantClientService;
+    private readonly ISentenceSplitterService _sentenceSplitterService;
 
-    public DocumentCreationCreationService(IRepository<Document> documentRepository, IAssistantClientService assistantClientService)
+    public DocumentCreationCreationService(
+        IRepository<Document> documentRepository,
+        IAssistantClientService assistantClientService,
+        ISentenceSplitterService sentenceSplitterService)
     {
         _documentRepository = documentRepository;
         _assistantClientService = assistantClientService;
+        _sentenceSplitterService = sentenceSplitterService;
     }
 
     public async Task AddDocument(DocumentCreationRequest creationRequest)
@@ -24,10 +29,17 @@ public class DocumentCreationCreationService : IDocumentCreationService
         var document = new Document()
         {
             Title = creationRequest.Title,
-            Content = creationRequest.Content,
             StudyTopic = creationRequest.StudyTopic,
             ThreadId = (await _assistantClientService.CreateThread()).Id,
         };
+
+        document.Sentences = _sentenceSplitterService.Split(creationRequest.Content)
+            .Select((text, index) => new DocumentSentence
+            {
+                DocumentId = document.Id,
+                Text = text,
+                Position = index + 1
+            }).ToList();
 
         await _documentRepository.Add(document);
     }

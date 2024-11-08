@@ -1,4 +1,4 @@
-import {getDocumentDetails, splitDocumentContent} from "@/app/api/document/documentApi.ts";
+import {getDocumentDetails} from "@/app/api/document/documentApi.ts";
 import {DocumentDetail} from "@/app/components/document/documentDetail.tsx";
 import {useState} from "react";
 import {DocumentResponse} from "@/app/dataModels/document/documentResponse.ts";
@@ -8,22 +8,19 @@ import useAsyncEffect from "use-async-effect";
 const DocumentDetails = () => {
     const { documentId } = useParams<{ documentId: string }>();
     const [document, setDocument] = useState<DocumentResponse>();
-    const [sentences, setSentences] = useState<string[]>([]);
 
     useAsyncEffect(async () => {
         const documentData = await getDocumentDetails(documentId!);
-        const splitSentences = await splitDocumentContent({ text: documentData.content });
         setDocument(documentData);
-        setSentences(splitSentences);
     }, [documentId]);
 
-    if (!document || sentences.length === 0) {
+    if (!document || document.sentences.length === 0) {
         return null;
     }
 
     return (
         <div className="flex flex-col h-screen">
-            <DocumentDetail document={document} sentences={sentences} />
+            <DocumentDetail document={document} />
         </div>
     )
 };

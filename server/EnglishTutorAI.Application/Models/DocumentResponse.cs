@@ -7,7 +7,7 @@ public class DocumentResponse
 
     public required string Title { get; init; }
 
-    public required string Content { get; init; }
+    public required IEnumerable<string> Sentences { get; set; }
 
     public DateTime CreatedAt { get; init; }
 
