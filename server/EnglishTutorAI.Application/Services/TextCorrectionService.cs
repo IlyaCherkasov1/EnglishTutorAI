@@ -52,6 +52,17 @@ namespace EnglishTutorAI.Application.Services
 
             var isCorrected = _textComparisonService.HasTextChanged(request.TranslatedText, correctedText);
 
+            if (isCorrected)
+            {
+                await _linguaFixMessageRepository.Add(new LinguaFixMessage
+                {
+                    ThreadId = request.ThreadId,
+                    TranslatedText = request.TranslatedText,
+                    CorrectedText = correctedText,
+                    DocumentId = request.DocumentId,
+                });
+            }
+
             return new TextCorrectionResult(correctedText, isCorrected);
         }
 
@@ -65,14 +76,6 @@ namespace EnglishTutorAI.Application.Services
         {
             var correctedText = await _assistantClientService.GetLastMessage(request.ThreadId);
             var cleanCorrectedText = _textExtractionService.ExtractCleanText(correctedText, request.OriginalText);
-
-            await _linguaFixMessageRepository.Add(new LinguaFixMessage
-            {
-                ThreadId = request.ThreadId,
-                TranslatedText = request.TranslatedText,
-                CorrectedText = correctedText,
-                DocumentId = request.DocumentId,
-            });
 
             return cleanCorrectedText;
         }
