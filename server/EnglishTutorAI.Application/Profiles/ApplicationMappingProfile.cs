@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EnglishTutorAI.Application.Models;
+using EnglishTutorAI.Application.Resolvers;
 using EnglishTutorAI.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -9,7 +10,8 @@ public class ApplicationMappingProfile : Profile
 {
     public ApplicationMappingProfile()
     {
-        CreateMap<Document, DocumentResponse>();
+        CreateMap<Document, DocumentResponse>()
+            .ForMember(d => d.Sentences, o => o.MapFrom<DocumentSentencesToDocumentResponseResolver>());
         CreateMap<Document, DocumentListItem>()
             .ForMember(d => d.StudyTopic, o => o.MapFrom(s => s.StudyTopic.ToString()));
 

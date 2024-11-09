@@ -1,7 +1,5 @@
 ﻿using EnglishTutorAI.Application.Attributes;
 using EnglishTutorAI.Application.Interfaces;
-using EnglishTutorAI.Application.Models;
-using EnglishTutorAI.Application.Models.Common;
 using EnglishTutorAI.Application.Models.Documents;
 using EnglishTutorAI.Application.Specifications;
 using EnglishTutorAI.Domain.Entities;
@@ -9,17 +7,17 @@ using EnglishTutorAI.Domain.Entities;
 namespace EnglishTutorAI.Application.Services;
 
 [ScopedDependency]
-public class MistakeHistorySearchService : IMistakeHistorySearchService
+public class DocumentMistakeHistoryService : IDocumentMistakeHistoryService
 {
     private readonly IRepository<LinguaFixMessage> _linguaFixMessageRepository;
 
-    public MistakeHistorySearchService(IRepository<LinguaFixMessage> linguaFixMessageRepository)
+    public DocumentMistakeHistoryService(IRepository<LinguaFixMessage> linguaFixMessageRepository)
     {
         _linguaFixMessageRepository = linguaFixMessageRepository;
     }
 
-    public async Task<IEnumerable<MistakeHistoryItems>> Search(PaginationSearchModel model)
+    public async Task<IEnumerable<DocumentMistakeHistoryItems>> Get(Guid sessionId)
     {
-        return await _linguaFixMessageRepository.List(new MistakeHistoryItemsSpecification(model));
+        return await _linguaFixMessageRepository.List(new DocumentMistakeHistoryItemsSpecification(sessionId));
     }
 }

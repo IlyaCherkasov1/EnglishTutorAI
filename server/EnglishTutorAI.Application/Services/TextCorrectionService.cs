@@ -60,6 +60,7 @@ namespace EnglishTutorAI.Application.Services
                     TranslatedText = request.TranslatedText,
                     CorrectedText = correctedText,
                     DocumentId = request.DocumentId,
+                    SessionId = request.SessionId
                 });
             }
 

@@ -9,7 +9,7 @@ public class GetDocumentDetailsQueryHandler : IRequestHandler<GetDocumentDetails
 {
     private readonly IDocumentRetrievalService _documentRetrievalService;
 
-    public GetDocumentDetailsQueryHandler(IMapper mapper, IDocumentRetrievalService documentRetrievalService)
+    public GetDocumentDetailsQueryHandler(IDocumentRetrievalService documentRetrievalService)
     {
         _documentRetrievalService = documentRetrievalService;
     }

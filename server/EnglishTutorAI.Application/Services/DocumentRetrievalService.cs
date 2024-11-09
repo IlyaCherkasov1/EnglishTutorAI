@@ -12,21 +12,24 @@ public class DocumentRetrievalService : IDocumentRetrievalService
 {
     private readonly IRepository<Document> _documentRepository;
     private readonly IMapper _mapper;
+    private readonly IRepository<DocumentSession> _documentSessionRepository;
 
     public DocumentRetrievalService(
         IRepository<Document> documentRepository,
-        IMapper mapper)
+        IMapper mapper,
+        IRepository<DocumentSession> documentSessionRepository)
     {
         _documentRepository = documentRepository;
         _mapper = mapper;
+        _documentSessionRepository = documentSessionRepository;
     }
 
     public async Task<DocumentResponse> GetDocumentById(Guid id)
     {
         var document = await _documentRepository.GetSingleOrDefault(new DocumentRetrievalByIdSpecification(id));
         var documentResponse = _mapper.Map<DocumentResponse>(document);
-        documentResponse.Sentences = document!.Sentences.OrderBy(s => s.Position)
-            .Select(s => s.Text);
+        documentResponse.SessionId =
+            await _documentSessionRepository.GetSingleOrDefault(new DocumentSessionByDocumentIdSpecification(document.Id));
 
         return documentResponse;
     }

@@ -1,5 +1,4 @@
 import {Card, CardContent, CardFooter, CardHeader} from "../ui/card"
-import {getMistakeHistoryItems} from "@/app/api/document/documentApi.ts";
 import {useState} from "react";
 import DiffComponent from "@/app/components/chatBot/diffComponent.tsx";
 import {formatDateToISO} from "@/app/infrastructure/helpers/dateHelpers.ts";
@@ -8,6 +7,7 @@ import {useTranslation} from "react-i18next";
 import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
 import {Constants} from "@/app/infrastructure/common/constants.ts";
 import {InfiniteScroll} from "@/app/components/pagination/InfiniteScroll.tsx";
+import {getMistakeHistoryItems} from "@/app/api/documentHistory/documentHisoryApi.ts";
 
 export const MistakeHistory = () => {
     const [mistakeHistoryItems, setMistakeHistoryItems] = useState<Array<MistakeHistoryItems>>([]);

@@ -5,4 +5,5 @@ export interface DocumentResponse {
     createdAt: Date;
     threadId: string;
     currentLine: number;
+    sessionId: string;
 }
