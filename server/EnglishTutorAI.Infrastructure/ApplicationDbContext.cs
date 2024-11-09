@@ -21,6 +21,8 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>
 
     public DbSet<LinguaFixMessage> LinguaFixMessages { get; set; }
 
+    public DbSet<DocumentSession> DocumentSessions { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

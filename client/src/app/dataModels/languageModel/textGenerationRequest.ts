@@ -3,4 +3,5 @@ export interface TextGenerationRequest {
     translatedText: string;
     threadId: string;
     documentId: string;
+    sessionId: string;
 }

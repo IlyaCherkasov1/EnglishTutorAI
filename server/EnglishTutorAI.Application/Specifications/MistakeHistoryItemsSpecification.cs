@@ -5,9 +5,9 @@ using EnglishTutorAI.Domain.Entities;
 
 namespace EnglishTutorAI.Application.Specifications;
 
-public class MakeHistoryItemsSpecification : DataTransformSpecification<LinguaFixMessage, MistakeHistoryItems>
+public class MistakeHistoryItemsSpecification : DataTransformSpecification<LinguaFixMessage, MistakeHistoryItems>
 {
-    public MakeHistoryItemsSpecification(PaginationSearchModel model) : base(
+    public MistakeHistoryItemsSpecification(PaginationSearchModel model) : base(
         m => new MistakeHistoryItems
         {
             Id = m.Id,

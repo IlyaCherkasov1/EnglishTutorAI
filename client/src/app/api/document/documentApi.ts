@@ -4,9 +4,7 @@ import {SaveCurrentLineRequest} from "@/app/dataModels/document/saveCurrentLineR
 import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
 import {httpGet, httpPost} from "@/app/infrastructure/requestApi.ts";
 import {DocumentSearchRequest} from "@/app/dataModels/document/documentSearchRequest.ts";
-import {Pageable} from "@/app/dataModels/common/pageable.ts";
 import {objectToQueryString} from "@/app/infrastructure/utils/paramsUtils.ts";
-import {MistakeHistoryItems} from "@/app/dataModels/mistakeHistoryItems.ts";
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem.ts";
 
 const documentsResource = "document";
@@ -20,10 +18,6 @@ export const addDocument = async (request: DocumentCreationRequest) => {
 
 export const getDocuments = async (request: DocumentSearchRequest): Promise<Array<DocumentListItem>> => {
     return httpGet({ url: `${documentsResource}/get-documents${objectToQueryString(request)}` })
-}
-
-export const getMistakeHistoryItems = async (request: Pageable): Promise<Array<MistakeHistoryItems>> => {
-    return httpGet({ url: `${documentsResource}/get-mistake-history-items${objectToQueryString(request)}` })
 }
 
 export const getDocumentDetails = async (id: string): Promise<DocumentResponse> => {

@@ -41,12 +41,6 @@ public class DocumentController : ControllerBase
         return _mediator.Send(new GetDocumentsQuery(model));
     }
 
-    [HttpGet(Routes.Document.GetMistakesHistory)]
-    public Task<IEnumerable<MistakeHistoryItems>> GetMistakeHistoryItems([FromQuery]PaginationSearchModel model)
-    {
-        return _mediator.Send(new GetMistakeHistoryItemQuery(model));
-    }
-
     [HttpGet(Routes.Document.GetDocumentDetails)]
     public Task<DocumentResponse> GetDocumentDetails(Guid id)
     {

@@ -14,4 +14,6 @@ public class DocumentResponse
     public required string ThreadId { get; init; }
 
     public int CurrentLine { get; init; }
+
+    public Guid SessionId { get; set; }
 }

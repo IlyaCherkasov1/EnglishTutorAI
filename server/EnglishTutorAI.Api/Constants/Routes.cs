@@ -10,8 +10,6 @@ public static class Routes
 
         public const string GetDocument = "get-documents";
 
-        public const string GetMistakesHistory = "get-mistake-history-items";
-
         public const string GetDocumentDetails = "get-document-details/{id}";
 
         public const string SaveCurrentLine = "save-current-line";
@@ -19,6 +17,19 @@ public static class Routes
         public const string GetConversationThread = "get-conversation-thread/{threadId}";
 
         public const string DeleteDocument = "delete-document/{documentId}";
+    }
+
+    public static class DocumentHistory
+    {
+        public const string GetMistakesHistory = "get-mistake-history-items";
+
+        public const string GetDocumentSessionMistakesHistory = "get-session-mistake-history/{sessionId}";
+    }
+
+    public static class DocumentSession
+    {
+        public const string GetDocumentSession = "get-document-session/{documentId}";
+        public const string RestartDocumentSession = "restart-document-session";
     }
 
     public static class Assistant

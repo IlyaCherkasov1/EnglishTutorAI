@@ -17,6 +17,8 @@ import {
 import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
 import useAsyncEffect from "use-async-effect";
 import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
+import {DocumentResult} from "@/app/components/document/documentResult.tsx";
+import {restartDocumentSession} from "@/app/api/documentSession/documentSessionApi.ts";
 
 interface Props {
     document: DocumentResponse;
@@ -28,6 +30,7 @@ export const DocumentDetail = (props: Props) => {
     const [translatedText, setTranslatedText] = useState('');
     const [chatMessageResponse, setChatMessageResponse] = useState<ChatMessageResponse[]>([]);
     const [isCorrected, setIsCorrected] = useState(false);
+    const [sessionId, setSessionId] = useState<string>(props.document.sessionId);
 
     const { t } = useTranslation();
 
@@ -51,6 +54,7 @@ export const DocumentDetail = (props: Props) => {
             translatedText: translatedText,
             threadId: props.document.threadId,
             documentId: props.document.id,
+            sessionId: sessionId,
         })
 
         setTranslatedText(translatedText);
@@ -75,6 +79,12 @@ export const DocumentDetail = (props: Props) => {
 
     const handleStartAgain = async () => {
         await saveCurrentLine({ currentLine: 0, documentId: props.document.id });
+        const newSessionId = await restartDocumentSession({
+            documentId: props.document.id,
+            currentSessionId: props.document.sessionId,
+        })
+
+        setSessionId(newSessionId);
         setCurrentLine(0);
         setTranslatedText('');
     }
@@ -88,56 +98,58 @@ export const DocumentDetail = (props: Props) => {
 
     return (
         <div>
-            <div className="flex-1 overflow-auto">
-                <div className="max-w-4xl mx-auto p-4">
-                    <h1 className="text-3xl font-bold mb-6">{props.document.title}</h1>
-                    <div className="bg-gray-100 p-4 rounded-md mb-4">
-                        {props.document.sentences.map((line, index) => (
-                            <span
-                                key={index}
-                                className={`mr-1 ${index === currentLine ? 'text-black' : 'text-gray-400'}`}>
+            <div className="max-w-4xl mx-auto p-4">
+                <h1 className="text-3xl font-bold mb-6">{props.document.title}</h1>
+                <div className="bg-gray-100 p-4 rounded-md mb-4">
+                    {props.document.sentences.map((line, index) => (
+                        <span
+                            key={index}
+                            className={`mr-1 ${index === currentLine ? 'text-black' : 'text-gray-400'}`}>
                                 {line}
                             </span>
-                        ))}
-                    </div>
-                    {isDocumentFinished ? (
+                    ))}
+                </div>
+                {isDocumentFinished ? (
+                    <>
                         <div className="flex justify-end mt-2">
                             <Button onClick={handleStartAgain}>{t('startAgain')}</Button>
                         </div>
-                    ) : (
-                        <div>
-                            <FormProvider {...methods}>
-                                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mb-4">
-                                    <Textarea
-                                        {...register('translatedText', { required: true })}
-                                        placeholder={t('enterYourText')}
-                                        disabled={isSubmitting}
-                                        onKeyDown={handleKeyDown} />
-                                    <FormMessage>{errors.translatedText?.message}</FormMessage>
-                                    <div className="flex justify-end mt-2">
-                                        <Button type="submit" disabled={isSubmitting}>{t('send')}</Button>
+                        <DocumentResult sessionId={sessionId} />
+                    </>
+                ) : (
+                    <div>
+                        <FormProvider {...methods}>
+                            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mb-4">
+                                <Textarea
+                                    {...register('translatedText', { required: true })
+                                    }
+                                    placeholder={t('enterYourText')}
+                                    disabled={isSubmitting}
+                                    onKeyDown={handleKeyDown} />
+                                <FormMessage>{errors.translatedText?.message}</FormMessage>
+                                <div className="flex justify-end mt-2">
+                                    <Button type="submit" disabled={isSubmitting}>{t('send')}</Button>
+                                </div>
+                                {isSubmitting && (
+                                    <div className="flex items-center justify-center mt-2">
+                                        <LoadingSpinner />
                                     </div>
-                                    {isSubmitting && (
-                                        <div className="flex items-center justify-center mt-2">
-                                            <LoadingSpinner />
-                                        </div>
-                                    )}
-                                </form>
-                            </FormProvider>
-                            {translatedText.length > 0 &&
-                                <DocumentCorrectionOutput
-                                    translatedText={translatedText}
-                                    correctedText={correctedText}
-                                    isCorrected={isCorrected}
-                                    threadId={props.document.threadId}
-                                    currentLine={currentLine}
-                                />
-                            }
-                        </div>
-                    )}
-                </div>
-                <ChatBotToggle chatMessageResponse={chatMessageResponse} threadId={props.document.threadId} />
+                                )}
+                            </form>
+                        </FormProvider>
+                        {translatedText.length > 0 &&
+                            <DocumentCorrectionOutput
+                                translatedText={translatedText}
+                                correctedText={correctedText}
+                                isCorrected={isCorrected}
+                                threadId={props.document.threadId}
+                                currentLine={currentLine}
+                            />
+                        }
+                    </div>
+                )}
             </div>
+            <ChatBotToggle chatMessageResponse={chatMessageResponse} threadId={props.document.threadId} />
         </div>
     )
 }
