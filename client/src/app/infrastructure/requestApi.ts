@@ -3,6 +3,9 @@ import {clearAccessToken, getAccessToken} from "@/app/infrastructure/services/au
 import {isAccessTokenExpired, renewAccessTokenHandler} from "@/app/infrastructure/services/auth/identityService.ts";
 import {routes} from "@/app/components/layout/routes/routeLink.ts";
 import {notifications} from "@/app/components/toast/toast.tsx";
+import {contentTypes} from "@/app/infrastructure/constants/contentTypes.ts";
+import {headerNames} from "@/app/infrastructure/constants/headerNames.ts";
+import {responseHandlingStatuses} from "@/app/infrastructure/constants/responseHandlingStatuses.ts";
 
 export type HttpRequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -13,25 +16,7 @@ export interface RequestOptions<T> {
     isAnonymous?: boolean;
 }
 
-export const responseHandlingStatuses = {
-    unhandled: 0,
-    unauthenticated: 1,
-    refreshTokenWasFailed: 2,
-    refreshTokenWasCompleted: 3,
-    unauthorized: 4,
-};
-
 export const apiRootUrl = import.meta.env.VITE_APP_API_URL;
-
-const headerNames = {
-    authenticate: "www-authenticate",
-    exceptionTraceId: "X-Trace-Id",
-};
-
-const contentTypes = {
-    plainText: "text/plain",
-    json: "application/json",
-};
 
 const getContentTypeHeader = <T>(options?: RequestOptions<T>): { "Content-Type": string } | EmptyObject =>
     options === null || options === undefined
@@ -109,6 +94,9 @@ const handleHeaders = async (response: Response): Promise<number> => {
         case 401:
             handleHeaderStatus = await handleUnauthorized(response);
             break;
+        case 404:
+            handleHeaderStatus = responseHandlingStatuses.notFound;
+            break;
     }
 
     handleRedirect(handleHeaderStatus);
@@ -149,6 +137,9 @@ const handleRedirect = (status: number) => {
         case responseHandlingStatuses.unauthorized:
         case responseHandlingStatuses.unauthenticated:
             redirectToPage = routes.login;
+            break;
+        case responseHandlingStatuses.notFound:
+            redirectToPage = routes.home;
             break;
     }
 

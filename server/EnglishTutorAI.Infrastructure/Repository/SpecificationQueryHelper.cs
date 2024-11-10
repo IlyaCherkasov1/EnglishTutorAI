@@ -2,7 +2,7 @@
 using EnglishTutorAI.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EnglishTutorAI.Infrastructure.Data;
+namespace EnglishTutorAI.Infrastructure.Repository;
 
 internal static class SpecificationQueryHelper<T> where T : Entity
 {

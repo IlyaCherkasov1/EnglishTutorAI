@@ -1,6 +1,7 @@
 ﻿using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Controllers.Attributes;
 using EnglishTutorAI.Application.Constants;
+using EnglishTutorAI.Application.Exceptions;
 using EnglishTutorAI.Application.Handlers.AddDocument;
 using EnglishTutorAI.Application.Handlers.DeleteDocument;
 using EnglishTutorAI.Application.Handlers.GetConversationThread;
@@ -42,9 +43,16 @@ public class DocumentController : ControllerBase
     }
 
     [HttpGet(Routes.Document.GetDocumentDetails)]
-    public Task<DocumentResponse> GetDocumentDetails(Guid id)
+    public async Task<IActionResult> GetDocumentDetails(string id)
     {
-        return _mediator.Send(new GetDocumentDetailsQuery(id));
+        if (!Guid.TryParse(id, out var documentId))
+        {
+            return NotFound("Document not found.");
+        }
+
+        var documentResponse = await _mediator.Send(new GetDocumentDetailsQuery(documentId));
+
+        return Ok(documentResponse);
     }
 
     [HttpPost(Routes.Document.SaveCurrentLine)]

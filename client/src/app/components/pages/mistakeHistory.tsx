@@ -5,7 +5,7 @@ import {formatDateToISO} from "@/app/infrastructure/helpers/dateHelpers.ts";
 import {MistakeHistoryItems} from "@/app/dataModels/mistakeHistoryItems.ts";
 import {useTranslation} from "react-i18next";
 import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
-import {Constants} from "@/app/infrastructure/common/constants.ts";
+import {Constants} from "@/app/infrastructure/constants/constants.ts";
 import {InfiniteScroll} from "@/app/components/pagination/InfiniteScroll.tsx";
 import {getMistakeHistoryItems} from "@/app/api/documentHistory/documentHisoryApi.ts";
 

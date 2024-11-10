@@ -19,3 +19,5 @@ bin/
 # Application settings configuration files
 **/appsettings*.json
 *.sln.DotSettings.user
+
+*.tsbuildinfo
