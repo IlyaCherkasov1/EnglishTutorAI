@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace EnglishTutorAI.Infrastructure.Data;
+namespace EnglishTutorAI.Infrastructure.Repository;
 
 [ScopedDependency]
 public class UnitOfWork : IUnitOfWork

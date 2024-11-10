@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import {ReactNode, useEffect, useRef} from "react";
 
 interface InfiniteScrollProps {
     loadMore: () => void;
     hasMore: boolean;
-    loader: React.ReactNode;
-    children: React.ReactNode;
+    loader: ReactNode;
+    children: ReactNode;
 }
 
 export const InfiniteScroll: React.FC<InfiniteScrollProps> = ({ loadMore, hasMore, loader, children }) => {

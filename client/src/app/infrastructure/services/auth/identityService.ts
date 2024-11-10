@@ -1,9 +1,9 @@
 import {clearAccessToken, setAccessToken} from "@/app/infrastructure/services/auth/accessTokenService.ts";
 import {jwtDecode} from "jwt-decode";
-import {responseHandlingStatuses} from "@/app/infrastructure/requestApi.ts";
 import {logout, renewAccessToken} from "@/app/api/identity/identityApi.ts";
 import {routes} from "@/app/components/layout/routes/routeLink.ts";
 import {contextService} from "@/app/infrastructure/services/contextService.ts";
+import {responseHandlingStatuses} from "@/app/infrastructure/constants/responseHandlingStatuses.ts";
 
 export const applyNewIdentity = async (accessToken: string) => {
     setAccessToken(accessToken);

@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {isAuthPage} from '@/app/infrastructure/utils/authUtils.ts';
 import {renewAccessTokenHandler} from '@/app/infrastructure/services/auth/identityService.ts';
-import {responseHandlingStatuses} from '@/app/infrastructure/requestApi.ts';
 import {routes} from '@/app/components/layout/routes/routeLink.ts';
 import {contextStore} from '@/app/infrastructure/stores/contextStore.ts';
 import {contextService} from '@/app/infrastructure/services/contextService.ts';
 import {observer} from "mobx-react-lite";
 import useAsyncEffect from "use-async-effect";
 import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
+import {responseHandlingStatuses} from "@/app/infrastructure/constants/responseHandlingStatuses.ts";
 
 interface AuthGuardProps {
     children: React.ReactNode;
