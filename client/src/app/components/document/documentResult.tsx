@@ -27,38 +27,16 @@ export const DocumentResult = (props: Props) => {
                     <p className="text-gray-500 mt-4">{t('translationSuccessMessage')}</p>
                 )}
                 {mistakeHistoryItems?.map(item => (
-                    <>
-                        <Card className="mb-4" key={item.id}>
-                            <CardHeader>
-                                {item.translatedText}
-                            </CardHeader>
-                            <CardContent>
-                                <DiffComponent
-                                    translatedText={item.translatedText}
-                                    correctedText={item.correctedText} />
-                            </CardContent>
-                        </Card>
-                        <Card className="mb-4" key={item.id}>
-                            <CardHeader>
-                                {item.translatedText}
-                            </CardHeader>
-                            <CardContent>
-                                <DiffComponent
-                                    translatedText={item.translatedText}
-                                    correctedText={item.correctedText} />
-                            </CardContent>
-                        </Card>
-                        <Card className="mb-4" key={item.id}>
-                            <CardHeader>
-                                {item.translatedText}
-                            </CardHeader>
-                            <CardContent>
-                                <DiffComponent
-                                    translatedText={item.translatedText}
-                                    correctedText={item.correctedText} />
-                            </CardContent>
-                        </Card>
-                    </>
+                    <Card className="mb-4" key={item.id}>
+                        <CardHeader>
+                            {item.translatedText}
+                        </CardHeader>
+                        <CardContent>
+                            <DiffComponent
+                                translatedText={item.translatedText}
+                                correctedText={item.correctedText} />
+                        </CardContent>
+                    </Card>
                 ))}
             </div>
         </div>
