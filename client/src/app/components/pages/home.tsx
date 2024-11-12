@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {getDocuments} from "@/app/api/document/documentApi.ts";
+import {getDocuments} from "@/app/api/documentApi.ts";
 import {DocumentsList} from "@/app/components/document/documentsList.tsx";
 import {Constants} from "@/app/infrastructure/constants/constants.ts";
 import {Pageable} from "@/app/dataModels/common/pageable.ts";

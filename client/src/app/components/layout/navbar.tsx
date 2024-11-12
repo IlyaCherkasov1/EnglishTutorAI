@@ -19,6 +19,11 @@ export const Navbar = () => {
                           "text-gray-900 font-medium" : "text-gray-700 hover:text-black"}`}>
                     {t('history')}
                 </Link>
+                <Link to={routes.achievements}
+                      className={`block py-2 ${location.pathname === routes.achievements ?
+                          "text-gray-900 font-medium" : "text-gray-700 hover:text-black"}`}>
+                    {t('achievementsLabel')}
+                </Link>
             </nav>
         </div>
     );

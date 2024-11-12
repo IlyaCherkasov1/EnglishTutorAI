@@ -1,5 +1,4 @@
 using EnglishTutorAI.Application.Attributes;
-using EnglishTutorAI.Application.Exceptions;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models.Common;
 using EnglishTutorAI.Application.Specifications.Configurations;
@@ -48,7 +47,13 @@ public class Repository<T> : IRepository<T> where T : Entity
     public async Task<T> Single(ISpecification<T> specification)
     {
         var queryable = _specificationHandler.ApplySpecification(specification);
-        return await RepositoryHelper.GetSingleWithExceptionHandling(queryable);
+        return await queryable.SingleAsync();
+    }
+
+    public async Task<TResult> Single<TResult>(IDataTransformSpecification<T, TResult> specification)
+    {
+        var queryable = _specificationHandler.ApplyDataTransformSpecification(specification);
+        return await queryable.SingleAsync();
     }
 
     public Task<IReadOnlyList<T>> ListAll()
@@ -165,6 +170,20 @@ public class Repository<T> : IRepository<T> where T : Entity
             Items = items,
             TotalCount = totalCount,
         };
+    }
+
+    public async Task<bool> Any(ISpecification<T> specification)
+    {
+        var queryable = _specificationHandler.ApplySpecification(specification);
+
+        return await queryable.AnyAsync();
+    }
+
+    public async Task<bool> Any()
+    {
+        var queryable = _specificationHandler.ApplySpecification(new Specification<T>());
+
+        return await queryable.AnyAsync();
     }
 
 

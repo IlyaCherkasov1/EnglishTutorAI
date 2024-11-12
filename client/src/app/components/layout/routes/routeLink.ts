@@ -11,5 +11,6 @@ export const routes = {
     },
     document: {
         documentDetails: "/documents/:documentId"
-    }
+    },
+    achievements: "/achievements",
 };

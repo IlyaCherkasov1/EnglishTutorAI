@@ -3,6 +3,7 @@ import {ContextResponse} from "@/app/dataModels/contextResponse.ts";
 import {userRoles} from "@/app/infrastructure/constants/userRoles.ts";
 
 class ContextStore {
+    public userId?: string;
     public isAuthenticated = false;
     public firstName?: string;
     public isContextLoaded = false;
@@ -17,6 +18,7 @@ class ContextStore {
             this.isContextLoaded = true;
         }
 
+        this.userId = response.userId;
         this.isAuthenticated = response.isAuthenticated;
         this.firstName = response.firstName;
         this.roleName = response.roleName;

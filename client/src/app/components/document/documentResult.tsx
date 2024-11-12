@@ -1,6 +1,6 @@
 import {useState} from "react";
 import useAsyncEffect from "use-async-effect";
-import {getDocumentSessionMistakesHistory} from "@/app/api/documentHistory/documentHisoryApi.ts";
+import {getDocumentSessionMistakesHistory} from "@/app/api/documentHisoryApi.ts";
 import {DocumentMistakeHistoryItems} from "@/app/dataModels/document/documentMistakeHistoryItems.ts";
 import {Card, CardContent, CardHeader} from "@/app/components/ui/card.tsx";
 import DiffComponent from "@/app/components/chatBot/diffComponent.tsx";

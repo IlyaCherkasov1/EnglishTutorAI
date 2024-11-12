@@ -61,4 +61,9 @@ public static class Routes
     {
         public const string ExternalAuthCallbackUrl = "https://localhost:7008/api/externalAuth/external-auth-callback";
     }
+
+    public static class Achievements
+    {
+        public const string GetAchievements = "get-achievements/{userId}";
+    }
 }
