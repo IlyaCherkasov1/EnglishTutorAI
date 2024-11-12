@@ -1,7 +1,7 @@
 import {useForm, FormProvider, Controller} from "react-hook-form";
 import {useTranslation} from "react-i18next";
 import {Textarea} from "@/app/components/ui/textarea.tsx";
-import {addDocument} from "@/app/api/document/documentApi.ts";
+import {addDocument} from "@/app/api/documentApi.ts";
 import {Button} from "@/app/components/ui/button.tsx";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Input} from "@/app/components/ui/input.tsx";

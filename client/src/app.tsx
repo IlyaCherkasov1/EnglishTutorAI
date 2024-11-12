@@ -12,6 +12,7 @@ import {RequireRole} from "@/app/components/auth/requireRole.tsx";
 import {AccessDenied} from "@/app/components/pages/accessDenied.tsx";
 import {MistakeHistory} from "@/app/components/pages/mistakeHistory.tsx";
 import {routes} from "@/app/components/layout/routes/routeLink.ts";
+import {Achievements} from "@/app/components/achievements/achievements.tsx";
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
                         <Route path={routes.document.documentDetails} element={<DocumentDetails />} />
                         <Route path={routes.accessDenied} element={<AccessDenied />} />
                         <Route path={routes.history} element={<MistakeHistory />} />
+                        <Route path={routes.achievements} element={<Achievements />} />
                     </Route>
                 </Routes>
             </AuthGuard>

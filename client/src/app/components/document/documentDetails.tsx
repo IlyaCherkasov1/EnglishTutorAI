@@ -1,4 +1,4 @@
-import {getDocumentDetails} from "@/app/api/document/documentApi.ts";
+import {getDocumentDetails} from "@/app/api/documentApi.ts";
 import {DocumentDetail} from "@/app/components/document/documentDetail.tsx";
 import {useState} from "react";
 import {DocumentResponse} from "@/app/dataModels/document/documentResponse.ts";

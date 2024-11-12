@@ -14,6 +14,10 @@ public interface IRepository<T> where T : Entity
 
     Task<T?> GetFirstOrDefault(ISpecification<T> specification);
 
+    Task<T> Single(ISpecification<T> specification);
+
+    Task<TResult> Single<TResult>(IDataTransformSpecification<T, TResult> specification);
+
     Task<IReadOnlyList<T>> ListAll();
 
     Task<IReadOnlyList<T>> List(ISpecification<T> specification);
@@ -45,4 +49,8 @@ public interface IRepository<T> where T : Entity
     Task<SearchResult<T>> Search(ISpecification<T> specification);
 
     Task<SearchResult<TResult>> Search<TResult>(IDataTransformSpecification<T, TResult> specification);
+
+    Task<bool> Any(ISpecification<T> specification);
+
+    Task<bool> Any();
 }

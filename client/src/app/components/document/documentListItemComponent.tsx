@@ -1,4 +1,4 @@
-import {deleteDocument} from "@/app/api/document/documentApi.ts";
+import {deleteDocument} from "@/app/api/documentApi.ts";
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem.ts";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/app/components/ui/card.tsx";
 import {formatDateToISO} from "@/app/infrastructure/helpers/dateHelpers.ts";

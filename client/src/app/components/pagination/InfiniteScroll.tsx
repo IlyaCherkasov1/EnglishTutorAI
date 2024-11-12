@@ -17,7 +17,7 @@ export const InfiniteScroll: React.FC<InfiniteScrollProps> = ({ loadMore, hasMor
                     loadMore();
                 }
             },
-            { threshold: 0.7 }
+            { threshold: 0.9 }
         );
 
         const currentObserverRef = observerRef.current;

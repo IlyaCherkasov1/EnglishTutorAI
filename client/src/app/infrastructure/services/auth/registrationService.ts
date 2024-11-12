@@ -1,4 +1,4 @@
-import {registerUser} from "@/app/api/identity/identityApi.ts";
+import {registerUser} from "@/app/api/identityApi.ts";
 import {RegisterSchema, TRegisterSchema} from "@/app/infrastructure/validationSchemas/registerSchema.ts";
 import {getLocalizedMessage} from "@/app/infrastructure/utils/localizerUtils.ts";
 

@@ -1,4 +1,4 @@
-import {loginUser} from "@/app/api/identity/identityApi.ts";
+import {loginUser} from "@/app/api/identityApi.ts";
 import {LoginSchema, TLoginSchema} from "@/app/infrastructure/validationSchemas/loginSchema.ts";
 
 type LoginResult =

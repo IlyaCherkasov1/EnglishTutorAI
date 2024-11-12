@@ -75,5 +75,30 @@
   "noRecords": "There are no records yet.",
   "home": "Home",
   "completed": "Completed",
-  "results": "Results"
+  "results": "Results",
+  "achievementsLabel": "Achievements",
+  "achievements": {
+    "flawlessTranslator": {
+      "name": "Flawless Translator",
+      "description": "Translate sentences without making any mistakes."
+    },
+    "noviceTranslator": {
+      "name": "Novice Translator",
+      "description": "Translate sentences"
+    },
+    "dedicatedTranslator": {
+      "name": "Dedicated Translator",
+      "description": "Complete translates"
+    },
+    "grammarPerfectionist": {
+      "name": "Grammar Perfectionist",
+      "description": "Correct grammar mistakes"
+    },
+    "perfectPassage": {
+      "name": "Perfect Passage",
+      "description": "Complete entire translate without any mistakes."
+    }
+  },
+  "level": "Level",
+  "progress": "Progress"
 }

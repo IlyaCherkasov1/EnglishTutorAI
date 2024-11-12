@@ -1,5 +1,5 @@
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/app/components/ui/accordion.tsx";
-import {sendMessage} from "@/app/api/languageModel/languageModelApi.ts";
+import {sendMessage} from "@/app/api/languageModelApi.ts";
 import {useState} from "react";
 import {HubConnectionBuilder} from "@microsoft/signalr";
 import useAsyncEffect from "use-async-effect";

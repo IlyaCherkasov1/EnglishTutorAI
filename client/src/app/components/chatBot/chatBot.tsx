@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
 import {ConversationRole} from "@/app/dataModels/enums/conversationRole.ts";
-import {sendMessageWithSave} from "@/app/api/languageModel/languageModelApi.ts";
+import {sendMessageWithSave} from "@/app/api/languageModelApi.ts";
 import {Bot} from "lucide-react";
 import {Input} from "@/app/components/ui/input.tsx";
 import {Button} from "@/app/components/ui/button.tsx";

@@ -1,4 +1,4 @@
-import {getContext} from "@/app/api/context/contextApi.ts";
+import {getContext} from "@/app/api/contextApi.ts";
 import {contextStore} from "@/app/infrastructure/stores/contextStore.ts";
 
 export const contextService = {

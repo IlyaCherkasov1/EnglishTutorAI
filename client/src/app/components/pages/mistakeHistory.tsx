@@ -7,7 +7,7 @@ import {useTranslation} from "react-i18next";
 import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
 import {Constants} from "@/app/infrastructure/constants/constants.ts";
 import {InfiniteScroll} from "@/app/components/pagination/InfiniteScroll.tsx";
-import {getMistakeHistoryItems} from "@/app/api/documentHistory/documentHisoryApi.ts";
+import {getMistakeHistoryItems} from "@/app/api/documentHisoryApi.ts";
 
 export const MistakeHistory = () => {
     const [mistakeHistoryItems, setMistakeHistoryItems] = useState<Array<MistakeHistoryItems>>([]);

@@ -17,19 +17,22 @@ public class IdentityService : IIdentityService
     private readonly IRefreshTokenCookieService _refreshTokenCookieService;
     private readonly ISessionService _sessionService;
     private readonly IClaimsService _claimsService;
+    private readonly IUserAchievementSeeder _userAchievementSeeder;
 
     public IdentityService(
         UserManager<User> userManager,
         IRefreshTokenCookieService refreshTokenCookieService,
         ISessionService sessionService,
         IClaimsService claimsService,
-        IJwtAuthService jwtAuthService)
+        IJwtAuthService jwtAuthService,
+        IUserAchievementSeeder userAchievementSeeder)
     {
         _userManager = userManager;
         _refreshTokenCookieService = refreshTokenCookieService;
         _sessionService = sessionService;
         _claimsService = claimsService;
         _jwtAuthService = jwtAuthService;
+        _userAchievementSeeder = userAchievementSeeder;
     }
 
     public async Task<Result> RegisterUser(UserRegisterRequest model)
@@ -54,6 +57,8 @@ public class IdentityService : IIdentityService
         {
             return ResultBuilder.BuildFailed(roleResult.Errors.Select(e => e.Description));
         }
+
+        await _userAchievementSeeder.Seed(user);
 
         return ResultBuilder.BuildSucceeded();
     }

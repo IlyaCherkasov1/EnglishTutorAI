@@ -1,12 +1,12 @@
 import {DocumentResponse} from "@/app/dataModels/document/documentResponse.ts";
 import React, {useMemo, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {getConversationThread, saveCurrentLine} from "@/app/api/document/documentApi.ts";
+import {getConversationThread, saveCurrentLine} from "@/app/api/documentApi.ts";
 import {Button} from "@/app/components/ui/button.tsx";
 import {Textarea} from "@/app/components/ui/textarea.tsx";
 import DocumentCorrectionOutput from "@/app/components/document/documentCorrectionOutput.tsx";
 import {FormProvider, useForm} from "react-hook-form";
-import {correctText} from "@/app/api/languageModel/languageModelApi.ts";
+import {correctText} from "@/app/api/languageModelApi.ts";
 import ChatBotToggle from "@/app/components/chatBot/chatBotToggle.tsx";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {FormMessage} from "@/app/components/ui/form.tsx";
@@ -18,7 +18,7 @@ import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
 import useAsyncEffect from "use-async-effect";
 import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
 import {DocumentResult} from "@/app/components/document/documentResult.tsx";
-import {restartDocumentSession} from "@/app/api/documentSession/documentSessionApi.ts";
+import {restartDocumentSession} from "@/app/api/documentSessionApi.ts";
 
 interface Props {
     document: DocumentResponse;
