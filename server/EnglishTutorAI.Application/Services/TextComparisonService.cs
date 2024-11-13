@@ -6,33 +6,26 @@ using EnglishTutorAI.Application.Interfaces;
 namespace EnglishTutorAI.Application.Services;
 
 [ScopedDependency]
-public partial class TextComparisonService : ITextComparisonService
+public class TextComparisonService : ITextComparisonService
 {
-    [GeneratedRegex(@"\p{C}+")]
-    private static partial Regex InvisibleCharsRegex();
+    private readonly ITextSplitterService _textSplitterService;
 
-    private static readonly char[] Separator = [' ', '.', ',', ';', ':', '!', '?', '\'', '\"', '(', ')'];
+    public TextComparisonService(ITextSplitterService textSplitterService)
+    {
+        _textSplitterService = textSplitterService;
+    }
 
     public bool HasTextChanged(string originalText, string correctedText)
     {
-        var originalWords = originalText.Split(Separator, StringSplitOptions.RemoveEmptyEntries)
-            .Select(CleanString)
-            .ToList();
-
-        var correctedWords = correctedText.Split(Separator, StringSplitOptions.RemoveEmptyEntries)
-            .Select(CleanString)
-            .ToList();
+        var originalWords = _textSplitterService.SplitText(originalText);
+        var correctedWords = _textSplitterService.SplitText(correctedText);
 
         if (originalWords.Count != correctedWords.Count)
         {
             return true;
         }
 
-        return originalWords.Where((t, i) => !t.Equals(correctedWords[i], StringComparison.OrdinalIgnoreCase)).Any();
-    }
-
-    private static string CleanString(string input)
-    {
-        return InvisibleCharsRegex().Replace(input, "").Normalize(NormalizationForm.FormC);
+        return originalWords.Where((t, i) =>
+            !t.Equals(correctedWords[i], StringComparison.OrdinalIgnoreCase)).Any();
     }
 }

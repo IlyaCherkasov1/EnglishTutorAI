@@ -29,6 +29,8 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>
 
     public DbSet<AchievementLevel> AchievementLevels { get; init; }
 
+    public DbSet<UserStatistics> UserStatistics { get; init; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

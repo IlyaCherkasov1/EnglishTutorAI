@@ -2,20 +2,31 @@ import { useState } from "react";
 import { AchievementsResponse } from "@/app/dataModels/achievementsResponse.ts";
 import useAsyncEffect from "use-async-effect";
 import { getAchievements } from "@/app/api/achievementsApi.ts";
-import { contextStore } from "@/app/infrastructure/stores/contextStore.ts";
 import { useTranslation } from "react-i18next";
+import {UserStatisticsResponse} from "@/app/dataModels/userStatisticsResponse.ts";
+import {getUserStatistics} from "@/app/api/userStatisticsApi.ts";
 
 export const Achievements = () => {
     const { t } = useTranslation();
     const [achievements, setAchievements] = useState<Array<AchievementsResponse>>([]);
+    const [statistics, setStatistics] = useState<UserStatisticsResponse>();
 
     useAsyncEffect(async () => {
-        const achievements = await getAchievements(contextStore.userId!);
-        setAchievements(achievements);
+        const [achievementsData, statisticsData] = await Promise.all([
+            getAchievements(),
+            getUserStatistics()
+        ]);
+        setAchievements(achievementsData);
+        setStatistics(statisticsData);
     }, []);
 
     return (
         <div className="bg-gray-100 p-4 rounded-lg">
+            {statistics && (
+                <div className="mb-5">
+                    <p>{t('correctedErrors')}: {statistics.correctedErrors}</p>
+                </div>
+            )}
             <ul>
                 {achievements.map(achievement => {
                     const progressPercentage = Math.min(

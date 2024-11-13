@@ -1,5 +1,6 @@
 ﻿using EnglishTutorAI.Application.Attributes;
 using EnglishTutorAI.Application.Configurations;
+using EnglishTutorAI.Application.Constants;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -12,11 +13,16 @@ public class AdminUserSeeder : IAdminUserSeeder
 {
     private readonly UserManager<User> _userManager;
     private readonly IOptions<AdminUserOptions> _adminUserOptions;
+    private readonly IRepository<UserStatistics> _userStatisticsRepository;
 
-    public AdminUserSeeder(UserManager<User> userManager, IOptions<AdminUserOptions> adminUserOptions)
+    public AdminUserSeeder(
+        UserManager<User> userManager,
+        IOptions<AdminUserOptions> adminUserOptions,
+        IRepository<UserStatistics> userStatisticsRepository)
     {
         _userManager = userManager;
         _adminUserOptions = adminUserOptions;
+        _userStatisticsRepository = userStatisticsRepository;
     }
 
     public async Task SeedAdminUserAsync()
@@ -36,6 +42,12 @@ public class AdminUserSeeder : IAdminUserSeeder
             };
 
             await _userManager.CreateAsync(newUser, _adminUserOptions.Value.Password);
+            await _userManager.AddToRoleAsync(newUser, UserRoles.Admin);
+            await _userStatisticsRepository.Add(new UserStatistics
+            {
+                UserId = user.Id,
+                CorrectedMistakes = 0,
+            });
         }
     }
 }

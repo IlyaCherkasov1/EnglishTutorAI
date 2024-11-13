@@ -15,6 +15,6 @@ public class GetUserAchievementsQueryHandler : IRequestHandler<GetUserAchievemen
 
     public Task<IEnumerable<UserAchievementResponse>> Handle(GetUserAchievementsQuery request, CancellationToken cancellationToken)
     {
-        return _userAchievementService.GetUserAchievements(request.UserId);
+        return _userAchievementService.GetUserAchievements();
     }
 }

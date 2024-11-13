@@ -1,6 +1,6 @@
 ﻿using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Controllers.Attributes;
-using EnglishTutorAI.Application.Handlers.GetUserAchievements;
+using EnglishTutorAI.Application.Handlers.GetUserStatistics;
 using EnglishTutorAI.Application.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -11,18 +11,18 @@ namespace EnglishTutorAI.Api.Controllers;
 [ApiRoute]
 [Authorize]
 [ApiController]
-public class AchievementsController : ControllerBase
+public class UserStatisticsController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public AchievementsController(IMediator mediator)
+    public UserStatisticsController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
-    [HttpGet(Routes.Achievements.GetAchievements)]
-    public Task<IEnumerable<UserAchievementResponse>> GetUserAchievements()
+    [HttpGet(Routes.UserStatistics.GetStatistics)]
+    public Task<UserStatisticsResponse> GetUserStatistics()
     {
-        return _mediator.Send(new GetUserAchievementsQuery());
+        return _mediator.Send(new GetUserStatisticsQuery());
     }
 }

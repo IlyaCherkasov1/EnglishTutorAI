@@ -13,7 +13,7 @@ public class DocumentMistakeHistoryItemsSpecification : DataTransformSpecificati
             Id = m.Id,
             CorrectedText = m.CorrectedText,
             TranslatedText = m.TranslatedText,
-        }, m => m.SessionId == sessionId)
+        }, m => m.DocumentSessionId == sessionId)
     {
         ApplyOrderBy(m => m.CreatedAt);
     }

@@ -2,7 +2,6 @@
 
 public class ContextResponse
 {
-    public Guid UserId { get; set; }
     public bool IsAuthenticated { get; init; }
 
     public  string FirstName { get; init; } = string.Empty;

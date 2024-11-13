@@ -28,7 +28,6 @@ public static class Routes
 
     public static class DocumentSession
     {
-        public const string GetDocumentSession = "get-document-session/{documentId}";
         public const string RestartDocumentSession = "restart-document-session";
     }
 
@@ -64,6 +63,11 @@ public static class Routes
 
     public static class Achievements
     {
-        public const string GetAchievements = "get-achievements/{userId}";
+        public const string GetAchievements = "get-achievements";
+    }
+
+    public static class UserStatistics
+    {
+        public const string GetStatistics = "get-statistics";
     }
 }
