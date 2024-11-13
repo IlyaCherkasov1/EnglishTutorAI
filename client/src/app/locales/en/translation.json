@@ -90,15 +90,12 @@
       "name": "Dedicated Translator",
       "description": "Complete translates"
     },
-    "grammarPerfectionist": {
-      "name": "Grammar Perfectionist",
-      "description": "Correct grammar mistakes"
-    },
     "perfectPassage": {
       "name": "Perfect Passage",
       "description": "Complete entire translate without any mistakes."
     }
   },
   "level": "Level",
-  "progress": "Progress"
+  "progress": "Progress",
+  "correctedErrors": "corrected Errors"
 }

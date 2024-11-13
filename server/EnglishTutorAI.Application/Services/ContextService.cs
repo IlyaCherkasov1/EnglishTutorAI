@@ -33,7 +33,6 @@ public class ContextService : IContextService
 
         return new ContextResponse
         {
-            UserId = user.Id,
             FirstName = user.FirstName,
             IsAuthenticated = userPrincipal.Identity!.IsAuthenticated,
             RoleName = roles,

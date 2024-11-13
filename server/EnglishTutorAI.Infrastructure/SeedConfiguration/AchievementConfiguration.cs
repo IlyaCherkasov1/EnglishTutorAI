@@ -12,42 +12,34 @@ public class AchievementConfiguration : IEntityTypeConfiguration<Achievement>
             new Achievement
             {
                 Id = Guid.Parse("684F3EFB-BF12-42AA-8FF4-17705F81D447"),
-                Name = "Novice Translator",
-                Description = "Translate sentences",
+                Name = "achievements.flawlessTranslator.name",
+                Description = "achievements.flawlessTranslator.description",
                 IsCompleted = false,
                 IconFileName = "novice_translator_icon.png",
             },
             new Achievement
             {
                 Id = Guid.Parse("B4631AAF-F4E1-419F-A073-8DA3B86FB6B5"),
-                Name = "Dedicated Translator",
-                Description = "Complete translates",
+                Name = "achievements.dedicatedTranslator.name",
+                Description = "achievements.dedicatedTranslator.description",
                 IsCompleted = false,
                 IconFileName = "dedicated_translator_icon.png",
             },
             new Achievement
             {
                 Id = Guid.Parse("34FF3DDA-DCFA-4F35-BB1B-0B13344CBF70"),
-                Name = "Flawless Translator",
-                Description = "Translate sentences without making any mistakes.",
+                Name = "achievements.flawlessTranslator.name",
+                Description = "achievements.flawlessTranslator.description",
                 IsCompleted = false,
                 IconFileName = "flawless_translator_icon.png",
             },
             new Achievement
             {
                 Id = Guid.Parse("e5ceb7fe-c164-4dcb-9153-1427cc9e1225"),
-                Name = "Perfect Passage",
-                Description = "Complete entire translate without any mistakes.",
+                Name = "achievements.perfectPassage.name",
+                Description = "achievements.perfectPassage.description",
                 IsCompleted = false,
                 IconFileName = "perfect_passage_icon.png",
-            },
-            new Achievement
-            {
-                Id = Guid.Parse("E2665643-F566-4CBF-90B8-E85F0906D8BB"),
-                Name = "Grammar Perfectionist",
-                Description = "Correct grammar mistakes",
-                IsCompleted = false,
-                IconFileName = "grammar_perfectionist_icon.png",
             }
         );
     }

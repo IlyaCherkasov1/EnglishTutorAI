@@ -3,4 +3,4 @@ using MediatR;
 
 namespace EnglishTutorAI.Application.Handlers.GetUserAchievements;
 
-public record GetUserAchievementsQuery(Guid UserId) : IRequest<IEnumerable<UserAchievementResponse>>;
+public record GetUserAchievementsQuery : IRequest<IEnumerable<UserAchievementResponse>>;

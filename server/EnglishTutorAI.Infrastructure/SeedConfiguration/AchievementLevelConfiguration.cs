@@ -20,10 +20,6 @@ public class AchievementLevelConfiguration : IEntityTypeConfiguration<Achievemen
             new AchievementLevel { Id = Guid.Parse("72A62120-25E8-4A23-B639-694C73A1010C"), AchievementId = Guid.Parse("34FF3DDA-DCFA-4F35-BB1B-0B13344CBF70"), Goal = 100},
             new AchievementLevel { Id = Guid.Parse("321AB4E0-B331-4560-906E-46873E66DBAD"), AchievementId = Guid.Parse("e5ceb7fe-c164-4dcb-9153-1427cc9e1225"), Goal = 3},
             new AchievementLevel { Id = Guid.Parse("A56C2EB0-F02D-46DA-A1CB-892097B673B2"), AchievementId = Guid.Parse("e5ceb7fe-c164-4dcb-9153-1427cc9e1225"), Goal = 10},
-            new AchievementLevel { Id = Guid.Parse("2443BA90-2D79-4645-8329-5E68D07DEA12"), AchievementId = Guid.Parse("e5ceb7fe-c164-4dcb-9153-1427cc9e1225"), Goal = 20},
-            new AchievementLevel { Id = Guid.Parse("6AFE17C0-1D63-4802-9750-050B42E6835D"), AchievementId = Guid.Parse("E2665643-F566-4CBF-90B8-E85F0906D8BB"), Goal = 3},
-            new AchievementLevel { Id = Guid.Parse("3EA4A320-2805-406D-86D4-FD59D93A41A0"), AchievementId = Guid.Parse("E2665643-F566-4CBF-90B8-E85F0906D8BB"), Goal = 10},
-            new AchievementLevel { Id = Guid.Parse("971E2141-689D-44EB-AD16-B26DD26C7D8E"), AchievementId = Guid.Parse("E2665643-F566-4CBF-90B8-E85F0906D8BB"), Goal = 20},
-            new AchievementLevel { Id = Guid.Parse("35FB57B1-985C-40DA-ACC3-9FFCF8362FEC"), AchievementId = Guid.Parse("E2665643-F566-4CBF-90B8-E85F0906D8BB"), Goal = 20, });
+            new AchievementLevel { Id = Guid.Parse("2443BA90-2D79-4645-8329-5E68D07DEA12"), AchievementId = Guid.Parse("e5ceb7fe-c164-4dcb-9153-1427cc9e1225"), Goal = 20});
     }
 }

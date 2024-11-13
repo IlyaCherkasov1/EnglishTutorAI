@@ -15,5 +15,7 @@ public class LinguaFixMessage : Entity, IHasCreatedAt
 
     public required Guid DocumentId { get; set; }
 
-    public Guid SessionId { get; set; }
+    public Guid DocumentSessionId { get; init; }
+
+    public DocumentSession DocumentSession { get; set; } = null!;
 }

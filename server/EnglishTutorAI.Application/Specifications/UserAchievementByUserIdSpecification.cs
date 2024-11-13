@@ -21,5 +21,6 @@ public class UserAchievementByUserIdSpecification : DataTransformSpecification<U
     {
         AddInclude(a => a.Achievement);
         AddInclude(a => a.Achievement.AchievementLevels);
+        AddInclude(a => a.User.UserStatistics);
     }
 }

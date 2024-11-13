@@ -3,6 +3,7 @@ using System;
 using EnglishTutorAI.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EnglishTutorAI.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241113063921_AddAchievementsDataSeeds")]
+    partial class AddAchievementsDataSeeds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -265,8 +268,6 @@ namespace EnglishTutorAI.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DocumentId");
-
                     b.ToTable("DocumentSessions");
                 });
 
@@ -286,7 +287,7 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.Property<Guid>("DocumentId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("DocumentSessionId")
+                    b.Property<Guid>("SessionId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("ThreadId")
@@ -300,8 +301,6 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DocumentId");
-
-                    b.HasIndex("DocumentSessionId");
 
                     b.ToTable("LinguaFixMessages");
                 });
@@ -438,8 +437,6 @@ namespace EnglishTutorAI.Infrastructure.Migrations
 
                     b.HasIndex("AchievementId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("UserAchievements");
                 });
 
@@ -470,25 +467,6 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserSessions");
-                });
-
-            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserStatistics", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("CorrectedMistakes")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserStatistics");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -573,6 +551,13 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("4931e704-6fba-419f-921c-a39840ceee3a"),
+                            RoleId = new Guid("9e2c2f8b-410e-422f-a472-dae5bf8f7ee7")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -614,17 +599,6 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.DocumentSession", b =>
-                {
-                    b.HasOne("EnglishTutorAI.Domain.Entities.Document", "Document")
-                        .WithMany()
-                        .HasForeignKey("DocumentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Document");
-                });
-
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.LinguaFixMessage", b =>
                 {
                     b.HasOne("EnglishTutorAI.Domain.Entities.Document", null)
@@ -632,14 +606,6 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                         .HasForeignKey("DocumentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("EnglishTutorAI.Domain.Entities.DocumentSession", "DocumentSession")
-                        .WithMany()
-                        .HasForeignKey("DocumentSessionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DocumentSession");
                 });
 
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserAchievement", b =>
@@ -650,29 +616,10 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EnglishTutorAI.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Achievement");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserSession", b =>
-                {
-                    b.HasOne("EnglishTutorAI.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserStatistics", b =>
                 {
                     b.HasOne("EnglishTutorAI.Domain.Entities.User", "User")
                         .WithMany()

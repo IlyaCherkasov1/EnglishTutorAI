@@ -7,4 +7,6 @@ namespace EnglishTutorAI.Domain.Entities;
 public class User : IdentityUser<Guid>
 {
     public required string FirstName { get; init; }
+
+    public UserStatistics UserStatistics { get; init; } = null!;
 }
