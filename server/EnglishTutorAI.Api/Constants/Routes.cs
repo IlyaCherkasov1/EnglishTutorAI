@@ -17,6 +17,8 @@ public static class Routes
         public const string GetConversationThread = "get-conversation-thread/{threadId}";
 
         public const string DeleteDocument = "delete-document/{documentId}";
+
+        public const string HandleDocumentCompletion = "handle-document-completion/{documentId}";
     }
 
     public static class DocumentHistory

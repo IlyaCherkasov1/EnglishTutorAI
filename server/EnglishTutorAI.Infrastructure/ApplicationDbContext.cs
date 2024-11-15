@@ -31,6 +31,8 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>
 
     public DbSet<UserStatistics> UserStatistics { get; init; }
 
+    public DbSet<UserDocumentCompletion> UserDocumentCompletions { get; init; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

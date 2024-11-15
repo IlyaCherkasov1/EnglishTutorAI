@@ -27,7 +27,7 @@ public class UserStatisticRetrievalService : IUserStatisticRetrievalService
 
         return new UserStatisticsResponse
         {
-            CorrectedErrors = result.CorrectedMistakes
+            CorrectedMistakes = result.CorrectedMistakes
         };
     }
 }

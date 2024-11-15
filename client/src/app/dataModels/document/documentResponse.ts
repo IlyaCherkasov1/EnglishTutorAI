@@ -6,4 +6,5 @@ export interface DocumentResponse {
     threadId: string;
     currentLine: number;
     sessionId: string;
+    isDocumentFinished: boolean;
 }

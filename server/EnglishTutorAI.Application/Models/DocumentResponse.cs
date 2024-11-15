@@ -16,4 +16,6 @@ public class DocumentResponse
     public int CurrentLine { get; init; }
 
     public Guid SessionId { get; set; }
+
+    public bool IsDocumentFinished => CurrentLine >= Sentences.Count();
 }

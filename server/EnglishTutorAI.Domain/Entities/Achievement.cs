@@ -6,7 +6,7 @@ public class Achievement : Entity
 
     public required string Description { get; init; }
 
-    public bool IsCompleted { get; init; }
+    public bool IsCompleted { get; set; }
 
     public required string IconFileName { get; init; }
 

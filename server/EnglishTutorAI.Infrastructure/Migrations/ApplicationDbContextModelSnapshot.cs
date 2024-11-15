@@ -51,10 +51,10 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("684f3efb-bf12-42aa-8ff4-17705f81d447"),
-                            Description = "achievements.flawlessTranslator.description",
+                            Description = "achievements.noviceTranslator.description",
                             IconFileName = "novice_translator_icon.png",
                             IsCompleted = false,
-                            Name = "achievements.flawlessTranslator.name"
+                            Name = "achievements.noviceTranslator.name"
                         },
                         new
                         {
@@ -71,14 +71,6 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                             IconFileName = "flawless_translator_icon.png",
                             IsCompleted = false,
                             Name = "achievements.flawlessTranslator.name"
-                        },
-                        new
-                        {
-                            Id = new Guid("e5ceb7fe-c164-4dcb-9153-1427cc9e1225"),
-                            Description = "achievements.perfectPassage.description",
-                            IconFileName = "perfect_passage_icon.png",
-                            IsCompleted = false,
-                            Name = "achievements.perfectPassage.name"
                         });
                 });
 
@@ -154,24 +146,6 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                             Id = new Guid("72a62120-25e8-4a23-b639-694c73a1010c"),
                             AchievementId = new Guid("34ff3dda-dcfa-4f35-bb1b-0b13344cbf70"),
                             Goal = 100
-                        },
-                        new
-                        {
-                            Id = new Guid("321ab4e0-b331-4560-906e-46873e66dbad"),
-                            AchievementId = new Guid("e5ceb7fe-c164-4dcb-9153-1427cc9e1225"),
-                            Goal = 3
-                        },
-                        new
-                        {
-                            Id = new Guid("a56c2eb0-f02d-46da-a1cb-892097b673b2"),
-                            AchievementId = new Guid("e5ceb7fe-c164-4dcb-9153-1427cc9e1225"),
-                            Goal = 10
-                        },
-                        new
-                        {
-                            Id = new Guid("2443ba90-2d79-4645-8329-5e68d07dea12"),
-                            AchievementId = new Guid("e5ceb7fe-c164-4dcb-9153-1427cc9e1225"),
-                            Goal = 20
                         });
                 });
 
@@ -443,6 +417,28 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.ToTable("UserAchievements");
                 });
 
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserDocumentCompletion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("DocumentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserDocumentCompletions");
+                });
+
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserSession", b =>
                 {
                     b.Property<Guid>("Id")
@@ -486,7 +482,8 @@ namespace EnglishTutorAI.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("UserStatistics");
                 });
@@ -661,6 +658,17 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserDocumentCompletion", b =>
+                {
+                    b.HasOne("EnglishTutorAI.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserSession", b =>
                 {
                     b.HasOne("EnglishTutorAI.Domain.Entities.User", "User")
@@ -675,8 +683,8 @@ namespace EnglishTutorAI.Infrastructure.Migrations
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserStatistics", b =>
                 {
                     b.HasOne("EnglishTutorAI.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("UserStatistics")
+                        .HasForeignKey("EnglishTutorAI.Domain.Entities.UserStatistics", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -744,6 +752,12 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.Navigation("LinguaFixMessages");
 
                     b.Navigation("Sentences");
+                });
+
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.User", b =>
+                {
+                    b.Navigation("UserStatistics")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

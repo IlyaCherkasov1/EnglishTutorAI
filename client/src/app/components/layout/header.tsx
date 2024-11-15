@@ -23,7 +23,7 @@ export const Header = () => {
             <div className="grid grid-rows-[100px_1px_50px] px-7">
                 <div className="flex items-center justify-between">
                     <Link to={routes.home} className="flex items-center">
-                        <img src="/logo.svg" alt="Company Logo" className="h-20 w-20" />
+                        <img src="/public/logo.svg" alt="Company Logo" className="h-10 w-10 mr-2" />
                         <span className="text-xl">{t("header.title")}</span>
                     </Link>
                     <div className="flex items-center">

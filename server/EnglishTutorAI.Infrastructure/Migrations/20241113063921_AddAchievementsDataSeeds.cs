@@ -26,7 +26,7 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                 values: new object[,]
                 {
                     { new Guid("34ff3dda-dcfa-4f35-bb1b-0b13344cbf70"), "achievements.flawlessTranslator.description", "flawless_translator_icon.png", false, "achievements.flawlessTranslator.name" },
-                    { new Guid("684f3efb-bf12-42aa-8ff4-17705f81d447"), "achievements.flawlessTranslator.description", "novice_translator_icon.png", false, "achievements.flawlessTranslator.name" },
+                    { new Guid("684f3efb-bf12-42aa-8ff4-17705f81d447"), "achievements.noviceTranslator.description", "novice_translator_icon.png", false, "achievements.noviceTranslator.name" },
                     { new Guid("b4631aaf-f4e1-419f-a073-8da3b86fb6b5"), "achievements.dedicatedTranslator.description", "dedicated_translator_icon.png", false, "achievements.dedicatedTranslator.name" },
                     { new Guid("e5ceb7fe-c164-4dcb-9153-1427cc9e1225"), "achievements.perfectPassage.description", "perfect_passage_icon.png", false, "achievements.perfectPassage.name" }
                 });

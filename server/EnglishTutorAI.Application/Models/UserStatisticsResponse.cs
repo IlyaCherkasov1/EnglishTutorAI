@@ -2,5 +2,5 @@
 
 public class UserStatisticsResponse
 {
-    public int CorrectedErrors { get; init; }
+    public int CorrectedMistakes { get; init; }
 }
