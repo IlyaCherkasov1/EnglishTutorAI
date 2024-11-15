@@ -42,3 +42,7 @@ export const deleteDocument = async (documentId: string): Promise<void> => {
         url: `${documentsResource}/delete-document/${documentId}`,
     })
 }
+
+export const handleDocumentCompletion = async (documentId: string): Promise<void> => {
+    return httpPost({ url: `${documentsResource}/handle-document-completion/${documentId}` });
+}

@@ -1,3 +1,3 @@
 export interface UserStatisticsResponse {
-    correctedErrors: number;
+    correctedMistakes: number;
 }

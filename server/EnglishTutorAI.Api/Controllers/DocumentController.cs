@@ -1,13 +1,12 @@
 ﻿using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Controllers.Attributes;
 using EnglishTutorAI.Application.Constants;
-using EnglishTutorAI.Application.Exceptions;
 using EnglishTutorAI.Application.Handlers.AddDocument;
 using EnglishTutorAI.Application.Handlers.DeleteDocument;
 using EnglishTutorAI.Application.Handlers.GetConversationThread;
 using EnglishTutorAI.Application.Handlers.GetDocumentDetails;
 using EnglishTutorAI.Application.Handlers.GetDocuments;
-using EnglishTutorAI.Application.Handlers.GetMistakeItem;
+using EnglishTutorAI.Application.Handlers.HandleDocumentCompletion;
 using EnglishTutorAI.Application.Handlers.SaveProgress;
 using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Models.Documents;
@@ -72,5 +71,11 @@ public class DocumentController : ControllerBase
     public Task DeleteDocument(Guid documentId)
     {
         return _mediator.Send(new DeleteDocumentCommand(documentId));
+    }
+
+    [HttpPost(Routes.Document.HandleDocumentCompletion)]
+    public Task HandleDocumentCompletion(Guid documentId)
+    {
+        return _mediator.Send(new HandleDocumentCompletionCommand(documentId));
     }
 }

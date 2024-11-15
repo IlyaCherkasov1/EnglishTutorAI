@@ -89,13 +89,9 @@
     "dedicatedTranslator": {
       "name": "Dedicated Translator",
       "description": "Complete translates"
-    },
-    "perfectPassage": {
-      "name": "Perfect Passage",
-      "description": "Complete entire translate without any mistakes."
     }
   },
   "level": "Level",
   "progress": "Progress",
-  "correctedErrors": "corrected Errors"
+  "correctedMistakes": "corrected Mistakes"
 }

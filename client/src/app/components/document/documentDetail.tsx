@@ -1,7 +1,7 @@
 import {DocumentResponse} from "@/app/dataModels/document/documentResponse.ts";
-import React, {useMemo, useState} from "react";
+import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
-import {getConversationThread, saveCurrentLine} from "@/app/api/documentApi.ts";
+import {getConversationThread, handleDocumentCompletion, saveCurrentLine} from "@/app/api/documentApi.ts";
 import {Button} from "@/app/components/ui/button.tsx";
 import {Textarea} from "@/app/components/ui/textarea.tsx";
 import DocumentCorrectionOutput from "@/app/components/document/documentCorrectionOutput.tsx";
@@ -31,6 +31,7 @@ export const DocumentDetail = (props: Props) => {
     const [chatMessageResponse, setChatMessageResponse] = useState<ChatMessageResponse[]>([]);
     const [isCorrected, setIsCorrected] = useState(false);
     const [sessionId, setSessionId] = useState<string>(props.document.sessionId);
+    const [isDocumentFinished, setIsDocumentFinished] = useState(props.document.isDocumentFinished);
 
     const { t } = useTranslation();
 
@@ -41,10 +42,6 @@ export const DocumentDetail = (props: Props) => {
 
     const methods = useForm<TDocumentDetailsSchema>({ resolver: zodResolver(DocumentDetailsSchema) });
     const { register, handleSubmit, reset, setFocus, formState: { errors, isSubmitting } } = methods;
-
-    const isDocumentFinished = useMemo(() => {
-        return currentLine >= props.document.sentences.length;
-    }, [currentLine, props.document.sentences.length]);
 
     const onSubmit = async (data: { translatedText: string }) => {
         const { translatedText } = data;
@@ -70,7 +67,14 @@ export const DocumentDetail = (props: Props) => {
     }
 
     const moveToNextLine = async () => {
-        setCurrentLine((prevLine) => prevLine + 1);
+        const nextLine = currentLine + 1;
+        setCurrentLine(nextLine);
+
+        if (nextLine >= props.document.sentences.length) {
+            setIsDocumentFinished(true);
+            await handleDocumentCompletion(props.document.id);
+        }
+
         await saveCurrentLine({ currentLine: currentLine + 1, documentId: props.document.id });
 
         reset();
@@ -84,6 +88,7 @@ export const DocumentDetail = (props: Props) => {
             currentSessionId: props.document.sessionId,
         })
 
+        setIsDocumentFinished(false)
         setSessionId(newSessionId);
         setCurrentLine(0);
         setTranslatedText('');

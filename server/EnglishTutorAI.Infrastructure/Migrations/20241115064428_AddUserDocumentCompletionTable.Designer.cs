@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EnglishTutorAI.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241113063921_AddAchievementsDataSeeds")]
-    partial class AddAchievementsDataSeeds
+    [Migration("20241115064428_AddUserDocumentCompletionTable")]
+    partial class AddUserDocumentCompletionTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,14 +74,6 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                             IconFileName = "flawless_translator_icon.png",
                             IsCompleted = false,
                             Name = "achievements.flawlessTranslator.name"
-                        },
-                        new
-                        {
-                            Id = new Guid("e5ceb7fe-c164-4dcb-9153-1427cc9e1225"),
-                            Description = "achievements.perfectPassage.description",
-                            IconFileName = "perfect_passage_icon.png",
-                            IsCompleted = false,
-                            Name = "achievements.perfectPassage.name"
                         });
                 });
 
@@ -157,24 +149,6 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                             Id = new Guid("72a62120-25e8-4a23-b639-694c73a1010c"),
                             AchievementId = new Guid("34ff3dda-dcfa-4f35-bb1b-0b13344cbf70"),
                             Goal = 100
-                        },
-                        new
-                        {
-                            Id = new Guid("321ab4e0-b331-4560-906e-46873e66dbad"),
-                            AchievementId = new Guid("e5ceb7fe-c164-4dcb-9153-1427cc9e1225"),
-                            Goal = 3
-                        },
-                        new
-                        {
-                            Id = new Guid("a56c2eb0-f02d-46da-a1cb-892097b673b2"),
-                            AchievementId = new Guid("e5ceb7fe-c164-4dcb-9153-1427cc9e1225"),
-                            Goal = 10
-                        },
-                        new
-                        {
-                            Id = new Guid("2443ba90-2d79-4645-8329-5e68d07dea12"),
-                            AchievementId = new Guid("e5ceb7fe-c164-4dcb-9153-1427cc9e1225"),
-                            Goal = 20
                         });
                 });
 
@@ -268,6 +242,8 @@ namespace EnglishTutorAI.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DocumentId");
+
                     b.ToTable("DocumentSessions");
                 });
 
@@ -287,7 +263,7 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.Property<Guid>("DocumentId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("SessionId")
+                    b.Property<Guid>("DocumentSessionId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("ThreadId")
@@ -301,6 +277,8 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DocumentId");
+
+                    b.HasIndex("DocumentSessionId");
 
                     b.ToTable("LinguaFixMessages");
                 });
@@ -437,7 +415,31 @@ namespace EnglishTutorAI.Infrastructure.Migrations
 
                     b.HasIndex("AchievementId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("UserAchievements");
+                });
+
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserDocumentCompletion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("DocumentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserDocumentCompletions");
                 });
 
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserSession", b =>
@@ -467,6 +469,26 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserSessions");
+                });
+
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserStatistics", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("CorrectedMistakes")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserStatistics");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -551,13 +573,6 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("4931e704-6fba-419f-921c-a39840ceee3a"),
-                            RoleId = new Guid("9e2c2f8b-410e-422f-a472-dae5bf8f7ee7")
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -599,6 +614,17 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.DocumentSession", b =>
+                {
+                    b.HasOne("EnglishTutorAI.Domain.Entities.Document", "Document")
+                        .WithMany()
+                        .HasForeignKey("DocumentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Document");
+                });
+
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.LinguaFixMessage", b =>
                 {
                     b.HasOne("EnglishTutorAI.Domain.Entities.Document", null)
@@ -606,6 +632,14 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                         .HasForeignKey("DocumentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("EnglishTutorAI.Domain.Entities.DocumentSession", "DocumentSession")
+                        .WithMany()
+                        .HasForeignKey("DocumentSessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DocumentSession");
                 });
 
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserAchievement", b =>
@@ -616,7 +650,26 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EnglishTutorAI.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Achievement");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserDocumentCompletion", b =>
+                {
+                    b.HasOne("EnglishTutorAI.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserSession", b =>
@@ -624,6 +677,17 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.HasOne("EnglishTutorAI.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserStatistics", b =>
+                {
+                    b.HasOne("EnglishTutorAI.Domain.Entities.User", "User")
+                        .WithOne("UserStatistics")
+                        .HasForeignKey("EnglishTutorAI.Domain.Entities.UserStatistics", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -691,6 +755,12 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.Navigation("LinguaFixMessages");
 
                     b.Navigation("Sentences");
+                });
+
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.User", b =>
+                {
+                    b.Navigation("UserStatistics")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
