@@ -3,11 +3,11 @@ import {getDocuments} from "@/app/api/documentApi.ts";
 import {DocumentsList} from "@/app/components/document/documentsList.tsx";
 import {Constants} from "@/app/infrastructure/constants/constants.ts";
 import {Pageable} from "@/app/dataModels/common/pageable.ts";
-import {SearchPanel} from "@/app/components/document/searchPanel.tsx";
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem.ts";
 import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
 import {InfiniteScroll} from "@/app/components/pagination/InfiniteScroll.tsx";
 import {StudyTopic} from "@/app/dataModels/enums/studyTopic.ts";
+import {CategorySelector} from "@/app/components/categorySelector.tsx";
 
 const Home = () => {
     const [documentListItem, setDocumentListItem] = useState<Array<DocumentListItem>>([]);
@@ -55,8 +55,8 @@ const Home = () => {
 
     return (
         <div>
-            <div className="max-w-8xl mx-auto px-4">
-                <SearchPanel selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
+            <div className="px-9">
+                <CategorySelector selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
             </div>
             <div className="max-w-8xl mx-auto px-4 flex flex-col min-h-[75vh]">
                 <InfiniteScroll
