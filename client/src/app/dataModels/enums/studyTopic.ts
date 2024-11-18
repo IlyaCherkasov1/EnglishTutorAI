@@ -1,5 +1,5 @@
 export enum StudyTopic {
-    Other,
+    All,
     Travel,
     Work,
     Education,
@@ -10,5 +10,5 @@ export enum StudyTopic {
     Sports,
     Shopping,
     Entertainment,
-    All,
+    Other,
 }

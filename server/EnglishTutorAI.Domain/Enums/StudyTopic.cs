@@ -3,7 +3,7 @@
 public enum StudyTopic
 {
     None,
-    Other,
+    All,
     Travel,
     Work,
     Education,
@@ -14,5 +14,5 @@ public enum StudyTopic
     Sports,
     Shopping,
     Entertainment,
-    All
+    Other
 }
