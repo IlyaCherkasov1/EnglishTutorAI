@@ -22,7 +22,7 @@ export const DocumentsList = (props: Props) => {
     return (
         <main>
             <div className="flex justify-center items-center">
-                <div className="grid grid-cols-3 gap-5 w-full m-5">
+                <div className="grid gap-8 p-4 grid-cols-1 grid-md:grid-cols-2 grid-lg:grid-cols-3">
                     {documents && documents.length > 0 ?
                         documents.map(document =>
                             <DocumentListItemComponent
