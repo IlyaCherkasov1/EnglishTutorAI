@@ -14,27 +14,32 @@ public class AdminUserSeeder : IAdminUserSeeder
     private readonly UserManager<User> _userManager;
     private readonly IOptions<AdminUserOptions> _adminUserOptions;
     private readonly IRepository<UserStatistics> _userStatisticsRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
     public AdminUserSeeder(
         UserManager<User> userManager,
         IOptions<AdminUserOptions> adminUserOptions,
-        IRepository<UserStatistics> userStatisticsRepository)
+        IRepository<UserStatistics> userStatisticsRepository,
+        IUnitOfWork unitOfWork)
     {
         _userManager = userManager;
         _adminUserOptions = adminUserOptions;
         _userStatisticsRepository = userStatisticsRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task SeedAdminUserAsync()
     {
-        var email = _adminUserOptions.Value.Email;
-        var user = await _userManager.FindByEmailAsync(email);
+        var user = await _userManager.FindByIdAsync(UserRoleIds.AdminUser);
 
         if (user == null)
         {
+            using var transaction = _unitOfWork.BeginTransaction();
+            var email = _adminUserOptions.Value.Email;
+
             var newUser = new User
             {
-                Id = Guid.Parse("4931e704-6fba-419f-921c-a39840ceee3a"),
+                Id = Guid.Parse(UserRoleIds.AdminUser),
                 Email = email,
                 UserName = email,
                 FirstName = _adminUserOptions.Value.FirstName,
@@ -45,9 +50,11 @@ public class AdminUserSeeder : IAdminUserSeeder
             await _userManager.AddToRoleAsync(newUser, UserRoles.Admin);
             await _userStatisticsRepository.Add(new UserStatistics
             {
-                UserId = user.Id,
+                UserId = newUser.Id,
                 CorrectedMistakes = 0,
             });
+
+            transaction.Commit();
         }
     }
 }

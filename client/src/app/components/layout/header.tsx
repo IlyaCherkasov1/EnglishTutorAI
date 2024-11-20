@@ -19,31 +19,31 @@ export const Header = () => {
     const { t } = useTranslation();
 
     return (
-        <header className="bg-gray-100 border-b">
-            <div className="grid grid-rows-[100px_1px_50px] px-7">
-                <div className="flex items-center justify-between">
+        <header className="border-b">
+            <div className="flex items-center justify-between px-7">
+                <div className="flex-1 flex justify-center space-x-4">
                     <Link to={routes.home} className="flex items-center">
                         <img src="/public/logo.svg" alt="Company Logo" className="h-10 w-10 mr-2" />
-                        <span className="text-xl">{t("header.title")}</span>
+                        <span className="text-2xl font-bold">{t("header.title")}</span>
                     </Link>
-                    <div className="flex items-center">
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <HeaderButton variant="ghost" size="icon" className="rounded-full">
-                                    <User className="h-5 w-5" />
-                                    <span className="sr-only">{t("header.myAccount")}</span>
-                                </HeaderButton>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>{contextStore.firstName}</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>{t("header.profile")}</DropdownMenuItem>
-                                <DropdownMenuItem onClick={performLogOut}>{t("header.signOut")}</DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </div>
+                    <Navbar />
                 </div>
-                <Navbar />
+                <div className="flex space-x-4">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <HeaderButton variant="ghost" size="icon" className="rounded-full">
+                                <User className="h-5 w-5" />
+                                <span className="sr-only">{t("header.myAccount")}</span>
+                            </HeaderButton>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>{contextStore.firstName}</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>{t("header.profile")}</DropdownMenuItem>
+                            <DropdownMenuItem onClick={performLogOut}>{t("header.signOut")}</DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
             </div>
         </header>
     );

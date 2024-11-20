@@ -54,11 +54,11 @@ const Home = () => {
     };
 
     return (
-        <div>
-            <div className="px-9">
+        <div className="max-w-5xl mx-auto">
+            <div className="mt-4">
                 <CategorySelector selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
             </div>
-            <div className="max-w-8xl mx-auto px-4 flex flex-col min-h-[75vh]">
+            <div className="mt-10">
                 <InfiniteScroll
                     loadMore={loadMoreItems}
                     hasMore={hasMore}
