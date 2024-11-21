@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from "react";
-import { getEnumValues } from "@/app/infrastructure/utils/enumUtils.ts";
-import { StudyTopic } from "@/app/dataModels/enums/studyTopic.ts";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {useState, useRef, useEffect} from "react";
+import {getEnumValues} from "@/app/infrastructure/utils/enumUtils.ts";
+import {StudyTopic} from "@/app/dataModels/enums/studyTopic.ts";
+import {ChevronLeft, ChevronRight} from "lucide-react";
 
 interface Props {
     selectedCategory: string;
@@ -39,6 +39,10 @@ export const CategorySelector = ({ selectedCategory, onCategoryChange }: Props) 
     };
 
     const handleCategoryClick = (category: string) => {
+        if (activeCategory === category) {
+            return;
+        }
+
         setActiveCategory(category);
         onCategoryChange(category);
     };
@@ -53,17 +57,17 @@ export const CategorySelector = ({ selectedCategory, onCategoryChange }: Props) 
     }, []);
 
     return (
-        <div className="flex items-center bg-white px-4 py-2 rounded-lg relative">
+        <div className="flex items-center bg-white px-4 py-2 rounded-lg">
             {canScrollLeft && (
                 <button
-                    className="absolute left-2 p-2 rounded-full bg-gray-100 hover:bg-gray-200 shadow-whiteGlow"
+                    className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 shadow-whiteGlow"
                     onClick={() => handleScroll("left")}>
                     <ChevronLeft size={20} className="text-gray-700" />
                 </button>
             )}
 
             <div className="flex gap-2 overflow-x-auto scrollbar-hide"
-                ref={scrollContainerRef}>
+                 ref={scrollContainerRef}>
                 {categories.map((category) => (
                     <button
                         key={category}
@@ -79,13 +83,11 @@ export const CategorySelector = ({ selectedCategory, onCategoryChange }: Props) 
             </div>
 
             {canScrollRight && (
-                <div className="relative">
-                    <button
-                        className="relative z-10 p-2 rounded-full bg-gray-100 hover:bg-gray-200 shadow-whiteGlow"
-                        onClick={() => handleScroll("right")}>
-                        <ChevronRight size={20} className="text-gray-700" />
-                    </button>
-                </div>
+                <button
+                    className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 shadow-whiteGlow"
+                    onClick={() => handleScroll("right")}>
+                    <ChevronRight size={20} className="text-gray-700" />
+                </button>
             )}
         </div>
     );
