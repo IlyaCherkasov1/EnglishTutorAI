@@ -41,13 +41,15 @@ const Home = () => {
 
         const documents = await getDocuments({
             studyTopic: category,
-            ...paging
+            pageSize: Constants.documentsPageSize,
+            pageNumber: 1,
         });
 
         if (documents.length < Constants.documentsPageSize) {
             setHasMore(false);
         } else {
             setHasMore(true);
+            setPage(prev => prev + 1);
         }
 
         setDocumentListItem(documents);
