@@ -1,30 +1,31 @@
-import {Link, useLocation} from "react-router-dom";
-import {useTranslation} from "react-i18next";
-import {routes} from "@/app/components/layout/routes/routeLink.ts";
+import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { routes } from "@/app/components/layout/routes/routeLink.ts";
 
 export const Navbar = () => {
     const { t } = useTranslation();
     const location = useLocation();
 
+    const navLinks = [
+        { to: routes.home, label: t("home") },
+        { to: routes.history, label: t("history") },
+        { to: routes.achievements, label: t("achievementsLabel") },
+    ];
+
     return (
-        <div className="ml-4">
-            <nav className="flex space-x-8">
-                <Link to={routes.home}
-                      className={`block py-2 ${location.pathname === routes.home ?
-                          "text-gray-900 font-medium" : "text-gray-700 hover:text-black"}`}>
-                    {t('home')}
+        <nav className="flex space-x-10 px-7 text-2xl">
+            {navLinks.map((link) => (
+                <Link
+                    key={link.to}
+                    to={link.to}
+                    className={`block py-2 ${
+                        location.pathname === link.to
+                            ? "text-black font-bold border-b-2 border-black"
+                            : "text-gray-500 hover:text-black hover:font-bold"
+                    }`}>
+                    {link.label}
                 </Link>
-                <Link to={routes.history}
-                      className={`block py-2 ${location.pathname === routes.history ?
-                          "text-gray-900 font-medium" : "text-gray-700 hover:text-black"}`}>
-                    {t('history')}
-                </Link>
-                <Link to={routes.achievements}
-                      className={`block py-2 ${location.pathname === routes.achievements ?
-                          "text-gray-900 font-medium" : "text-gray-700 hover:text-black"}`}>
-                    {t('achievementsLabel')}
-                </Link>
-            </nav>
-        </div>
+            ))}
+        </nav>
     );
 };

@@ -56,7 +56,7 @@ const Home = () => {
     };
 
     return (
-        <div className="max-w-5xl mx-auto">
+        <>
             <div className="mt-4">
                 <CategorySelector selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
             </div>
@@ -68,7 +68,7 @@ const Home = () => {
                     <DocumentsList allDocuments={documentListItem} />
                 </InfiniteScroll>
             </div>
-        </div>
+        </>
     )
 };
 

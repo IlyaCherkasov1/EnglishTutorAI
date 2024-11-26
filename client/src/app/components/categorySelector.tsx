@@ -33,7 +33,7 @@ export const CategorySelector = ({ selectedCategory, onCategoryChange }: Props) 
 
             scrollContainerRef.current.scrollBy({
                 left: direction === "left" ? -scrollStep : scrollStep,
-                behavior: "smooth",
+                behavior: "auto",
             });
         }
     };
