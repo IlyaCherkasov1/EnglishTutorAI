@@ -19,13 +19,13 @@ export const Header = () => {
     const { t } = useTranslation();
 
     return (
-        <header className="border-b">
-            <div className="flex items-center justify-between px-7">
-                <div className="flex-1 flex justify-center space-x-4">
-                    <Link to={routes.home} className="flex items-center">
-                        <img src="/public/logo.svg" alt="Company Logo" className="h-10 w-10 mr-2" />
-                        <span className="text-2xl font-bold">{t("header.title")}</span>
-                    </Link>
+        <header className="border-b h-16">
+            <div className="flex items-center justify-between px-7 mt-2">
+                <Link to={routes.home} className="flex items-center">
+                    <img src="/public/logo.png" alt="Company Logo" className="h-8 w-8 mr-2" />
+                    <span className="font-serif text-2xl font-bold">{t("header.title")}</span>
+                </Link>
+                <div className="flex justify-center space-x-4">
                     <Navbar />
                 </div>
                 <div className="flex space-x-4">
