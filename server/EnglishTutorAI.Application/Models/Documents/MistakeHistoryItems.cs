@@ -10,4 +10,6 @@ public class MistakeHistoryItems : IHasCreatedAt
     public required string CorrectedText { get; set; }
 
     public DateTime CreatedAt { get; set; }
+
+    public Guid DocumentId { get; set; }
 }

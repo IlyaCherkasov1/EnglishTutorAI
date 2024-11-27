@@ -21,9 +21,9 @@ export const Achievements = () => {
     }, []);
 
     return (
-        <div className="bg-gray-100 p-4 rounded-lg">
+        <div className="p-4 rounded-lg">
             {statistics && (
-                <div className="mb-8 text-center bg-white shadow-sm rounded-lg p-5">
+                <div className="mb-8 text-center bg-softBeige shadow-sm rounded-lg p-5">
                     <h2 className="text-xl font-semibold text-gray-800">{t('correctedMistakes')}</h2>
                     <p className="text-3xl font-bold text-green-600 mt-2">
                         {statistics.correctedMistakes}

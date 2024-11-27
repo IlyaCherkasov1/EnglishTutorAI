@@ -2,9 +2,8 @@ import {useState} from "react";
 import useAsyncEffect from "use-async-effect";
 import {getDocumentSessionMistakesHistory} from "@/app/api/documentHisoryApi.ts";
 import {DocumentMistakeHistoryItems} from "@/app/dataModels/document/documentMistakeHistoryItems.ts";
-import {Card, CardContent, CardHeader} from "@/app/components/ui/card.tsx";
-import DiffComponent from "@/app/components/chatBot/diffComponent.tsx";
 import {useTranslation} from "react-i18next";
+import {MistakeCard} from "@/app/components/mistakeCard.tsx";
 
 interface Props {
     sessionId: string;
@@ -27,16 +26,11 @@ export const DocumentResult = (props: Props) => {
                     <p className="text-gray-500 mt-4">{t('translationSuccessMessage')}</p>
                 )}
                 {mistakeHistoryItems?.map(item => (
-                    <Card className="mb-4" key={item.id}>
-                        <CardHeader>
-                            {item.translatedText}
-                        </CardHeader>
-                        <CardContent>
-                            <DiffComponent
-                                translatedText={item.translatedText}
-                                correctedText={item.correctedText} />
-                        </CardContent>
-                    </Card>
+                    <MistakeCard
+                        id={item.id}
+                        translatedText={item.translatedText}
+                        correctedText={item.correctedText}>
+                    </MistakeCard>
                 ))}
             </div>
         </div>

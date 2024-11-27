@@ -57,10 +57,8 @@ const Home = () => {
 
     return (
         <>
-            <div className="mt-4">
-                <CategorySelector selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
-            </div>
-            <div className="mt-10">
+            <CategorySelector selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
+            <div className="mt-8">
                 <InfiniteScroll
                     loadMore={loadMoreItems}
                     hasMore={hasMore}

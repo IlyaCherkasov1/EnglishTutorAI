@@ -14,6 +14,7 @@ public class MistakeHistoryItemsSpecification : DataTransformSpecification<Lingu
             CorrectedText = m.CorrectedText,
             TranslatedText = m.TranslatedText,
             CreatedAt = m.CreatedAt,
+            DocumentId = m.DocumentId,
         },
         m => m.TranslatedText != m.CorrectedText)
     {

@@ -93,5 +93,7 @@
   },
   "level": "Level",
   "progress": "Progress",
-  "correctedMistakes": "corrected Mistakes"
+  "correctedMistakes": "corrected Mistakes",
+  "translatedText": "Translated Text",
+  "goToTranslate": "Go to translate"
 }
