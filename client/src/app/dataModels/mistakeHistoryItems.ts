@@ -3,4 +3,5 @@ export interface MistakeHistoryItems {
     translatedText: string;
     correctedText: string;
     createdAt: string;
+    documentId: string;
 }

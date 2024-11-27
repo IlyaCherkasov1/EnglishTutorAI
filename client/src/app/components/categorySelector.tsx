@@ -33,7 +33,7 @@ export const CategorySelector = ({ selectedCategory, onCategoryChange }: Props) 
 
             scrollContainerRef.current.scrollBy({
                 left: direction === "left" ? -scrollStep : scrollStep,
-                behavior: "auto",
+                behavior: "smooth",
             });
         }
     };
@@ -57,34 +57,38 @@ export const CategorySelector = ({ selectedCategory, onCategoryChange }: Props) 
     }, []);
 
     return (
-        <div className="flex items-center bg-white px-4 py-2 rounded-lg">
+        <div className="flex items-center px-4 py-4  rounded-lg">
             {canScrollLeft && (
                 <button
-                    className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 shadow-whiteGlow"
+                    className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 shadow"
                     onClick={() => handleScroll("left")}>
                     <ChevronLeft size={20} className="text-gray-700" />
                 </button>
             )}
 
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide"
-                 ref={scrollContainerRef}>
+            <div className="flex gap-4 overflow-x-auto scrollbar-hide items-center" ref={scrollContainerRef}>
                 {categories.map((category) => (
                     <button
                         key={category}
-                        className={`px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap ${
+                        className={`flex items-center gap-3 px-6 py-3 rounded-full font-medium shadow-sm whitespace-nowrap transition-all ${
                             activeCategory === category
                                 ? "bg-black text-white"
                                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                         }`}
                         onClick={() => handleCategoryClick(category)}>
-                        {category}
+            <span className="flex items-center justify-center w-10 h-10 rounded-full bg-white shadow">
+                <img src={`/public/topics/${category.toLowerCase()}.png`}
+                     alt={`${category} icon`}
+                     className="w-6 h-6 object-contain" />
+            </span>
+                        <span>{category}</span>
                     </button>
                 ))}
             </div>
 
             {canScrollRight && (
                 <button
-                    className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 shadow-whiteGlow"
+                    className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 shadow"
                     onClick={() => handleScroll("right")}>
                     <ChevronRight size={20} className="text-gray-700" />
                 </button>

@@ -50,10 +50,7 @@ module.exports = {
                     '4': 'hsl(var(--chart-4))',
                     '5': 'hsl(var(--chart-5))'
                 },
-                badge: {
-                    DEFAULT: 'hsl(var(--badge))',
-                    foreground: 'hsl(var(--badge-foreground))',
-                },
+                softBeige: 'hsl(var(--soft-beige))',
             },
             keyframes: {
                 'accordion-down': {

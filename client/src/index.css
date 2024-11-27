@@ -46,8 +46,7 @@
         --chart-3: 197 37% 24%;
         --chart-4: 43 74% 66%;
         --chart-5: 27 87% 67%;
-        --badge: 222.2 47.4% 11.2%;
-        --badge-foreground: 0 0% 100%;
+        --soft-beige: 25, 36%, 92%;
     }
 }
 
@@ -58,4 +57,9 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+html, body {
+    background-color: #fbf8f6;
+    min-height: 100vh;
 }

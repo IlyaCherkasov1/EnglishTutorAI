@@ -3,9 +3,11 @@ import {Outlet} from "react-router-dom";
 
 export const MainLayout = () => {
     return (
-        <div className="max-w-5xl mx-auto">
+        <>
             <Header />
-            <Outlet />
-        </div>
+            <div className="max-w-5xl mx-auto mt-20">
+                <Outlet />
+            </div>
+        </>
     );
 }

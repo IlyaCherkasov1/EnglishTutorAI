@@ -13,10 +13,12 @@ import {AccessDenied} from "@/app/components/pages/accessDenied.tsx";
 import {MistakeHistory} from "@/app/components/pages/mistakeHistory.tsx";
 import {routes} from "@/app/components/layout/routes/routeLink.ts";
 import {Achievements} from "@/app/components/achievements/achievements.tsx";
+import {ScrollToTopOnRouteChange} from "@/app/components/scrollToTopOnRouteChange.ts";
 
 function App() {
     return (
         <BrowserRouter>
+            <ScrollToTopOnRouteChange />
             <AuthGuard>
                 <Routes>
                     <Route path={routes.login} element={<Login />} />

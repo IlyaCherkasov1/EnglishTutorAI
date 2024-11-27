@@ -19,11 +19,11 @@ export const Header = () => {
     const { t } = useTranslation();
 
     return (
-        <header className="border-b h-16">
-            <div className="flex items-center justify-between px-7 mt-2">
-                <Link to={routes.home} className="flex items-center">
-                    <img src="/public/logo.png" alt="Company Logo" className="h-8 w-8 mr-2" />
-                    <span className="font-serif text-2xl font-bold">{t("header.title")}</span>
+        <header className="border-b h-16 bg-softBeige fixed top-0 z-50 w-full">
+            <div className="flex items-center justify-between max-w-5xl mx-auto mt-3 space-x-4 px-4">
+                <Link to={routes.home} className="flex space-x-4">
+                    <img src="/public/logo.png" alt="Company Logo" className="h-8 w-8 " />
+                    <p className="font-serif text-2xl font-bold">{t("header.title")}</p>
                 </Link>
                 <div className="flex justify-center space-x-4">
                     <Navbar />
