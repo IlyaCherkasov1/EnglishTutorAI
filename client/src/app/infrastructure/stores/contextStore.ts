@@ -7,6 +7,7 @@ class ContextStore {
     public firstName?: string;
     public isContextLoaded = false;
     public roleName?: Array<string>;
+    public email?: string;
 
     constructor() {
         makeAutoObservable(this)
@@ -20,6 +21,7 @@ class ContextStore {
         this.isAuthenticated = response.isAuthenticated;
         this.firstName = response.firstName;
         this.roleName = response.roleName;
+        this.email = response.email;
     }
 
     get isAdminRole(): boolean {
