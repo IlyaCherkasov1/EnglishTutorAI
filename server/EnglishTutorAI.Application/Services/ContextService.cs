@@ -36,6 +36,7 @@ public class ContextService : IContextService
             FirstName = user.FirstName,
             IsAuthenticated = userPrincipal.Identity!.IsAuthenticated,
             RoleName = roles,
+            Email = user.Email,
         };
     }
 }

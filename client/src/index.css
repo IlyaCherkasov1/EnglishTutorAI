@@ -63,3 +63,10 @@ html, body {
     background-color: #fbf8f6;
     min-height: 100vh;
 }
+
+@layer utilities {
+    ::selection {
+        background-color: #ffcdd2;
+        color: #b71c1c;
+    }
+}

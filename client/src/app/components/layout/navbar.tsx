@@ -9,7 +9,7 @@ export const Navbar = () => {
     const navLinks = [
         { to: routes.home, label: t("home") },
         { to: routes.history, label: t("history") },
-        { to: routes.achievements, label: t("achievementsLabel") },
+        { to: routes.profile, label: t("profile") },
     ];
 
     return (

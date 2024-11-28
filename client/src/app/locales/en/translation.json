@@ -18,7 +18,6 @@
   "header": {
     "toggleMenu": "Toggle menu",
     "title": "Tutor",
-    "profile": "Profile",
     "signOut": "Sign out"
   },
   "signInWith": {
@@ -93,7 +92,9 @@
   },
   "level": "Level",
   "progress": "Progress",
-  "correctedMistakes": "corrected Mistakes",
+  "correctedMistakes": "Corrected Mistakes",
   "translatedText": "Translated Text",
-  "goToTranslate": "Go to translate"
+  "goToTranslate": "Go to translate",
+  "statistics": "Statistics",
+  "profile": "Profile"
 }

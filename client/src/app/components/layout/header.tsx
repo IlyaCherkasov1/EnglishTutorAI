@@ -38,8 +38,10 @@ export const Header = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>{contextStore.firstName}</DropdownMenuLabel>
+                            <div className="px-2 py-1.5 text-sm text-gray-600">
+                                {contextStore.email}
+                            </div>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>{t("header.profile")}</DropdownMenuItem>
                             <DropdownMenuItem onClick={performLogOut}>{t("header.signOut")}</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
