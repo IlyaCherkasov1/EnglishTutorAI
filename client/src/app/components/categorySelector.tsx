@@ -22,7 +22,8 @@ export const CategorySelector = ({ selectedCategory, onCategoryChange }: Props) 
         if (scrollContainerRef.current) {
             const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
             setCanScrollLeft(scrollLeft > 0);
-            setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
+            const ERROR_MARGIN = 5;
+            setCanScrollRight(scrollLeft + clientWidth < scrollWidth - ERROR_MARGIN);
         }
     };
 
