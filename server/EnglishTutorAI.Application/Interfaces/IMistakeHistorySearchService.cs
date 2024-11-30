@@ -6,5 +6,5 @@ namespace EnglishTutorAI.Application.Interfaces;
 
 public interface IMistakeHistorySearchService
 {
-    Task<IEnumerable<MistakeHistoryItems>> Search(PaginationSearchModel model);
+    Task<SearchResult<MistakeHistoryItems>> Search(PaginationSearchModel model);
 }
