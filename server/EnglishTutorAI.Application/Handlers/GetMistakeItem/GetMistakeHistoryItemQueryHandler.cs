@@ -5,7 +5,7 @@ using MediatR;
 
 namespace EnglishTutorAI.Application.Handlers.GetMistakeItem;
 
-public class GetMistakeHistoryItemQueryHandler : IRequestHandler<GetMistakeHistoryItemQuery, IEnumerable<MistakeHistoryItems>>
+public class GetMistakeHistoryItemQueryHandler : IRequestHandler<GetMistakeHistoryItemQuery, SearchResult<MistakeHistoryItems>>
 {
     private readonly IMistakeHistorySearchService _makMistakeHistorySearchService;
 
@@ -14,7 +14,7 @@ public class GetMistakeHistoryItemQueryHandler : IRequestHandler<GetMistakeHisto
         _makMistakeHistorySearchService = makMistakeHistorySearchService;
     }
 
-    public Task<IEnumerable<MistakeHistoryItems>> Handle(
+    public Task<SearchResult<MistakeHistoryItems>> Handle(
         GetMistakeHistoryItemQuery request, CancellationToken cancellationToken)
     {
         return _makMistakeHistorySearchService.Search(request.Model);

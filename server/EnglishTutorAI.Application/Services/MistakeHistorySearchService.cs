@@ -18,8 +18,8 @@ public class MistakeHistorySearchService : IMistakeHistorySearchService
         _linguaFixMessageRepository = linguaFixMessageRepository;
     }
 
-    public async Task<IEnumerable<MistakeHistoryItems>> Search(PaginationSearchModel model)
+    public async Task<SearchResult<MistakeHistoryItems>> Search(PaginationSearchModel model)
     {
-        return await _linguaFixMessageRepository.List(new MistakeHistoryItemsSpecification(model));
+        return await _linguaFixMessageRepository.Search(new MistakeHistoryItemsSpecification(model));
     }
 }

@@ -5,7 +5,7 @@ using MediatR;
 
 namespace EnglishTutorAI.Application.Handlers.GetMistakeItem;
 
-public class GetMistakeHistoryItemQuery : IRequest<IEnumerable<MistakeHistoryItems>>
+public class GetMistakeHistoryItemQuery : IRequest<SearchResult<MistakeHistoryItems>>
 {
     public GetMistakeHistoryItemQuery(PaginationSearchModel model)
     {

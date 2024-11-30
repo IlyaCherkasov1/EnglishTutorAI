@@ -3,6 +3,7 @@ using EnglishTutorAI.Api.Controllers.Attributes;
 using EnglishTutorAI.Application.Handlers.GetDocumentMistakeHistory;
 using EnglishTutorAI.Application.Handlers.GetMistakeItem;
 using EnglishTutorAI.Application.Models;
+using EnglishTutorAI.Application.Models.Common;
 using EnglishTutorAI.Application.Models.Documents;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -23,7 +24,7 @@ public class DocumentHistoryController : ControllerBase
     }
 
     [HttpGet(Routes.DocumentHistory.GetMistakesHistory)]
-    public Task<IEnumerable<MistakeHistoryItems>> GetMistakeHistoryItems([FromQuery]PaginationSearchModel model)
+    public Task<SearchResult<MistakeHistoryItems>> GetMistakeHistoryItems([FromQuery]PaginationSearchModel model)
     {
         return _mediator.Send(new GetMistakeHistoryItemQuery(model));
     }
