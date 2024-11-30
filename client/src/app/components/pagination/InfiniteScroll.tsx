@@ -1,20 +1,33 @@
-import {ReactNode, useEffect, useRef} from "react";
+import {ReactNode, useEffect, useRef, useState} from "react";
 
-interface InfiniteScrollProps {
-    loadMore: () => void;
+interface Props {
+    loadMore: () => Promise<void>;
     hasMore: boolean;
     loader: ReactNode;
     children: ReactNode;
+    minLoaderTime?: number;
 }
 
-export const InfiniteScroll: React.FC<InfiniteScrollProps> = ({ loadMore, hasMore, loader, children }) => {
+export const InfiniteScroll = ({ loadMore, hasMore, loader, children, minLoaderTime = 1000 }: Props) => {
     const observerRef = useRef<HTMLDivElement | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting && hasMore) {
-                    loadMore();
+            async (entries) => {
+                if (entries[0].isIntersecting && hasMore && !isLoading) {
+                    setIsLoading(true);
+
+                    const startTime = Date.now();
+
+                    await loadMore();
+
+                    const elapsedTime = Date.now() - startTime;
+                    if (elapsedTime < minLoaderTime) {
+                        await new Promise((resolve) => setTimeout(resolve, minLoaderTime - elapsedTime));
+                    }
+
+                    setIsLoading(false);
                 }
             },
             { threshold: 0.9 }
@@ -31,14 +44,14 @@ export const InfiniteScroll: React.FC<InfiniteScrollProps> = ({ loadMore, hasMor
                 observer.unobserve(currentObserverRef);
             }
         };
-    }, [loadMore, hasMore]);
+    }, [loadMore, hasMore, isLoading, minLoaderTime]);
 
     return (
         <div>
             {children}
-            {hasMore && (
+            {hasMore  && (
                 <div ref={observerRef} className="flex justify-center items-center mt-4 h-10">
-                    {loader}
+                    {isLoading && loader}
                 </div>
             )}
         </div>

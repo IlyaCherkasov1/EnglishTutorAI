@@ -10,7 +10,7 @@ import {useForm} from "react-hook-form";
 import {HubConnectionBuilder} from "@microsoft/signalr";
 import useAsyncEffect from "use-async-effect";
 import Markdown from "react-markdown";
-import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
+import {SubmitSpinner} from "@/app/components/ui/submitSpinner.svg.tsx";
 
 interface Props {
     threadId: string;
@@ -108,7 +108,7 @@ export const ChatBot = (props: Props) => {
                                 ))}
                                 {isProcessingResponse && (
                                     <div className='flex justify-center mt-4'>
-                                        <LoadingSpinner />
+                                        <SubmitSpinner />
                                     </div>
                                 )}
                                 {assistantTyping && (

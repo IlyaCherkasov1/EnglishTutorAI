@@ -1,4 +1,4 @@
 export const Constants = {
-    documentsPageSize: 6,
+    documentsPageSize: 9,
     mistakeHistoryPageSize: 10,
 }

@@ -1,5 +1,4 @@
 import React from "react";
-import { deleteDocument } from "@/app/api/documentApi.ts";
 import { DocumentListItem } from "@/app/dataModels/document/documentListItem.ts";
 import { formatDateToISO } from "@/app/infrastructure/helpers/dateHelpers.ts";
 import { DeleteDocumentModal } from "@/app/components/modals/deleteDocumentModal.tsx";
@@ -13,13 +12,8 @@ interface Props {
     onDelete: (documentId: string) => void;
 }
 
-export const DocumentListItemComponent = ({ document, onDelete }: Props) => {
+export const DocumentListItemComponent = React.memo(({ document, onDelete }: Props) => {
     const { t } = useTranslation();
-
-    const handleDelete = async (documentId: string) => {
-        await deleteDocument(documentId);
-        onDelete(documentId);
-    };
 
     const handleModalClick = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -55,7 +49,7 @@ export const DocumentListItemComponent = ({ document, onDelete }: Props) => {
                     </div>
                     {contextStore.isAdminRole && (
                         <div onClick={handleModalClick}>
-                            <DeleteDocumentModal onConfirm={() => handleDelete(document.id)} />
+                            <DeleteDocumentModal onConfirm={() => onDelete(document.id)} />
                         </div>
                     )}
                 </div>
@@ -71,4 +65,4 @@ export const DocumentListItemComponent = ({ document, onDelete }: Props) => {
             </div>
         </Link>
     );
-};
+});
