@@ -16,9 +16,9 @@ import {
 } from "@/app/infrastructure/validationSchemas/documentDetailsSchema.ts";
 import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
 import useAsyncEffect from "use-async-effect";
-import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
 import {DocumentResult} from "@/app/components/document/documentResult.tsx";
 import {restartDocumentSession} from "@/app/api/documentSessionApi.ts";
+import {SubmitSpinner} from "@/app/components/ui/submitSpinner.svg.tsx";
 
 interface Props {
     document: DocumentResponse;
@@ -137,7 +137,7 @@ export const DocumentDetail = (props: Props) => {
                                 </div>
                                 {isSubmitting && (
                                     <div className="flex items-center justify-center mt-2">
-                                        <LoadingSpinner />
+                                        <SubmitSpinner />
                                     </div>
                                 )}
                             </form>

@@ -6,7 +6,7 @@ using MediatR;
 
 namespace EnglishTutorAI.Application.Handlers.GetDocuments;
 
-public class GetDocumentsQueryHandler : IRequestHandler<GetDocumentsQuery, IEnumerable<DocumentListItem>>
+public class GetDocumentsQueryHandler : IRequestHandler<GetDocumentsQuery, SearchResult<DocumentListItem>>
 {
     private readonly IDocumentSearchService _documentSearchService;
 
@@ -15,7 +15,7 @@ public class GetDocumentsQueryHandler : IRequestHandler<GetDocumentsQuery, IEnum
         _documentSearchService = documentSearchService;
     }
 
-    public Task<IEnumerable<DocumentListItem>> Handle(GetDocumentsQuery request, CancellationToken cancellationToken)
+    public Task<SearchResult<DocumentListItem>> Handle(GetDocumentsQuery request, CancellationToken cancellationToken)
     {
         return _documentSearchService.Search(request.Model);
     }

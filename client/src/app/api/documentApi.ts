@@ -6,6 +6,7 @@ import {httpGet, httpPost} from "@/app/infrastructure/requestApi.ts";
 import {DocumentSearchRequest} from "@/app/dataModels/document/documentSearchRequest.ts";
 import {objectToQueryString} from "@/app/infrastructure/utils/paramsUtils.ts";
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem.ts";
+import {SearchResult} from "@/app/dataModels/searchResult.ts";
 
 const documentsResource = "document";
 
@@ -16,7 +17,7 @@ export const addDocument = async (request: DocumentCreationRequest) => {
     });
 }
 
-export const getDocuments = async (request: DocumentSearchRequest): Promise<Array<DocumentListItem>> => {
+export const getDocuments = async (request: DocumentSearchRequest): Promise<SearchResult<DocumentListItem>> => {
     return httpGet({ url: `${documentsResource}/get-documents${objectToQueryString(request)}` })
 }
 

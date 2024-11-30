@@ -10,7 +10,7 @@ import {AdminPanelSchema, TAdminPanelSchema} from "@/app/infrastructure/validati
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/app/components/ui/select.tsx";
 import {getEnumValues} from "@/app/infrastructure/utils/enumUtils.ts";
 import {StudyTopic} from "@/app/dataModels/enums/studyTopic.ts";
-import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
+import {SubmitSpinner} from "@/app/components/ui/submitSpinner.svg.tsx";
 
 export const AdminPanel = () => {
     const { t } = useTranslation();
@@ -71,7 +71,7 @@ export const AdminPanel = () => {
                 <Button disabled={isSubmitting} type="submit">
                     {isSubmitting ? t('submitting...') : t('submit')}
                 </Button>
-                {isSubmitting && <LoadingSpinner />}
+                {isSubmitting && <SubmitSpinner />}
             </form>
         </FormProvider>
     );

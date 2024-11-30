@@ -5,7 +5,7 @@ import {HubConnectionBuilder} from "@microsoft/signalr";
 import useAsyncEffect from "use-async-effect";
 import Markdown from "react-markdown";
 import {useTranslation} from "react-i18next";
-import {LoadingSpinner} from "@/app/components/ui/loadingSpinner.tsx";
+import {SubmitSpinner} from "@/app/components/ui/submitSpinner.svg.tsx";
 
 interface Props {
     threadId: string;
@@ -77,7 +77,7 @@ export const ExplanationCard = (props: Props) => {
                 <AccordionContent>
                     {isLoading ? (
                         <div className="flex justify-center">
-                            <LoadingSpinner />
+                            <SubmitSpinner />
                         </div>
                     ) : (
                         <Markdown className="text-sm">{assistantTypingMessage}</Markdown>

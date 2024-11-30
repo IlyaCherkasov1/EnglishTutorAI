@@ -18,8 +18,8 @@ public class DocumentSearchService : IDocumentSearchService
         _documentRepository = documentRepository;
     }
 
-    public async Task<IEnumerable<DocumentListItem>> Search(DocumentsSearchModel model)
+    public async Task<SearchResult<DocumentListItem>> Search(DocumentsSearchModel model)
     {
-        return await _documentRepository.List(new DocumentListSearchSpecification(model));
+        return await _documentRepository.Search(new DocumentListSearchSpecification(model));
     }
 }
