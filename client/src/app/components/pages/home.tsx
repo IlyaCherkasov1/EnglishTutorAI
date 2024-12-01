@@ -15,6 +15,7 @@ const Home = () => {
     const [totalCount, setTotalCount] = useState<number | null>(null);
     const [hasMore, setHasMore] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState<string>(StudyTopic[StudyTopic.All]);
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
 
     const paging: Pageable = {
         pageNumber: page,
@@ -26,6 +27,10 @@ const Home = () => {
             studyTopic: selectedCategory,
             ...paging
         });
+
+        if (isInitialLoad) {
+            setIsInitialLoad(false);
+        }
 
         if (totalCount === null) {
             setTotalCount(response.totalCount);
@@ -46,6 +51,7 @@ const Home = () => {
         setSelectedCategory(category);
         setPage(1);
         setTotalCount(null);
+        setIsInitialLoad(true);
 
         const response = await getDocuments({
             studyTopic: category,
@@ -77,7 +83,8 @@ const Home = () => {
                 <InfiniteScroll
                     loadMore={loadMoreItems}
                     hasMore={hasMore}
-                    loader={<ContentLoaderSpinner />}>
+                    loader={<ContentLoaderSpinner />}
+                    isInitialLoad={isInitialLoad}>
                     <DocumentsList allDocuments={documentListItem}  onDelete={handleDeleteDocument}/>
                 </InfiniteScroll>
             </div>

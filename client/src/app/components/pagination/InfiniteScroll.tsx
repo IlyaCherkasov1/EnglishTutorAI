@@ -6,9 +6,10 @@ interface Props {
     loader: ReactNode;
     children: ReactNode;
     minLoaderTime?: number;
+    isInitialLoad?: boolean;
 }
 
-export const InfiniteScroll = ({ loadMore, hasMore, loader, children, minLoaderTime = 1000 }: Props) => {
+export const InfiniteScroll = ({ loadMore, hasMore, loader, children, minLoaderTime = 1000, isInitialLoad = false }: Props) => {
     const observerRef = useRef<HTMLDivElement | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -44,14 +45,14 @@ export const InfiniteScroll = ({ loadMore, hasMore, loader, children, minLoaderT
                 observer.unobserve(currentObserverRef);
             }
         };
-    }, [loadMore, hasMore, isLoading, minLoaderTime]);
+    }, [loadMore, hasMore, isLoading, minLoaderTime, isInitialLoad]);
 
     return (
         <div>
             {children}
             {hasMore  && (
                 <div ref={observerRef} className="flex justify-center items-center mt-4 h-10">
-                    {isLoading && loader}
+                    {!isInitialLoad && isLoading && loader}
                 </div>
             )}
         </div>

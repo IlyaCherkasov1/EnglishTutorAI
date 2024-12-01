@@ -65,7 +65,6 @@
   "error": "Error",
   "defaultRequestError": "Something went wrong. Please contact your administrator",
   "explanation": "Explanation",
-  "noDocumentsAvailable": "There are no documents available",
   "clearAllFilters": "Clear all filters",
   "accessDenied": "Access Denied",
   "youDoNotHavePermission": "You do not have permission to view this page.",
