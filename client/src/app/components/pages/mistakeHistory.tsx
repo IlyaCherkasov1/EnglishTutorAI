@@ -12,11 +12,16 @@ export const MistakeHistory = () => {
     const [page, setPage] = useState(1);
     const [totalCount, setTotalCount] = useState<number | null>(null);
     const [hasMore, setHasMore] = useState(true);
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
     const { t } = useTranslation();
 
     const loadMoreItems = async () => {
         const response = await getMistakeHistoryItems(
             { pageNumber: page, pageSize: Constants.mistakeHistoryPageSize });
+
+        if (isInitialLoad) {
+            setIsInitialLoad(false);
+        }
 
         if (totalCount === null) {
             setTotalCount(response.totalCount);
@@ -38,7 +43,8 @@ export const MistakeHistory = () => {
                 <InfiniteScroll
                     loadMore={loadMoreItems}
                     hasMore={hasMore}
-                    loader={<ContentLoaderSpinner />}>
+                    loader={<ContentLoaderSpinner />}
+                    isInitialLoad={isInitialLoad}>
                     <div className="flex flex-col items-center mt-7">
                         {mistakeHistoryItems.length === 0 && !hasMore && (
                             <p className="text-gray-500 mt-4">{t('noRecords')}</p>
