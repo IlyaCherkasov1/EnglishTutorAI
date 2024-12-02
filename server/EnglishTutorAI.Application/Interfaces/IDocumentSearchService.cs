@@ -7,4 +7,6 @@ namespace EnglishTutorAI.Application.Interfaces;
 public interface IDocumentSearchService
 {
     Task<SearchResult<DocumentListItem>> Search(DocumentsSearchModel model);
+
+    Task<DocumentListItem?> GetNextDocument(NextDocumentSearchModel model);
 }

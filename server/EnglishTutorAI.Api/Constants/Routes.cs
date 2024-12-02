@@ -19,6 +19,8 @@ public static class Routes
         public const string DeleteDocument = "delete-document/{documentId}";
 
         public const string HandleDocumentCompletion = "handle-document-completion/{documentId}";
+
+        public const string GetNextDocument = "get-next-document";
     }
 
     public static class DocumentHistory

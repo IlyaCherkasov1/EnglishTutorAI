@@ -6,6 +6,7 @@ using EnglishTutorAI.Application.Handlers.DeleteDocument;
 using EnglishTutorAI.Application.Handlers.GetConversationThread;
 using EnglishTutorAI.Application.Handlers.GetDocumentDetails;
 using EnglishTutorAI.Application.Handlers.GetDocuments;
+using EnglishTutorAI.Application.Handlers.GetNextDocument;
 using EnglishTutorAI.Application.Handlers.HandleDocumentCompletion;
 using EnglishTutorAI.Application.Handlers.SaveProgress;
 using EnglishTutorAI.Application.Models;
@@ -78,5 +79,11 @@ public class DocumentController : ControllerBase
     public Task HandleDocumentCompletion(Guid documentId)
     {
         return _mediator.Send(new HandleDocumentCompletionCommand(documentId));
+    }
+
+    [HttpGet(Routes.Document.GetNextDocument)]
+    public Task<DocumentListItem?> GetNextDocument([FromQuery]NextDocumentSearchModel model)
+    {
+        return _mediator.Send(new GetNextDocumentQuery(model));
     }
 }

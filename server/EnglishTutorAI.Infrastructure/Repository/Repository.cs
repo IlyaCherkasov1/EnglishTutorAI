@@ -44,6 +44,12 @@ public class Repository<T> : IRepository<T> where T : Entity
         return await queryable.FirstOrDefaultAsync();
     }
 
+    public async Task<TResult?> GetFirstOrDefault<TResult>(IDataTransformSpecification<T, TResult> specification)
+    {
+        var queryable = _specificationHandler.ApplyDataTransformSpecification(specification);
+        return await queryable.FirstOrDefaultAsync();
+    }
+
     public async Task<T> Single(ISpecification<T> specification)
     {
         var queryable = _specificationHandler.ApplySpecification(specification);

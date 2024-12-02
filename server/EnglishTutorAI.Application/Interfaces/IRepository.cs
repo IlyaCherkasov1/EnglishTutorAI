@@ -14,6 +14,8 @@ public interface IRepository<T> where T : Entity
 
     Task<T?> GetFirstOrDefault(ISpecification<T> specification);
 
+    Task<TResult?> GetFirstOrDefault<TResult>(IDataTransformSpecification<T, TResult> specification);
+
     Task<T> Single(ISpecification<T> specification);
 
     Task<TResult> Single<TResult>(IDataTransformSpecification<T, TResult> specification);

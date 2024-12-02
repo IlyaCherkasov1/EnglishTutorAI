@@ -1,5 +1,5 @@
 import {useCallback, useState} from "react";
-import {deleteDocument, getDocuments} from "@/app/api/documentApi.ts";
+import {deleteDocument, getDocuments, getNextDocument} from "@/app/api/documentApi.ts";
 import {DocumentsList} from "@/app/components/document/documentsList.tsx";
 import {Constants} from "@/app/infrastructure/constants/constants.ts";
 import {Pageable} from "@/app/dataModels/common/pageable.ts";
@@ -46,7 +46,6 @@ const Home = () => {
         }
     };
 
-
     const handleCategoryChange = async (category: string) => {
         setSelectedCategory(category);
         setPage(1);
@@ -69,12 +68,33 @@ const Home = () => {
         }
     };
 
+    const fetchNewDocument = useCallback(async () => {
+        const lastDocumentCreatedAt = documentListItem[documentListItem.length - 1].createdAt;
+
+        const document = await getNextDocument({
+            studyTopic: selectedCategory,
+            createdAt: lastDocumentCreatedAt
+        });
+
+        if (document) {
+            setDocumentListItem((prev) => [...prev, document]);
+        }
+    }, [setDocumentListItem, selectedCategory, documentListItem])
+
+
     const handleDeleteDocument = useCallback(async (documentId: string) => {
         await deleteDocument(documentId);
         setDocumentListItem((prevDocuments) =>
             prevDocuments.filter((document) => document.id !== documentId)
         );
-    }, []);
+
+        setTotalCount((prevState) => (prevState !== null ? prevState - 1 : prevState));
+
+        if (documentListItem.length !== totalCount) {
+            await fetchNewDocument();
+        }
+
+    }, [fetchNewDocument, setTotalCount, documentListItem, totalCount]);
 
     return (
         <div className="pb-5">
@@ -85,7 +105,7 @@ const Home = () => {
                     hasMore={hasMore}
                     loader={<ContentLoaderSpinner />}
                     isInitialLoad={isInitialLoad}>
-                    <DocumentsList allDocuments={documentListItem}  onDelete={handleDeleteDocument}/>
+                    <DocumentsList allDocuments={documentListItem} onDelete={handleDeleteDocument} />
                 </InfiniteScroll>
             </div>
         </div>
