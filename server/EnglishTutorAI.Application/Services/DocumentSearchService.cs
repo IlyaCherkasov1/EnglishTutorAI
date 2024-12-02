@@ -22,4 +22,9 @@ public class DocumentSearchService : IDocumentSearchService
     {
         return await _documentRepository.Search(new DocumentListSearchSpecification(model));
     }
+
+    public async Task<DocumentListItem?> GetNextDocument(NextDocumentSearchModel model)
+    {
+        return await _documentRepository.GetFirstOrDefault(new NextDocumentSearchSpecification(model));
+    }
 }

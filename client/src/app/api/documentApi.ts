@@ -7,6 +7,7 @@ import {DocumentSearchRequest} from "@/app/dataModels/document/documentSearchReq
 import {objectToQueryString} from "@/app/infrastructure/utils/paramsUtils.ts";
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem.ts";
 import {SearchResult} from "@/app/dataModels/searchResult.ts";
+import {NextDocumentSearchModel} from "@/app/dataModels/nextDocumentSearchModel.ts";
 
 const documentsResource = "document";
 
@@ -46,4 +47,8 @@ export const deleteDocument = async (documentId: string): Promise<void> => {
 
 export const handleDocumentCompletion = async (documentId: string): Promise<void> => {
     return httpPost({ url: `${documentsResource}/handle-document-completion/${documentId}` });
+}
+
+export const getNextDocument = async (request: NextDocumentSearchModel): Promise<DocumentListItem | null> => {
+    return httpGet({url: `${documentsResource}/get-next-document${objectToQueryString(request)}`})
 }
