@@ -1,11 +1,21 @@
 import {Header} from "@/app/components/layout/header.tsx";
-import {Outlet} from "react-router-dom";
+import {Outlet, useLocation} from "react-router-dom";
+import {routes} from "@/app/components/layout/routes/routeLink.ts";
 
 export const MainLayout = () => {
+    const location = useLocation();
+    const isHomeOrProfilePage = location.pathname === routes.home || location.pathname === routes.profile;
+
+    const marginBottom = isHomeOrProfilePage
+        ? "mb-20"
+        : "mb-24";
+
     return (
         <>
-            <Header />
-            <div className="max-w-5xl mx-auto mt-20">
+            <div className={marginBottom}>
+                <Header />
+            </div>
+            <div className="max-w-5xl mx-auto">
                 <Outlet />
             </div>
         </>

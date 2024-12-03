@@ -58,10 +58,10 @@ export const CategorySelector = ({ selectedCategory, onCategoryChange }: Props) 
     }, []);
 
     return (
-        <div className="flex items-center px-4 py-4  rounded-lg">
+        <div className="flex items-center px-4 py-4 rounded-lg">
             {canScrollLeft && (
                 <button
-                    className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 shadow"
+                    className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 shadow-softGlow z-10"
                     onClick={() => handleScroll("left")}>
                     <ChevronLeft size={20} className="text-gray-700" />
                 </button>
@@ -77,11 +77,11 @@ export const CategorySelector = ({ selectedCategory, onCategoryChange }: Props) 
                                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                         }`}
                         onClick={() => handleCategoryClick(category)}>
-            <span className="flex items-center justify-center w-10 h-10 rounded-full bg-white shadow">
-                <img src={`/public/topics/${category.toLowerCase()}.png`}
-                     alt={`${category} icon`}
-                     className="w-6 h-6 object-contain" />
-            </span>
+                        <span className="flex items-center justify-center w-10 h-10 rounded-full bg-white shadow">
+                            <img src={`/public/topics/${category.toLowerCase()}.png`}
+                                 alt={`${category} icon`}
+                                 className="w-6 h-6 object-contain" />
+                        </span>
                         <span>{category}</span>
                     </button>
                 ))}
@@ -89,7 +89,7 @@ export const CategorySelector = ({ selectedCategory, onCategoryChange }: Props) 
 
             {canScrollRight && (
                 <button
-                    className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 shadow"
+                    className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 shadow-softGlow z-10"
                     onClick={() => handleScroll("right")}>
                     <ChevronRight size={20} className="text-gray-700" />
                 </button>

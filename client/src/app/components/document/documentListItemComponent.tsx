@@ -53,7 +53,7 @@ export const DocumentListItemComponent = React.memo(({ document, onDelete }: Pro
                         </div>
                     )}
                 </div>
-                <p className="text-gray-600 text-sm mt-3 line-clamp-3">{document.content}</p>
+                <p className="text-gray-600 text-sm mt-3 line-clamp-3 min-h-16">{document.content}</p>
                 <div className="flex justify-between items-center mt-4">
                     <p className="text-sm text-gray-500">{formatDateToISO(document.createdAt)}</p>
                     {document.isDocumentFinished && (

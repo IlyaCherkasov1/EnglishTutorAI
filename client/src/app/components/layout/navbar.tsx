@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { routes } from "@/app/components/layout/routes/routeLink.ts";
+import {contextStore} from "@/app/infrastructure/stores/contextStore.ts";
 
 export const Navbar = () => {
     const { t } = useTranslation();
@@ -11,6 +12,10 @@ export const Navbar = () => {
         { to: routes.history, label: t("history") },
         { to: routes.profile, label: t("profile") },
     ];
+
+    if (contextStore.isAdminRole){
+        navLinks.push({to: routes.adminPanel, label: t('adminPanel')})
+    }
 
     return (
         <nav className="flex space-x-10 px-7 text-2xl">
