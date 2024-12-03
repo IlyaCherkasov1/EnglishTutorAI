@@ -79,7 +79,7 @@ module.exports = {
                 'grid-lg': '60rem',
             },
             boxShadow: {
-                whiteGlow: "0 0 20px 20px hsla(0, 0%, 100%, 0.95)",
+                softGlow: "0 0 20px 20px hsla(30, 50%, 97%, 0.95)",
             },
         }
     },

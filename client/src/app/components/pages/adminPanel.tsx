@@ -32,7 +32,7 @@ export const AdminPanel = () => {
         reset();
     };
 
-    const studyTopicOptions = getEnumValues(StudyTopic);
+    const studyTopicOptions = getEnumValues(StudyTopic).filter(st => st !== StudyTopic[StudyTopic.All]);
 
     return (
         <FormProvider {...methods}>
@@ -41,12 +41,12 @@ export const AdminPanel = () => {
                 <Input
                     {...register("title")}
                     type="text"
-                    className="block w-1/5 p-2 border border-gray-300 rounded"
+                    className="block p-2 border border-gray-300 rounded"
                     disabled={isSubmitting}
                 />
                 <FormMessage>{errors.title?.message}</FormMessage>
                 <div className="mb-2 text-lg font-medium">{t('documentContent')}</div>
-                <Textarea {...register("content")} className="w-1/5 h-32" disabled={isSubmitting} />
+                <Textarea {...register("content")} className="h-32" disabled={isSubmitting} />
                 <FormMessage>{errors.content?.message}</FormMessage>
                 <div className="mb-2 text-lg font-medium">{t('category')}</div>
                 <Controller
@@ -54,7 +54,7 @@ export const AdminPanel = () => {
                     control={control}
                     render={({ field }) => (
                         <Select value={field.value} onValueChange={field.onChange} disabled={isSubmitting}>
-                            <SelectTrigger className="w-1/5">
+                            <SelectTrigger>
                                 <SelectValue placeholder={t('selectCategory')} />
                             </SelectTrigger>
                             <SelectContent>

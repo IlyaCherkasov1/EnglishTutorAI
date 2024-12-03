@@ -38,29 +38,27 @@ export const MistakeHistory = () => {
 
     return (
         <div className="flex flex-col pb-5">
-            <div className="mt-10">
-                <h1 className="text-4xl font-semibold">{t('history')}</h1>
-                <InfiniteScroll
-                    loadMore={loadMoreItems}
-                    hasMore={hasMore}
-                    loader={<ContentLoaderSpinner />}
-                    isInitialLoad={isInitialLoad}>
-                    <div className="flex flex-col items-center mt-7">
-                        {mistakeHistoryItems.length === 0 && !hasMore && (
-                            <p className="text-gray-500 mt-4">{t('noRecords')}</p>
-                        )}
-                        {mistakeHistoryItems?.map(item => (
-                           <MistakeCard
-                               id={item.id}
-                               translatedText={item.translatedText}
-                               correctedText={item.correctedText}
-                               createdAt={item.createdAt}
-                               documentId={item.documentId}>
-                           </MistakeCard>
-                        ))}
-                    </div>
-                </InfiniteScroll>
-            </div>
+            <h1 className="text-4xl font-semibold">{t('history')}</h1>
+            <InfiniteScroll
+                loadMore={loadMoreItems}
+                hasMore={hasMore}
+                loader={<ContentLoaderSpinner />}
+                isInitialLoad={isInitialLoad}>
+                <div className="flex flex-col items-center mt-7">
+                    {mistakeHistoryItems.length === 0 && !hasMore && (
+                        <p className="text-gray-500 mt-4">{t('noRecords')}</p>
+                    )}
+                    {mistakeHistoryItems?.map(item => (
+                        <MistakeCard
+                            id={item.id}
+                            translatedText={item.translatedText}
+                            correctedText={item.correctedText}
+                            createdAt={item.createdAt}
+                            documentId={item.documentId}>
+                        </MistakeCard>
+                    ))}
+                </div>
+            </InfiniteScroll>
         </div>
     )
 }
