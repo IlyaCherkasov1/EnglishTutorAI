@@ -14,7 +14,7 @@ public class UserAchievementByUserIdSpecification : DataTransformSpecification<U
             LevelGoals = ua.Achievement.AchievementLevels.Select(g => g.Goal).ToList(),
             Progress = ua.Progress,
             CurrentLevel = ua.CurrentLevel,
-            IsCompleted = ua.Achievement.IsCompleted,
+            IsCompleted = ua.IsCompleted,
             IconFileName = ua.Achievement.IconFileName,
         },
         u => u.UserId == userId)

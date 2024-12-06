@@ -1,4 +1,4 @@
-import {DocumentResponse} from "@/app/dataModels/document/documentResponse.ts";
+import {DocumentDetailsModel} from "@/app/dataModels/document/documentDetailsModel.ts";
 import {DocumentCreationRequest} from "@/app/dataModels/document/documentCreationRequest.ts";
 import {SaveCurrentLineRequest} from "@/app/dataModels/document/saveCurrentLineRequest.ts";
 import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
@@ -22,7 +22,7 @@ export const getDocuments = async (request: DocumentSearchRequest): Promise<Sear
     return httpGet({ url: `${documentsResource}/get-documents${objectToQueryString(request)}` })
 }
 
-export const getDocumentDetails = async (id: string): Promise<DocumentResponse> => {
+export const getDocumentDetails = async (id: string): Promise<DocumentDetailsModel> => {
     return httpGet({ url: `${documentsResource}/get-document-details/${id}` })
 }
 
@@ -45,8 +45,12 @@ export const deleteDocument = async (documentId: string): Promise<void> => {
     })
 }
 
-export const handleDocumentCompletion = async (documentId: string): Promise<void> => {
-    return httpPost({ url: `${documentsResource}/handle-document-completion/${documentId}` });
+export const handleDocumentCompletion = async (userDocumentId: string): Promise<void> => {
+    return httpPost({ url: `${documentsResource}/handle-document-completion/${userDocumentId}` });
+}
+
+export const handleDocumentStart = async (userDocumentId: string): Promise<void> => {
+    return httpPost({ url: `${documentsResource}/handle-document-start/${userDocumentId}`})
 }
 
 export const getNextDocument = async (request: NextDocumentSearchModel): Promise<DocumentListItem | null> => {

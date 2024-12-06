@@ -8,6 +8,7 @@ interface Props {
     isCorrected: boolean;
     threadId: string;
     currentLine: number;
+    userDocumentId: string;
 }
 
 const DocumentCorrectionOutput = (props: Props) => {
@@ -30,7 +31,9 @@ const DocumentCorrectionOutput = (props: Props) => {
                     <ExplanationCard
                         threadId={props.threadId}
                         currentLine={props.currentLine}
-                        isCorrected={props.isCorrected} />
+                        isCorrected={props.isCorrected}
+                        userDocumentId={props.userDocumentId}
+                    />
                 </div>
             )}
         </div>

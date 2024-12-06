@@ -1,18 +1,19 @@
-﻿namespace EnglishTutorAI.Domain.Enums;
-
-public enum StudyTopic
+﻿namespace EnglishTutorAI.Domain.Enums
 {
-    None,
-    All,
-    Travel,
-    Work,
-    Education,
-    Health,
-    Food,
-    Technology,
-    Environment,
-    Sports,
-    Shopping,
-    Entertainment,
-    Other
+    public enum StudyTopic
+    {
+        All,
+        Work,
+        Travel,
+        Education,
+        Technology,
+        Health,
+        Entertainment,
+        Programming,
+        Food,
+        Sports,
+        Shopping,
+        Environment,
+        Other
+    }
 }

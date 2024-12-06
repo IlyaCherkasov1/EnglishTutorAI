@@ -35,24 +35,27 @@ public class SendAssistantMessageService : ISendAssistantMessageService
     {
         await _assistantClientService.AddMessageToThread(request.ThreadId, request.Message);
         await _assistantClientService.CreateRunRequestWithStreaming(_assistantId, request.ThreadId, request.GroupId);
-        var response = await _assistantClientService.GetLastMessage(request.ThreadId);
+        var lastMessage = await _assistantClientService.GetLastMessage(request.ThreadId);
 
         if (saveToRepository)
         {
-            await AddMessageToDialogRepository(request.ThreadId, request.Message, ConversationRole.User);
-            await AddMessageToDialogRepository(request.ThreadId, response, ConversationRole.Assistant);
+            await AddMessageToDialogRepository(new AddMessageToDialogRepositoryModel(
+                request.UserDocumentId, request.Message, ConversationRole.User));
+
+            await AddMessageToDialogRepository(new AddMessageToDialogRepositoryModel(
+                request.UserDocumentId, lastMessage, ConversationRole.Assistant));
         }
 
-        return response;
+        return lastMessage;
     }
 
-    private async Task AddMessageToDialogRepository(string threadId, string content, ConversationRole role)
+    private async Task AddMessageToDialogRepository(AddMessageToDialogRepositoryModel model)
     {
         await _dialogMessageRepository.Add(new DialogMessage
         {
-            ThreadId = threadId,
-            Content = content,
-            ConversationRole = role,
+            Content = model.Content,
+            ConversationRole = model.Role,
+            UserDocumentId = model.UserDocumentId
         });
     }
 }

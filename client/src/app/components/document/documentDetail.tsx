@@ -1,7 +1,12 @@
-import {DocumentResponse} from "@/app/dataModels/document/documentResponse.ts";
+import {DocumentDetailsModel} from "@/app/dataModels/document/documentDetailsModel.ts";
 import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
-import {getConversationThread, handleDocumentCompletion, saveCurrentLine} from "@/app/api/documentApi.ts";
+import {
+    getConversationThread,
+    handleDocumentCompletion,
+    handleDocumentStart,
+    saveCurrentLine
+} from "@/app/api/documentApi.ts";
 import {Button} from "@/app/components/ui/button.tsx";
 import {Textarea} from "@/app/components/ui/textarea.tsx";
 import DocumentCorrectionOutput from "@/app/components/document/documentCorrectionOutput.tsx";
@@ -17,28 +22,26 @@ import {
 import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
 import useAsyncEffect from "use-async-effect";
 import {DocumentResult} from "@/app/components/document/documentResult.tsx";
-import {restartDocumentSession} from "@/app/api/documentSessionApi.ts";
 import {SubmitSpinner} from "@/app/components/ui/submitSpinner.svg.tsx";
 
 interface Props {
-    document: DocumentResponse;
+    documentDetails: DocumentDetailsModel;
 }
 
 export const DocumentDetail = (props: Props) => {
-    const [currentLine, setCurrentLine] = useState(props.document.currentLine);
+    const [currentLine, setCurrentLine] = useState(props.documentDetails.currentLine);
     const [correctedText, setCorrectedText] = useState('');
     const [translatedText, setTranslatedText] = useState('');
     const [chatMessageResponse, setChatMessageResponse] = useState<ChatMessageResponse[]>([]);
     const [isCorrected, setIsCorrected] = useState(false);
-    const [sessionId, setSessionId] = useState<string>(props.document.sessionId);
-    const [isDocumentFinished, setIsDocumentFinished] = useState(props.document.isDocumentFinished);
+    const [isDocumentFinished, setIsDocumentFinished] = useState(props.documentDetails.isDocumentFinished);
 
     const { t } = useTranslation();
 
     useAsyncEffect(async () => {
-        const response = await getConversationThread(props.document.threadId);
+        const response = await getConversationThread(props.documentDetails.threadId);
         setChatMessageResponse(response);
-    }, [props.document.threadId]);
+    }, [props.documentDetails.threadId]);
 
     const methods = useForm<TDocumentDetailsSchema>({ resolver: zodResolver(DocumentDetailsSchema) });
     const { register, handleSubmit, reset, setFocus, formState: { errors, isSubmitting } } = methods;
@@ -47,12 +50,11 @@ export const DocumentDetail = (props: Props) => {
         const { translatedText } = data;
 
         const result = await correctText({
-            originalText: props.document.sentences[currentLine],
+            originalText: props.documentDetails.sentences[currentLine],
             translatedText: translatedText,
-            threadId: props.document.threadId,
-            documentId: props.document.id,
-            sessionId: sessionId,
-        })
+            threadId: props.documentDetails.threadId,
+            userDocumentId: props.documentDetails.userDocumentId,
+        });
 
         setTranslatedText(translatedText);
         setIsCorrected(result.isCorrected);
@@ -70,26 +72,21 @@ export const DocumentDetail = (props: Props) => {
         const nextLine = currentLine + 1;
         setCurrentLine(nextLine);
 
-        if (nextLine >= props.document.sentences.length) {
+        if (nextLine >= props.documentDetails.sentences.length) {
             setIsDocumentFinished(true);
-            await handleDocumentCompletion(props.document.id);
+            await handleDocumentCompletion(props.documentDetails.userDocumentId);
         }
 
-        await saveCurrentLine({ currentLine: currentLine + 1, documentId: props.document.id });
+        await saveCurrentLine({ currentLine: currentLine + 1, userDocumentId: props.documentDetails.userDocumentId });
 
         reset();
         setFocus("translatedText");
     };
 
     const handleStartAgain = async () => {
-        await saveCurrentLine({ currentLine: 0, documentId: props.document.id });
-        const newSessionId = await restartDocumentSession({
-            documentId: props.document.id,
-            currentSessionId: props.document.sessionId,
-        })
+        await handleDocumentStart(props.documentDetails.userDocumentId);
 
         setIsDocumentFinished(false)
-        setSessionId(newSessionId);
         setCurrentLine(0);
         setTranslatedText('');
     }
@@ -104,9 +101,9 @@ export const DocumentDetail = (props: Props) => {
     return (
         <div>
             <div className="max-w-4xl mx-auto p-4">
-                <h1 className="text-3xl font-bold mb-6">{props.document.title}</h1>
+                <h1 className="text-3xl font-bold mb-6">{props.documentDetails.title}</h1>
                 <div className="bg-gray-100 p-4 rounded-md mb-4">
-                    {props.document.sentences.map((line, index) => (
+                    {props.documentDetails.sentences.map((line, index) => (
                         <span
                             key={index}
                             className={`mr-1 ${index === currentLine ? 'text-black' : 'text-gray-400'}`}>
@@ -119,10 +116,10 @@ export const DocumentDetail = (props: Props) => {
                         <div className="flex justify-end mt-2">
                             <Button onClick={handleStartAgain}>{t('startAgain')}</Button>
                         </div>
-                        <DocumentResult sessionId={sessionId} />
+                        <DocumentResult userDocumentId={props.documentDetails.userDocumentId} />
                     </>
                 ) : (
-                    <div>
+                    <>
                         <FormProvider {...methods}>
                             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mb-4">
                                 <Textarea
@@ -136,7 +133,7 @@ export const DocumentDetail = (props: Props) => {
                                     <Button type="submit" disabled={isSubmitting}>{t('send')}</Button>
                                 </div>
                                 {isSubmitting && (
-                                    <div className="flex items-center justify-center mt-2">
+                                    <div className="mt-2">
                                         <SubmitSpinner />
                                     </div>
                                 )}
@@ -147,14 +144,18 @@ export const DocumentDetail = (props: Props) => {
                                 translatedText={translatedText}
                                 correctedText={correctedText}
                                 isCorrected={isCorrected}
-                                threadId={props.document.threadId}
+                                threadId={props.documentDetails.threadId}
                                 currentLine={currentLine}
+                                userDocumentId={props.documentDetails.userDocumentId}
                             />
                         }
-                    </div>
+                    </>
                 )}
+                <ChatBotToggle
+                    chatMessageResponse={chatMessageResponse}
+                    threadId={props.documentDetails.threadId}
+                    userDocumentId={props.documentDetails.userDocumentId} />
             </div>
-            <ChatBotToggle chatMessageResponse={chatMessageResponse} threadId={props.document.threadId} />
         </div>
     )
 }

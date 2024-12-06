@@ -47,18 +47,19 @@
   "cancel": "Cancel",
   "deleteDocument": "Delete document",
   "studyTopics": {
-    "Other": "Other",
-    "Travel": "Travel",
+    "All": "All",
     "Work": "Work",
+    "Travel": "Travel",
     "Education": "Education",
-    "Health": "Health",
-    "Food": "Food",
     "Technology": "Technology",
-    "Environment": "Environment",
+    "Health": "Health",
+    "Entertainment": "Entertainment",
+    "Programming": "Programming",
+    "Food": "Food",
     "Sports": "Sports",
     "Shopping": "Shopping",
-    "Entertainment": "Entertainment",
-    "All": "All"
+    "Environment": "Environment",
+    "Other": "Other"
   },
   "category": "Category",
   "selectCategory": "Select category",
@@ -96,5 +97,6 @@
   "goToTranslate": "Go to translate",
   "statistics": "Statistics",
   "profile": "Profile",
-  "adminPanel": "Admin panel"
+  "adminPanel": "Admin panel",
+  "completedLabel": "Completed"
 }

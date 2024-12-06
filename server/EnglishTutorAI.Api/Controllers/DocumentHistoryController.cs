@@ -30,8 +30,8 @@ public class DocumentHistoryController : ControllerBase
     }
 
     [HttpGet(Routes.DocumentHistory.GetDocumentSessionMistakesHistory)]
-    public Task<IEnumerable<DocumentMistakeHistoryItems>> GetDocumentSessionMistakeHistory(Guid sessionId)
+    public Task<IEnumerable<DocumentMistakeHistoryItems>> GetDocumentSessionMistakeHistory(Guid userDocumentId)
     {
-        return _mediator.Send(new GetDocumentMistakeHistoryQuery(sessionId));
+        return _mediator.Send(new GetDocumentMistakeHistoryQuery(userDocumentId));
     }
 }

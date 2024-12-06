@@ -2,7 +2,7 @@
 
 public class RestartDocumentSessionRequest
 {
-    public Guid DocumentId { get; set; }
+    public Guid UserDocumentId { get; set; }
 
     public Guid CurrentSessionId { get; set; }
 }

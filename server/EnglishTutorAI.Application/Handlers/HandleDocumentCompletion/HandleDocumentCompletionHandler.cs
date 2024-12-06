@@ -18,7 +18,7 @@ public class HandleDocumentCompletionHandler : IRequestHandler<HandleDocumentCom
 
     public async Task Handle(HandleDocumentCompletionCommand request, CancellationToken cancellationToken)
     {
-        await _documentCompletionService.Save(request.DocumentId);
+        await _documentCompletionService.Save(request.UserDocumentId);
         await _unitOfWork.Commit();
     }
 }

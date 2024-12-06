@@ -11,11 +11,9 @@ public class LinguaFixMessage : Entity, IHasCreatedAt
 
     public DateTime CreatedAt { get; set; }
 
-    public required string ThreadId { get; init; }
+    public required Guid SessionId { get; set; }
 
-    public required Guid DocumentId { get; set; }
+    public required Guid UserDocumentId { get; set; }
 
-    public Guid DocumentSessionId { get; init; }
-
-    public DocumentSession DocumentSession { get; set; } = null!;
+    public UserDocument UserDocument { get; init; } = null!;
 }

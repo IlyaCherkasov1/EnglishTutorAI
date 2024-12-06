@@ -1,8 +1,5 @@
-﻿using AutoMapper;
-using EnglishTutorAI.Application.Attributes;
-using EnglishTutorAI.Application.Exceptions;
+﻿using EnglishTutorAI.Application.Attributes;
 using EnglishTutorAI.Application.Interfaces;
-using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Specifications;
 using EnglishTutorAI.Domain.Entities;
 
@@ -11,33 +8,47 @@ namespace EnglishTutorAI.Application.Services;
 [ScopedDependency]
 public class DocumentRetrievalService : IDocumentRetrievalService
 {
+    private readonly IRepository<UserDocument> _userDocumentRepository;
+    private readonly IAssistantClientService _assistantClientService;
     private readonly IRepository<Document> _documentRepository;
-    private readonly IMapper _mapper;
-    private readonly IRepository<DocumentSession> _documentSessionRepository;
+    private readonly IUserContextService _userContextService;
 
     public DocumentRetrievalService(
+        IRepository<UserDocument> userDocumentRepository,
+        IAssistantClientService assistantClientService,
         IRepository<Document> documentRepository,
-        IMapper mapper,
-        IRepository<DocumentSession> documentSessionRepository)
+        IUserContextService userContextService)
     {
+        _userDocumentRepository = userDocumentRepository;
+        _assistantClientService = assistantClientService;
         _documentRepository = documentRepository;
-        _mapper = mapper;
-        _documentSessionRepository = documentSessionRepository;
+        _userContextService = userContextService;
     }
 
-    public async Task<DocumentResponse> GetDocumentById(Guid id)
+    public async Task<UserDocument> GetDocumentDetailsById(Guid documentId)
     {
-        var document = await _documentRepository.GetSingleOrDefault(new DocumentRetrievalByIdSpecification(id));
+        var userDocument = await _userDocumentRepository.GetSingleOrDefault(
+            new UserDocumentRetrievalByIdSpecification(documentId, _userContextService.UserId));
 
-        if (document == null)
+        if (userDocument != null)
         {
-            throw new EntityNotFoundException("Document not found");
+            return userDocument;
         }
 
-        var documentResponse = _mapper.Map<DocumentResponse>(document);
-        documentResponse.SessionId =
-            await _documentSessionRepository.GetSingleOrDefault(new DocumentSessionByDocumentIdSpecification(document.Id));
+        var document = await _documentRepository.Single(new DocumentRetrievalByIdSpecification(documentId));
+        userDocument = new UserDocument
+        {
+            ThreadId = (await _assistantClientService.CreateThread()).Id,
+            CurrentLine = 0,
+            UserId = _userContextService.UserId,
+            DocumentId = documentId,
+            Document = document,
+            SessionId = Guid.NewGuid(),
+            IsCompleted = false,
+        };
 
-        return documentResponse;
+        await _userDocumentRepository.Add(userDocument);
+
+        return userDocument;
     }
 }

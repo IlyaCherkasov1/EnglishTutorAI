@@ -1,12 +1,12 @@
 import {useState} from "react";
 import useAsyncEffect from "use-async-effect";
-import {getDocumentSessionMistakesHistory} from "@/app/api/documentHisoryApi.ts";
+import {getCurrentDocumentSessionMistakesHistory} from "@/app/api/documentHisoryApi.ts";
 import {DocumentMistakeHistoryItems} from "@/app/dataModels/document/documentMistakeHistoryItems.ts";
 import {useTranslation} from "react-i18next";
 import {MistakeCard} from "@/app/components/mistakeCard.tsx";
 
 interface Props {
-    sessionId: string;
+    userDocumentId: string;
 }
 
 export const DocumentResult = (props: Props) => {
@@ -14,7 +14,7 @@ export const DocumentResult = (props: Props) => {
     const { t } = useTranslation();
 
     useAsyncEffect(async () => {
-        const mistakes = await getDocumentSessionMistakesHistory(props.sessionId);
+        const mistakes = await getCurrentDocumentSessionMistakesHistory(props.userDocumentId);
         setMistakeHistoryItems(mistakes);
     }, []);
 

@@ -11,5 +11,7 @@ public class DialogMessage : Entity, IHasCreatedAt
 
     public DateTime CreatedAt { get; set; }
 
-    public required string ThreadId { get; init; }
+    public UserDocument UserDocument { get; init; } = null!;
+
+    public required Guid UserDocumentId { get; init; }
 }

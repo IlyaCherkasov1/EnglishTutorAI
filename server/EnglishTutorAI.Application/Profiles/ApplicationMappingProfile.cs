@@ -10,8 +10,14 @@ public class ApplicationMappingProfile : Profile
 {
     public ApplicationMappingProfile()
     {
-        CreateMap<Document, DocumentResponse>()
-            .ForMember(d => d.Sentences, o => o.MapFrom<DocumentSentencesToDocumentResponseResolver>());
+        CreateMap<UserDocument, DocumentDetailsModel>()
+            .ForMember(d => d.Title, o => o.MapFrom(s => s.Document.Title))
+            .ForMember(d => d.Sentences, o => o.MapFrom<UserDocumentSentencesToDocumentResponseResolver>())
+            .ForMember(d => d.CreatedAt, o => o.MapFrom(s => s.Document.CreatedAt))
+            .ForMember(d => d.CurrentLine, o => o.MapFrom(s => s.CurrentLine))
+            .ForMember(d => d.UserDocumentId, o => o.MapFrom(s => s.Id))
+            .ForMember(d => d.IsDocumentFinished, o => o.MapFrom(s => s.IsCompleted));
+
         CreateMap<Document, DocumentListItem>()
             .ForMember(d => d.StudyTopic, o => o.MapFrom(s => s.StudyTopic.ToString()));
 

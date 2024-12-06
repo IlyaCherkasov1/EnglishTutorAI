@@ -1,9 +1,9 @@
 ﻿
 namespace EnglishTutorAI.Application.Models;
 
-public class DocumentResponse
+public class DocumentDetailsModel
 {
-    public Guid Id { get; init; }
+    public Guid UserDocumentId { get; init; }
 
     public required string Title { get; init; }
 
@@ -15,7 +15,5 @@ public class DocumentResponse
 
     public int CurrentLine { get; init; }
 
-    public Guid SessionId { get; set; }
-
-    public bool IsDocumentFinished => CurrentLine >= Sentences.Count();
+    public bool IsDocumentFinished { get; set; }
 }

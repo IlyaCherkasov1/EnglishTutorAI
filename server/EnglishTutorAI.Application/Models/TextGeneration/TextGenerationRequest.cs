@@ -8,7 +8,5 @@ public class TextGenerationRequest
 
     public required string ThreadId { get; set; }
 
-    public Guid DocumentId { get; set; }
-
-    public Guid SessionId { get; set; }
+    public Guid UserDocumentId { get; set; }
 }

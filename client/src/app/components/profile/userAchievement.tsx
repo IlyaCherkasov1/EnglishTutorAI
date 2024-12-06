@@ -33,7 +33,7 @@ export const UserAchievement = (props: Props) => {
                                         className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-white
                                             rounded-full px-2 py-1">
                                             <span className="text-xs font-bold text-indigo-600">
-                                              LV.{achievement.currentLevel + 1}
+                                            {achievement.isCompleted ? t('completedLabel') : `LV.${achievement.currentLevel + 1}`}
                                             </span>
                                     </div>
                                 </div>
@@ -42,20 +42,20 @@ export const UserAchievement = (props: Props) => {
                             <div className="ml-4 flex-1">
                                 <h3 className="text-lg font-bold text-gray-800">{t(achievement.name)}</h3>
                                 <p className="text-sm text-gray-600">{t(achievement.description)}</p>
-                                <div className="flex items-center mt-3">
-                                    <div className="flex-1 bg-gray-300 rounded-full h-2 relative">
-                                        <div
-                                            className="absolute top-0 left-0 h-2 rounded-full transition-all"
-                                            style={{
-                                                width: `${progressPercentage}%`,
-                                                backgroundColor: achievement.isCompleted ? '#34D399' : '#F87171',
-                                            }}
-                                        ></div>
-                                    </div>
-                                    <div className="text-sm text-gray-500 ml-3 font-medium">
-                                        {achievement.progress} / {achievement.levelGoals[achievement.currentLevel]}
-                                    </div>
-                                </div>
+                                {!achievement.isCompleted &&
+                                    (<div className="flex items-center mt-3">
+                                        <div className="flex-1 bg-gray-300 rounded-full h-2 relative">
+                                            <div className="absolute top-0 left-0 h-2 rounded-full transition-all"
+                                                 style={{
+                                                     width: `${progressPercentage}%`,
+                                                     backgroundColor: '#F87171',
+                                                 }}>
+                                            </div>
+                                        </div>
+                                        <div className="text-sm text-gray-500 ml-3 font-medium">
+                                            {achievement.progress} / {achievement.levelGoals[achievement.currentLevel]}
+                                        </div>
+                                    </div>)}
                             </div>
                         </li>
                     );

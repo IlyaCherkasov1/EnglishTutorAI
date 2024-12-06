@@ -2,5 +2,5 @@
 
 public interface IDocumentCompletionService
 {
-    Task Save(Guid documentId);
+    Task Save(Guid userDocumentId);
 }
