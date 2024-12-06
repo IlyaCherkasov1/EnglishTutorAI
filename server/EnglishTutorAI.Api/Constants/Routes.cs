@@ -32,11 +32,6 @@ public static class Routes
         public const string GetDocumentSessionMistakesHistory = "get-session-mistake-history/{userDocumentId}";
     }
 
-    public static class DocumentSession
-    {
-        public const string StartDocumentSession = "start-document-session";
-    }
-
     public static class Assistant
     {
         public const string GenerateChatCompletion = "correct-text";
