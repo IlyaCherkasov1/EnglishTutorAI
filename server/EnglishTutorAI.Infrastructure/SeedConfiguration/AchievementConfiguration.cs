@@ -15,7 +15,6 @@ public class AchievementConfiguration : IEntityTypeConfiguration<Achievement>
                 Id = AchievementIds.NoviceTranslatorId,
                 Name = "achievements.noviceTranslator.name",
                 Description = "achievements.noviceTranslator.description",
-                IsCompleted = false,
                 IconFileName = "novice_translator_icon.png",
             },
             new Achievement
@@ -23,7 +22,6 @@ public class AchievementConfiguration : IEntityTypeConfiguration<Achievement>
                 Id = AchievementIds.DedicatedTranslatorId,
                 Name = "achievements.dedicatedTranslator.name",
                 Description = "achievements.dedicatedTranslator.description",
-                IsCompleted = false,
                 IconFileName = "dedicated_translator_icon.png",
             },
             new Achievement
@@ -31,7 +29,6 @@ public class AchievementConfiguration : IEntityTypeConfiguration<Achievement>
                 Id = AchievementIds.FlawlessTranslatorId,
                 Name = "achievements.flawlessTranslator.name",
                 Description = "achievements.flawlessTranslator.description",
-                IsCompleted = false,
                 IconFileName = "flawless_translator_icon.png",
             }
         );

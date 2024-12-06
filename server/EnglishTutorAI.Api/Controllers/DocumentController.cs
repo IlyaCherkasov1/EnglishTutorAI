@@ -8,6 +8,7 @@ using EnglishTutorAI.Application.Handlers.GetDocumentDetails;
 using EnglishTutorAI.Application.Handlers.GetDocuments;
 using EnglishTutorAI.Application.Handlers.GetNextDocument;
 using EnglishTutorAI.Application.Handlers.HandleDocumentCompletion;
+using EnglishTutorAI.Application.Handlers.HandleDocumentStart;
 using EnglishTutorAI.Application.Handlers.SaveProgress;
 using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Models.Common;
@@ -76,9 +77,15 @@ public class DocumentController : ControllerBase
     }
 
     [HttpPost(Routes.Document.HandleDocumentCompletion)]
-    public Task HandleDocumentCompletion(Guid documentId)
+    public Task HandleDocumentCompletion(Guid userDocumentId)
     {
-        return _mediator.Send(new HandleDocumentCompletionCommand(documentId));
+        return _mediator.Send(new HandleDocumentCompletionCommand(userDocumentId));
+    }
+
+    [HttpPost(Routes.Document.HandleDocumentStart)]
+    public Task HandleDocumentStart(Guid userDocumentId)
+    {
+        return _mediator.Send(new HandleDocumentStartCommand(userDocumentId));
     }
 
     [HttpGet(Routes.Document.GetNextDocument)]

@@ -10,20 +10,20 @@ namespace EnglishTutorAI.Application.Services;
 public class UserStatisticRetrievalService : IUserStatisticRetrievalService
 {
     private readonly IRepository<UserStatistics> _userStatisticsRepository;
-    private readonly IAuthenticatedUserContext _authenticatedUserContext;
+    private readonly IUserContextService _userContextService;
 
     public UserStatisticRetrievalService(
         IRepository<UserStatistics> userStatisticsRepository,
-        IAuthenticatedUserContext authenticatedUserContext)
+        IUserContextService userContextService)
     {
         _userStatisticsRepository = userStatisticsRepository;
-        _authenticatedUserContext = authenticatedUserContext;
+        _userContextService = userContextService;
     }
 
     public async Task<UserStatisticsResponse> Retrieve()
     {
-        var userId = _authenticatedUserContext.UserId!.Value;
-        var result = await _userStatisticsRepository.Single(new UserStatisticsByUserIdSpecification(userId));
+        var result = await _userStatisticsRepository.Single(
+            new UserStatisticsByUserIdSpecification(_userContextService.UserId));
 
         return new UserStatisticsResponse
         {

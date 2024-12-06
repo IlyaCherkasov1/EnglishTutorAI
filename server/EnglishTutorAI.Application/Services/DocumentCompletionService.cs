@@ -9,32 +9,38 @@ namespace EnglishTutorAI.Application.Services;
 [ScopedDependency]
 public class DocumentCompletionService : IDocumentCompletionService
 {
-    private readonly IAuthenticatedUserContext _authenticatedUserContext;
     private readonly IUserAchievementService _userAchievementService;
     private readonly IRepository<UserDocumentCompletion> _userDocumentCompletionRepository;
+    private readonly IRepository<UserDocument> _userDocumentRepository;
+    private readonly IUserContextService _userContextService;
 
     public DocumentCompletionService(
-        IAuthenticatedUserContext authenticatedUserContext,
         IUserAchievementService userAchievementService,
-        IRepository<UserDocumentCompletion> userDocumentCompletionRepository)
+        IRepository<UserDocumentCompletion> userDocumentCompletionRepository,
+        IRepository<UserDocument> userDocumentRepository,
+        IUserContextService userContextService)
     {
-        _authenticatedUserContext = authenticatedUserContext;
         _userAchievementService = userAchievementService;
         _userDocumentCompletionRepository = userDocumentCompletionRepository;
+        _userDocumentRepository = userDocumentRepository;
+        _userContextService = userContextService;
     }
 
-    public async Task Save(Guid documentId)
+    public async Task Save(Guid userDocumentId)
     {
-        var userId = _authenticatedUserContext.UserId!.Value;
+        var userId = _userContextService.UserId;
         var isDocumentCompleted = await _userDocumentCompletionRepository.Any(
-                new UserDocumentCompletionForAchievementsSpecification(userId, documentId));
+                new UserDocumentCompletionForAchievementsSpecification(_userContextService.UserId, userDocumentId));
+
+        var userDocument = await _userDocumentRepository.GetById(userDocumentId);
+        userDocument.IsCompleted = true;
 
         if (!isDocumentCompleted)
         {
             await _userDocumentCompletionRepository.Add(new UserDocumentCompletion
             {
                 UserId = userId,
-                DocumentId = documentId,
+                UserDocumentId = userDocumentId,
             });
 
             await _userAchievementService.UpdateProgress(userId, AchievementIds.DedicatedTranslatorId);

@@ -18,7 +18,9 @@ public static class Routes
 
         public const string DeleteDocument = "delete-document/{documentId}";
 
-        public const string HandleDocumentCompletion = "handle-document-completion/{documentId}";
+        public const string HandleDocumentCompletion = "handle-document-completion/{userDocumentId}";
+
+        public const string HandleDocumentStart = "handle-document-start/{userDocumentId}";
 
         public const string GetNextDocument = "get-next-document";
     }
@@ -27,18 +29,15 @@ public static class Routes
     {
         public const string GetMistakesHistory = "get-mistake-history-items";
 
-        public const string GetDocumentSessionMistakesHistory = "get-session-mistake-history/{sessionId}";
-    }
-
-    public static class DocumentSession
-    {
-        public const string RestartDocumentSession = "restart-document-session";
+        public const string GetDocumentSessionMistakesHistory = "get-session-mistake-history/{userDocumentId}";
     }
 
     public static class Assistant
     {
         public const string GenerateChatCompletion = "correct-text";
+
         public const string SendMessage = "send-message";
+
         public const string SendMessageWithSave = "send-message-with-save";
     }
 

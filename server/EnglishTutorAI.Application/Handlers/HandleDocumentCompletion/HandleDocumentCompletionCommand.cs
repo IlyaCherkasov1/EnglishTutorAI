@@ -2,4 +2,4 @@
 
 namespace EnglishTutorAI.Application.Handlers.HandleDocumentCompletion;
 
-public record HandleDocumentCompletionCommand(Guid DocumentId) : IRequest;
+public record HandleDocumentCompletionCommand(Guid UserDocumentId) : IRequest;

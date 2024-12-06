@@ -15,6 +15,7 @@ import {SubmitSpinner} from "@/app/components/ui/submitSpinner.svg.tsx";
 interface Props {
     threadId: string;
     chatMessageResponse: ChatMessageResponse[];
+    userDocumentId: string;
 }
 
 type Message = {
@@ -50,7 +51,7 @@ export const ChatBot = (props: Props) => {
 
     useAsyncEffect(async () => {
         await connection.start();
-        await connection.invoke('JoinChat', props.threadId);
+        await connection.invoke('JoinAssistantChat', props.threadId, props.userDocumentId);
 
         connection.on('ReceiveMessage', (message: string) => {
             setAssistantTyping(true);
@@ -75,7 +76,8 @@ export const ChatBot = (props: Props) => {
         const assistantResponse = await sendMessageWithSave({
             message: data.message,
             threadId: props.threadId,
-            groupId: props.threadId,
+            groupId: `${props.userDocumentId}-${props.threadId}-Assistant`,
+            userDocumentId: props.userDocumentId,
         });
 
         const assistantMessage: Message = {

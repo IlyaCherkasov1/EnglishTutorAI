@@ -10,28 +10,31 @@ namespace EnglishTutorAI.Application.Services;
 public class UserAchievementService : IUserAchievementService
 {
     private readonly IRepository<UserAchievement> _userAchievementRepository;
-    private readonly IAuthenticatedUserContext _authenticatedUserContext;
+    private readonly IUserContextService _userContextService;
     private const int ProgressStep = 1;
 
     public UserAchievementService(
-        IRepository<UserAchievement> userAchievementRepository,
-        IAuthenticatedUserContext authenticatedUserContext)
+        IRepository<UserAchievement> userAchievementRepository, IUserContextService userContextService)
     {
         _userAchievementRepository = userAchievementRepository;
-        _authenticatedUserContext = authenticatedUserContext;
+        _userContextService = userContextService;
     }
 
     public async Task<IEnumerable<UserAchievementResponse>> GetUserAchievements()
     {
-        var userId = _authenticatedUserContext.UserId!.Value;
-
-        return await _userAchievementRepository.List(new UserAchievementByUserIdSpecification(userId));
+        return await _userAchievementRepository.List(
+            new UserAchievementByUserIdSpecification(_userContextService.UserId));
     }
 
     public async Task UpdateProgress(Guid userId, Guid achievementId)
     {
         var userAchievement = await _userAchievementRepository.Single(
             new UserAchievementByUpdateAchievementSpecification(userId, achievementId));
+
+        if (userAchievement.IsCompleted)
+        {
+            return;
+        }
 
         userAchievement.Progress += ProgressStep;
 
@@ -46,7 +49,7 @@ public class UserAchievementService : IUserAchievementService
 
             if (userAchievement.CurrentLevel >= userAchievement.Achievement.AchievementLevels.Count)
             {
-                userAchievement.Achievement.IsCompleted = true;
+                userAchievement.IsCompleted = true;
             }
         }
     }

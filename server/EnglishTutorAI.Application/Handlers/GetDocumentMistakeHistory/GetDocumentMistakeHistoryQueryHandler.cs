@@ -17,6 +17,6 @@ public class GetDocumentMistakeHistoryQueryHandler :
     public Task<IEnumerable<DocumentMistakeHistoryItems>> Handle(
         GetDocumentMistakeHistoryQuery request, CancellationToken cancellationToken)
     {
-        return _documentMistakeHistoryService.Get(request.SessionId);
+        return _documentMistakeHistoryService.Get(request.UserDocumentId);
     }
 }

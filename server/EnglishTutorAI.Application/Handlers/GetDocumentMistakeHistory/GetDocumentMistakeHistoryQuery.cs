@@ -5,10 +5,10 @@ namespace EnglishTutorAI.Application.Handlers.GetDocumentMistakeHistory;
 
 public class GetDocumentMistakeHistoryQuery : IRequest<IEnumerable<DocumentMistakeHistoryItems>>
 {
-    public GetDocumentMistakeHistoryQuery(Guid sessionId)
+    public GetDocumentMistakeHistoryQuery(Guid userDocumentId)
     {
-        SessionId = sessionId;
+        UserDocumentId = userDocumentId;
     }
 
-    public Guid SessionId { get; set; }
+    public Guid UserDocumentId { get; set; }
 }

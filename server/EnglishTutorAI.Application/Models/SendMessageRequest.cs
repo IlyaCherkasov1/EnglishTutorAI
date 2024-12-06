@@ -9,4 +9,6 @@ public class SendMessageRequest
     public required string ThreadId { get; set; }
 
     public required string GroupId { get; set; }
+
+    public Guid UserDocumentId {get; set;}
 }

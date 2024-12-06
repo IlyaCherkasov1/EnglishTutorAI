@@ -4,7 +4,7 @@ namespace EnglishTutorAI.Domain.Entities;
 
 public class UserDocumentCompletion : Entity, IHasCreatedAt
 {
-    public Guid DocumentId { get; set; }
+    public Guid UserDocumentId { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

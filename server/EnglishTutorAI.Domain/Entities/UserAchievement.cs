@@ -6,7 +6,10 @@ public class UserAchievement : Entity
 
     public int CurrentLevel { get; set; }
 
+    public bool IsCompleted { get; set; }
+
     public Guid AchievementId { get; init; }
+
     public Achievement Achievement { get; set; } = null!;
 
     public Guid UserId { get; init; }

@@ -8,15 +8,14 @@ namespace EnglishTutorAI.Application.Specifications;
 
 public class DocumentListSearchSpecification : DataTransformSpecification<Document, DocumentListItem>
 {
-    public DocumentListSearchSpecification(DocumentsSearchModel model) : base(
+    public DocumentListSearchSpecification(DocumentsSearchModel model, Guid userId) : base(
         d => new DocumentListItem
         {
             Id = d.Id,
             Title = d.Title,
-            Content = string.Join(' ', d.Sentences.Select(s => s.Text).Take(2)),
+            Content = string.Join(' ', d.Sentences.OrderBy(s => s.Position).Select(s => s.Text).Take(2)),
             StudyTopic = d.StudyTopic.ToString(),
             CreatedAt = d.CreatedAt,
-            IsDocumentFinished = d.CurrentLine >= d.Sentences.Count,
         })
     {
         if (model.StudyTopic != StudyTopic.All)
@@ -27,5 +26,10 @@ public class DocumentListSearchSpecification : DataTransformSpecification<Docume
         AddInclude(d => d.Sentences);
         ApplyOrderByDescending(d => d.CreatedAt);
         ApplyPaging(model.PageNumber, model.PageSize);
+
+        ApplyCriteria(d => d.UserDocuments
+            .Where(ud => ud.UserId == userId && ud.DocumentId == d.Id)
+            .Select(ud => ud.IsCompleted)
+            .FirstOrDefault() == false);
     }
 }

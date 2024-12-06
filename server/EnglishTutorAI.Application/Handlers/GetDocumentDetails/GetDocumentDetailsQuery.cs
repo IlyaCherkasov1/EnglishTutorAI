@@ -3,12 +3,12 @@ using MediatR;
 
 namespace EnglishTutorAI.Application.Handlers.GetDocumentDetails;
 
-public class GetDocumentDetailsQuery : IRequest<DocumentResponse>
+public class GetDocumentDetailsQuery : IRequest<DocumentDetailsModel>
 {
-    public GetDocumentDetailsQuery(Guid id)
+    public GetDocumentDetailsQuery(Guid documentId)
     {
-        Id = id;
+        DocumentId = documentId;
     }
 
-    public Guid Id { get; }
+    public Guid DocumentId { get; }
 }

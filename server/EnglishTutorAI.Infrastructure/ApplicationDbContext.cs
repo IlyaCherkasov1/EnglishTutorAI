@@ -21,8 +21,6 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>
 
     public DbSet<LinguaFixMessage> LinguaFixMessages { get; init; }
 
-    public DbSet<DocumentSession> DocumentSessions { get; init; }
-
     public DbSet<Achievement> Achievements { get; init; }
 
     public DbSet<UserAchievement> UserAchievements { get; init; }

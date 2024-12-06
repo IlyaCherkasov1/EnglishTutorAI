@@ -12,19 +12,25 @@ namespace EnglishTutorAI.Application.Services;
 public class DocumentSearchService : IDocumentSearchService
 {
     private readonly IRepository<Document> _documentRepository;
+    private readonly IUserContextService _userContextService;
 
-    public DocumentSearchService(IRepository<Document> documentRepository)
+    public DocumentSearchService(
+        IRepository<Document> documentRepository,
+        IUserContextService userContextService)
     {
         _documentRepository = documentRepository;
+        _userContextService = userContextService;
     }
 
     public async Task<SearchResult<DocumentListItem>> Search(DocumentsSearchModel model)
     {
-        return await _documentRepository.Search(new DocumentListSearchSpecification(model));
+        return await _documentRepository.Search(
+            new DocumentListSearchSpecification(model, _userContextService.UserId));
     }
 
     public async Task<DocumentListItem?> GetNextDocument(NextDocumentSearchModel model)
     {
-        return await _documentRepository.GetFirstOrDefault(new NextDocumentSearchSpecification(model));
+        return await _documentRepository.GetFirstOrDefault(
+            new NextDocumentSearchSpecification(model, _userContextService.UserId));
     }
 }

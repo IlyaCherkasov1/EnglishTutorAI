@@ -4,5 +4,5 @@ namespace EnglishTutorAI.Application.Interfaces;
 
 public interface IDocumentMistakeHistoryService
 {
-    Task<IEnumerable<DocumentMistakeHistoryItems>> Get(Guid sessionId);
+    Task<IEnumerable<DocumentMistakeHistoryItems>> Get(Guid userDocumentId);
 }

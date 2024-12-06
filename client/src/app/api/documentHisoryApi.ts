@@ -11,6 +11,6 @@ export const getMistakeHistoryItems = async (request: Pageable): Promise<SearchR
     return httpGet({ url: `${documentHistoryResource}/get-mistake-history-items${objectToQueryString(request)}` })
 }
 
-export const getDocumentSessionMistakesHistory = async (sessionId: string): Promise<Array<DocumentMistakeHistoryItems>> => {
-    return httpGet({url: `${documentHistoryResource}/get-session-mistake-history/${sessionId}` })
+export const getCurrentDocumentSessionMistakesHistory = async (userDocumentId: string): Promise<Array<DocumentMistakeHistoryItems>> => {
+    return httpGet({url: `${documentHistoryResource}/get-session-mistake-history/${userDocumentId}` })
 }

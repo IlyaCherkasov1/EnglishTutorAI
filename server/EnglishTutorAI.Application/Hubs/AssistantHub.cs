@@ -4,13 +4,13 @@ namespace EnglishTutorAI.Application.Hubs;
 
 public class AssistantHub : Hub
 {
-    public async Task JoinChat(string threadId)
+    public async Task JoinAssistantChat(string threadId, Guid userDocumentId)
     {
-        await Groups.AddToGroupAsync(Context.ConnectionId, threadId);
+        await Groups.AddToGroupAsync(Context.ConnectionId, $"{userDocumentId}-{threadId}-Assistant");
     }
 
-    public async Task JoinExplanationChat(string threadId)
+    public async Task JoinExplanationChat(string threadId, Guid userDocumentId)
     {
-        await Groups.AddToGroupAsync(Context.ConnectionId, $"{threadId}-Explanation");
+        await Groups.AddToGroupAsync(Context.ConnectionId, $"{userDocumentId}-{threadId}-Explanation");
     }
 }

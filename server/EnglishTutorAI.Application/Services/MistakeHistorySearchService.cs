@@ -12,14 +12,19 @@ namespace EnglishTutorAI.Application.Services;
 public class MistakeHistorySearchService : IMistakeHistorySearchService
 {
     private readonly IRepository<LinguaFixMessage> _linguaFixMessageRepository;
+    private readonly IUserContextService _userContextService;
 
-    public MistakeHistorySearchService(IRepository<LinguaFixMessage> linguaFixMessageRepository)
+    public MistakeHistorySearchService(
+        IRepository<LinguaFixMessage> linguaFixMessageRepository,
+        IUserContextService userContextService)
     {
         _linguaFixMessageRepository = linguaFixMessageRepository;
+        _userContextService = userContextService;
     }
 
     public async Task<SearchResult<MistakeHistoryItems>> Search(PaginationSearchModel model)
     {
-        return await _linguaFixMessageRepository.Search(new MistakeHistoryItemsSpecification(model));
+        return await _linguaFixMessageRepository.Search(
+            new MistakeHistoryItemsSpecification(model, _userContextService.UserId));
     }
 }

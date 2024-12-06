@@ -5,8 +5,8 @@ namespace EnglishTutorAI.Application.Specifications;
 
 public class UserDocumentCompletionForAchievementsSpecification : Specification<UserDocumentCompletion>
 {
-    public UserDocumentCompletionForAchievementsSpecification(Guid userId, Guid documentId) : base(
-        ud => ud.UserId == userId && ud.DocumentId == documentId)
+    public UserDocumentCompletionForAchievementsSpecification(Guid userId, Guid userDocumentId) : base(
+        ud => ud.UserId == userId && ud.UserDocumentId == userDocumentId)
     {
     }
 }

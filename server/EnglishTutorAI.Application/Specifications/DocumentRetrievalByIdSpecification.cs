@@ -5,7 +5,7 @@ namespace EnglishTutorAI.Application.Specifications;
 
 public class DocumentRetrievalByIdSpecification : Specification<Document>
 {
-    public DocumentRetrievalByIdSpecification(Guid id) : base(d => d.Id == id)
+    public DocumentRetrievalByIdSpecification(Guid documentId) : base(d => d.Id == documentId)
     {
         AddInclude(d => d.Sentences);
     }

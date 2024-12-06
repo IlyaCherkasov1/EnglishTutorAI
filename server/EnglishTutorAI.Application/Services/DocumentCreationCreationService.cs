@@ -13,20 +13,14 @@ namespace EnglishTutorAI.Application.Services;
 public class DocumentCreationCreationService : IDocumentCreationService
 {
     private readonly IRepository<Document> _documentRepository;
-    private readonly IAssistantClientService _assistantClientService;
     private readonly ISentenceSplitterService _sentenceSplitterService;
-    private readonly IDocumentSessionService _documentSessionService;
 
     public DocumentCreationCreationService(
         IRepository<Document> documentRepository,
-        IAssistantClientService assistantClientService,
-        ISentenceSplitterService sentenceSplitterService,
-        IDocumentSessionService documentSessionService)
+        ISentenceSplitterService sentenceSplitterService)
     {
         _documentRepository = documentRepository;
-        _assistantClientService = assistantClientService;
         _sentenceSplitterService = sentenceSplitterService;
-        _documentSessionService = documentSessionService;
     }
 
     public async Task AddDocument(DocumentCreationRequest creationRequest)
@@ -35,7 +29,6 @@ public class DocumentCreationCreationService : IDocumentCreationService
         {
             Title = creationRequest.Title,
             StudyTopic = creationRequest.StudyTopic,
-            ThreadId = (await _assistantClientService.CreateThread()).Id,
         };
 
         document.Sentences = _sentenceSplitterService.Split(creationRequest.Content)
@@ -47,6 +40,5 @@ public class DocumentCreationCreationService : IDocumentCreationService
             }).ToList();
 
         await _documentRepository.Add(document);
-        await _documentSessionService.StartNewSession(document.Id);
     }
 }

@@ -4,7 +4,6 @@ using EnglishTutorAI.Application.Constants;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Models.TextGeneration;
-using EnglishTutorAI.Domain.Entities;
 using Microsoft.Extensions.Options;
 
 namespace EnglishTutorAI.Application.Services;
@@ -14,52 +13,52 @@ public class TextCorrectionService : ITextCorrectionService
 {
     private readonly string _assistantId;
     private readonly IAssistantClientService _assistantClientService;
-    private readonly ITextCorrectionMessageGenerationService _messageGenerationService;
     private readonly ISingleEntryCache _singleEntryCache;
-    private readonly IRepository<LinguaFixMessage> _linguaFixMessageRepository;
-    private readonly IAuthenticatedUserContext _authenticatedUserContext;
     private readonly ITextProcessingService _textProcessingService;
-    private readonly IUserManagementService _userManagementService;
-    private Guid UserId => _authenticatedUserContext.UserId!.Value;
+    private readonly IUserAchievementService _userAchievementService;
+    private readonly IAssistantMessageService _assistantMessageService;
+    private readonly IStatisticsService _statisticsService;
+    private readonly IUserContextService _userContextService;
 
     public TextCorrectionService(
         IAssistantClientService assistantClientService,
         IOptionsMonitor<OpenAiConfig> openAiConfig,
-        ITextCorrectionMessageGenerationService messageGenerationService,
         ISingleEntryCache singleEntryCache,
-        IRepository<LinguaFixMessage> linguaFixMessageRepository,
-        IAuthenticatedUserContext authenticatedUserContext,
         ITextProcessingService textProcessingService,
-        IUserManagementService userManagementService)
+        IUserAchievementService userAchievementService,
+        IAssistantMessageService assistantMessageService,
+        IStatisticsService statisticsService,
+        IUserContextService userContextService)
     {
         _assistantClientService = assistantClientService;
-        _messageGenerationService = messageGenerationService;
         _singleEntryCache = singleEntryCache;
-        _linguaFixMessageRepository = linguaFixMessageRepository;
-        _authenticatedUserContext = authenticatedUserContext;
         _textProcessingService = textProcessingService;
-        _userManagementService = userManagementService;
+        _userAchievementService = userAchievementService;
+        _assistantMessageService = assistantMessageService;
+        _statisticsService = statisticsService;
+        _userContextService = userContextService;
         _assistantId = openAiConfig.CurrentValue.EnglishFixerAssistantId!;
     }
 
     public async Task<TextCorrectionResult> Correct(TextGenerationRequest request)
     {
-        var correctedText = await GetOrGenerateCorrectedText(request);
+        var correctedText = await GetOrGenerateCorrectedText(request, request.ThreadId);
         var isCorrected = _textProcessingService.HasTextChanged(request.TranslatedText, correctedText);
 
         if (isCorrected)
         {
-            await UpdateStatisticsAndSaveMessage(request, correctedText);
+            await _statisticsService.SaveStatisticsAndMessage(new SaveStatisticsAndMessageModel(
+                request.TranslatedText, correctedText, request.UserDocumentId));
         }
         else
         {
-            await _userManagementService.UpdateAchievement(UserId, AchievementIds.NoviceTranslatorId);
+            await _userAchievementService.UpdateProgress(_userContextService.UserId, AchievementIds.NoviceTranslatorId);
         }
 
         return new TextCorrectionResult(correctedText, isCorrected);
     }
 
-    private async Task<string> GetOrGenerateCorrectedText(TextGenerationRequest request)
+    private async Task<string> GetOrGenerateCorrectedText(TextGenerationRequest request, string threadId)
     {
         var cachedText = _singleEntryCache.Get(request.OriginalText);
 
@@ -68,48 +67,19 @@ public class TextCorrectionService : ITextCorrectionService
             return cachedText;
         }
 
-        await GenerateAndAddUserMessageAsync(request);
-        await _assistantClientService.CreateRunRequest(_assistantId, request.ThreadId);
-        var correctedText = await GenerateCorrectedMessageAsync(request);
+        await _assistantMessageService.GenerateAndAddMessageAsync(request, threadId);
+        await _assistantClientService.CreateRunRequest(_assistantId, threadId);
+        var correctedText = await _assistantMessageService.GetCorrectedMessageAsync(request.OriginalText, threadId);
 
         var isCorrected = _textProcessingService.HasTextChanged(request.TranslatedText, correctedText);
 
         if (!isCorrected)
         {
-            await _userManagementService.UpdateAchievement(UserId, AchievementIds.FlawlessTranslatorId);
+            await _userAchievementService.UpdateProgress(_userContextService.UserId, AchievementIds.FlawlessTranslatorId);
         }
 
         _singleEntryCache.Set(request.OriginalText, correctedText);
 
         return correctedText;
-    }
-
-    private async Task UpdateStatisticsAndSaveMessage(TextGenerationRequest request, string correctedText)
-    {
-        var countMistakes = _textProcessingService.CountErrors(request.TranslatedText, correctedText);
-        await _userManagementService.UpdateStatistics(UserId, countMistakes);
-
-        await _linguaFixMessageRepository.Add(new LinguaFixMessage
-        {
-            ThreadId = request.ThreadId,
-            TranslatedText = request.TranslatedText,
-            CorrectedText = correctedText,
-            DocumentId = request.DocumentId,
-            DocumentSessionId = request.SessionId
-        });
-    }
-
-    private async Task GenerateAndAddUserMessageAsync(TextGenerationRequest request)
-    {
-        var message = await _messageGenerationService.GenerateMessageAsync(request);
-        await _assistantClientService.AddMessageToThread(request.ThreadId, message);
-    }
-
-    private async Task<string> GenerateCorrectedMessageAsync(TextGenerationRequest request)
-    {
-        var correctedText = await _assistantClientService.GetLastMessage(request.ThreadId);
-        var cleanCorrectedText = _textProcessingService.ExtractCleanText(correctedText, request.OriginalText);
-
-        return cleanCorrectedText;
     }
 }
