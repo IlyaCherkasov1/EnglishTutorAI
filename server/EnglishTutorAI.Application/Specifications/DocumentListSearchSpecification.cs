@@ -13,7 +13,7 @@ public class DocumentListSearchSpecification : DataTransformSpecification<Docume
         {
             Id = d.Id,
             Title = d.Title,
-            Content = string.Join(' ', d.Sentences.OrderBy(s => s.Position).Select(s => s.Text).Take(2)),
+            Content = string.Join(' ', d.Sentences.OrderBy(s => s.Position).Select(s => s.Text).Take(4)),
             StudyTopic = d.StudyTopic.ToString(),
             CreatedAt = d.CreatedAt,
         })

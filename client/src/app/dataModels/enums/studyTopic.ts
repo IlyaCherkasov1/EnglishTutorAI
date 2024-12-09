@@ -11,5 +11,4 @@ export enum StudyTopic {
     Sports,
     Shopping,
     Environment,
-    Other
 }
