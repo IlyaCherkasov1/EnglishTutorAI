@@ -15,11 +15,12 @@ export const DocumentsList = (props: Props) => {
         <main>
             <div className="flex justify-center items-center">
                 <div className="grid gap-8 p-4 grid-cols-1 grid-md:grid-cols-2 grid-lg:grid-cols-3">
-                    {props.allDocuments.map(document =>
+                    {props.allDocuments.map((document, index) =>
                         <DocumentListItemComponent
                             key={document.id}
                             document={document}
                             onDelete={props.onDelete}
+                            index={index}
                         />)}
                 </div>
             </div>

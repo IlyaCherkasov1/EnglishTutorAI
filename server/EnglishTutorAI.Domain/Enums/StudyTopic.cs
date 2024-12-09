@@ -13,7 +13,6 @@
         Food,
         Sports,
         Shopping,
-        Environment,
-        Other
+        Environment
     }
 }

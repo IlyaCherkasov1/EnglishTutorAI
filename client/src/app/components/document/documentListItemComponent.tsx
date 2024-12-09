@@ -5,14 +5,15 @@ import { DeleteDocumentModal } from "@/app/components/modals/deleteDocumentModal
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { contextStore } from "@/app/infrastructure/stores/contextStore.ts";
-import {studyTopicColors} from "@/app/infrastructure/constants/studyTopicColors.ts";
+import {categoryColorSequences} from "@/app/infrastructure/constants/studyTopicColors.ts";
 
 interface Props {
     document: DocumentListItem;
     onDelete: (documentId: string) => void;
+    index: number;
 }
 
-export const DocumentListItemComponent = React.memo(({ document, onDelete }: Props) => {
+export const DocumentListItemComponent = React.memo(({ document, onDelete, index }: Props) => {
     const { t } = useTranslation();
 
     const handleModalClick = (e: React.MouseEvent) => {
@@ -20,13 +21,14 @@ export const DocumentListItemComponent = React.memo(({ document, onDelete }: Pro
         e.preventDefault();
     };
 
-    const topicColor = studyTopicColors[document.studyTopic];
+    const colorSequence = categoryColorSequences[document.studyTopic];
+    const cardColor = colorSequence[index % colorSequence.length];
 
     return (
-        <Link to={`/documents/${document.id}`} className="block relative">
+        <Link to={`/documents/${document.id}`} className="block relative w-[25rem]">
             <div
                 key={document.id}
-                className={`relative rounded-2xl p-4 ${topicColor} hover:shadow-lg transition-shadow`}>
+                className={`relative rounded-2xl p-4 hover:shadow-lg transition-shadow border-2 ${cardColor}`}>
                 <div className="flex items-center gap-3">
                     <div className="flex items-center justify-center w-9 h-9 rounded-full bg-white shadow">
                         <img

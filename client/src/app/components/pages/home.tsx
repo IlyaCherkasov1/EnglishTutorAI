@@ -60,10 +60,11 @@ const Home = () => {
 
         setTotalCount(response.totalCount);
         setDocumentListItem(response.items);
-        const totalLoaded = documentListItem.length + response.items.length;
-        setHasMore(totalLoaded < (response.totalCount || 0));
 
-        if (totalLoaded < (response.totalCount || 0)) {
+        const hasMore =response.items.length < (response.totalCount || 0);
+        setHasMore(hasMore);
+
+        if (hasMore) {
             setPage((prev) => prev + 1);
         }
     };

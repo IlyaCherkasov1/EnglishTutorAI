@@ -32,7 +32,7 @@
   "alreadyHaveAccount": "Already have an account?",
   "writeYourMessage": "Write your message...",
   "welcome": "Welcome",
-  "createAnAccount":"Create an account",
+  "createAnAccount": "Create an account",
   "signUpOrLogInToContinue": "Sign up or log in to continue",
   "minCharactersRequired": "Minimum {{count}} characters required",
   "fieldRequired": "The field is required",
@@ -58,8 +58,7 @@
     "Food": "Food",
     "Sports": "Sports",
     "Shopping": "Shopping",
-    "Environment": "Environment",
-    "Other": "Other"
+    "Environment": "Environment"
   },
   "category": "Category",
   "selectCategory": "Select category",
@@ -98,5 +97,6 @@
   "statistics": "Statistics",
   "profile": "Profile",
   "adminPanel": "Admin panel",
-  "completedLabel": "Completed"
+  "completedLabel": "Completed",
+  "maxCharactersAllowed": "This field must not exceed {{count}} characters."
 }
