@@ -1,6 +1,5 @@
 import React from "react";
 import { DocumentListItem } from "@/app/dataModels/document/documentListItem.ts";
-import { formatDateToISO } from "@/app/infrastructure/helpers/dateHelpers.ts";
 import { DeleteDocumentModal } from "@/app/components/modals/deleteDocumentModal.tsx";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -55,15 +54,7 @@ export const DocumentListItemComponent = React.memo(({ document, onDelete, index
                         </div>
                     )}
                 </div>
-                <p className="text-gray-600 text-sm mt-3 line-clamp-3 min-h-16">{document.content}</p>
-                <div className="flex justify-between items-center mt-4">
-                    <p className="text-sm text-gray-500">{formatDateToISO(document.createdAt)}</p>
-                    {document.isDocumentFinished && (
-                        <span className="text-xs font-semibold text-green-600 bg-green-100 px-2 py-1 rounded-full">
-                            {t("completed")}
-                        </span>
-                    )}
-                </div>
+                <p className="text-gray-600 text-sm mt-3 line-clamp-3 min-h-16 mb-8">{document.content}</p>
             </div>
         </Link>
     );

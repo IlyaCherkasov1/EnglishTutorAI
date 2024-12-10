@@ -3,6 +3,7 @@ using EnglishTutorAI.Api.Controllers.Attributes;
 using EnglishTutorAI.Application.Constants;
 using EnglishTutorAI.Application.Handlers.AddDocument;
 using EnglishTutorAI.Application.Handlers.DeleteDocument;
+using EnglishTutorAI.Application.Handlers.GetCompletedDocuments;
 using EnglishTutorAI.Application.Handlers.GetConversationThread;
 using EnglishTutorAI.Application.Handlers.GetDocumentDetails;
 using EnglishTutorAI.Application.Handlers.GetDocuments;
@@ -92,5 +93,11 @@ public class DocumentController : ControllerBase
     public Task<DocumentListItem?> GetNextDocument([FromQuery]NextDocumentSearchModel model)
     {
         return _mediator.Send(new GetNextDocumentQuery(model));
+    }
+
+    [HttpGet(Routes.Document.GetCompletedDocuments)]
+    public Task<SearchResult<CompletedDocumentListItem>> GetCompletedDocuments([FromQuery]PaginationSearchModel model)
+    {
+        return _mediator.Send(new GetCompletedDocumentsQuery(model));
     }
 }

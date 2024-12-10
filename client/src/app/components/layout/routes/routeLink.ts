@@ -13,4 +13,5 @@ export const routes = {
         documentDetails: "/documents/:documentId"
     },
     profile: "/profile",
+    completedDocuments: "/completedTranslates",
 };

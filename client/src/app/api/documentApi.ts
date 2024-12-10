@@ -8,6 +8,8 @@ import {objectToQueryString} from "@/app/infrastructure/utils/paramsUtils.ts";
 import {DocumentListItem} from "@/app/dataModels/document/documentListItem.ts";
 import {SearchResult} from "@/app/dataModels/searchResult.ts";
 import {NextDocumentSearchModel} from "@/app/dataModels/nextDocumentSearchModel.ts";
+import {Pageable} from "@/app/dataModels/common/pageable.ts";
+import {CompletedDocumentListItem} from "@/app/dataModels/document/completedDocumentListItem.ts";
 
 const documentsResource = "document";
 
@@ -55,4 +57,8 @@ export const handleDocumentStart = async (userDocumentId: string): Promise<void>
 
 export const getNextDocument = async (request: NextDocumentSearchModel): Promise<DocumentListItem | null> => {
     return httpGet({url: `${documentsResource}/get-next-document${objectToQueryString(request)}`})
+}
+
+export const getCompletedDocuments = async (request: Pageable): Promise<SearchResult<CompletedDocumentListItem>> => {
+    return httpGet({url: `${documentsResource}/get-completed-documents${objectToQueryString(request)}`})
 }

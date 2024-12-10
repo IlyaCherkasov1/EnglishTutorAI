@@ -23,7 +23,6 @@ public class DocumentListSearchSpecification : DataTransformSpecification<Docume
             ApplyCriteria(d => d.StudyTopic == model.StudyTopic);
         }
 
-        AddInclude(d => d.Sentences);
         ApplyOrderByDescending(d => d.CreatedAt);
         ApplyPaging(model.PageNumber, model.PageSize);
 

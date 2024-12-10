@@ -8,8 +8,9 @@ export const Navbar = () => {
     const location = useLocation();
 
     const navLinks = [
-        { to: routes.home, label: t("home") },
+        { to: routes.home, label: t("translate") },
         { to: routes.history, label: t("history") },
+        { to: routes.completedDocuments, label: t("completed") },
         { to: routes.profile, label: t("profile") },
     ];
 

@@ -12,6 +12,8 @@ public class UserDocument : Entity
 
     public required bool IsCompleted { get; set; }
 
+    public DateTime CompletedOn { get; set; }
+
     public Guid SessionId { get; set; }
 
     public ICollection<LinguaFixMessage> LinguaFixMessages { get; set; } = null!;
