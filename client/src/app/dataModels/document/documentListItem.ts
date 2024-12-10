@@ -6,5 +6,4 @@ export interface DocumentListItem {
     createdAt: string;
     content: string;
     studyTopic: keyof typeof StudyTopic;
-    isDocumentFinished: boolean;
 }

@@ -29,7 +29,7 @@ export const Header = () => {
                     <Navbar />
                 </div>
                 <div className="flex space-x-4">
-                    <DropdownMenu>
+                    <DropdownMenu modal={false}>
                         <DropdownMenuTrigger asChild>
                             <HeaderButton variant="ghost" size="icon" className="rounded-full">
                                 <User className="h-5 w-5" />
@@ -38,9 +38,6 @@ export const Header = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>{contextStore.firstName}</DropdownMenuLabel>
-                            <div className="px-2 py-1.5 text-sm text-gray-600">
-                                {contextStore.email}
-                            </div>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={performLogOut}>{t("header.signOut")}</DropdownMenuItem>
                         </DropdownMenuContent>

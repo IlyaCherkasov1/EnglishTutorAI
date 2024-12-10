@@ -23,6 +23,8 @@ public static class Routes
         public const string HandleDocumentStart = "handle-document-start/{userDocumentId}";
 
         public const string GetNextDocument = "get-next-document";
+
+        public const string GetCompletedDocuments = "get-completed-documents";
     }
 
     public static class DocumentHistory

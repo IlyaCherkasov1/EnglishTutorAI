@@ -11,6 +11,4 @@ public class DocumentListItem
     public required string Content { get; set; }
 
     public required string StudyTopic { get; init; }
-
-    public bool IsDocumentFinished { get; init; }
 }

@@ -14,6 +14,7 @@ import {MistakeHistory} from "@/app/components/pages/mistakeHistory.tsx";
 import {routes} from "@/app/components/layout/routes/routeLink.ts";
 import {ScrollToTopOnRouteChange} from "@/app/components/scrollToTopOnRouteChange.ts";
 import {UserProfile} from "@/app/components/profile/userProfile.tsx";
+import {CompletedDocuments} from "@/app/components/pages/completedDocuments.tsx";
 
 function App() {
     return (
@@ -30,6 +31,7 @@ function App() {
                         <Route path={routes.document.documentDetails} element={<DocumentDetails />} />
                         <Route path={routes.accessDenied} element={<AccessDenied />} />
                         <Route path={routes.history} element={<MistakeHistory />} />
+                        <Route path={routes.completedDocuments} element={<CompletedDocuments />} />
                         <Route path={routes.profile} element={<UserProfile />} />
                     </Route>
                 </Routes>

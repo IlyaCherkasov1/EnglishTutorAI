@@ -98,5 +98,7 @@
   "profile": "Profile",
   "adminPanel": "Admin panel",
   "completedLabel": "Completed",
-  "maxCharactersAllowed": "This field must not exceed {{count}} characters."
+  "maxCharactersAllowed": "This field must not exceed {{count}} characters.",
+  "completedDocuments": "Completed Translates",
+  "translate": "Translates"
 }

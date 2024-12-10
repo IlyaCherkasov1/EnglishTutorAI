@@ -13,6 +13,9 @@ export const UserMainInfo = () => {
                     <h1 className="text-2xl font-bold text-gray-800">
                         {contextStore.firstName}
                     </h1>
+                    <p className="text-sm text-gray-500">
+                        {contextStore.email}
+                    </p>
                 </div>
             </div>
         </div>
