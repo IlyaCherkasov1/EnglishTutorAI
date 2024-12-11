@@ -10,7 +10,7 @@ interface Props {
     translatedText: string;
     correctedText: string;
     createdAt?: string;
-    documentId?: string;
+    translateId?: string;
 }
 
 export const MistakeCard = (props: Props) => {
@@ -36,8 +36,8 @@ export const MistakeCard = (props: Props) => {
                 <CardFooter>
                     <p className="text-sm text-gray-500">{formatDateToISO(props.createdAt)}</p>
                 </CardFooter>}
-            {props.documentId && (
-                <Link to={`/documents/${props.documentId}`}
+            {props.translateId && (
+                <Link to={`/translates/${props.translateId}`}
                       className="absolute bottom-4 right-4 flex items-center gap-2 px-4 py-2">
                     {t("goToTranslate")}
                     <ArrowRight size={16} />

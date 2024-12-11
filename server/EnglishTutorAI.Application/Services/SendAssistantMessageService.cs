@@ -40,10 +40,10 @@ public class SendAssistantMessageService : ISendAssistantMessageService
         if (saveToRepository)
         {
             await AddMessageToDialogRepository(new AddMessageToDialogRepositoryModel(
-                request.UserDocumentId, request.Message, ConversationRole.User));
+                request.UserTranslateId, request.Message, ConversationRole.User));
 
             await AddMessageToDialogRepository(new AddMessageToDialogRepositoryModel(
-                request.UserDocumentId, lastMessage, ConversationRole.Assistant));
+                request.UserTranslateId, lastMessage, ConversationRole.Assistant));
         }
 
         return lastMessage;
@@ -55,7 +55,7 @@ public class SendAssistantMessageService : ISendAssistantMessageService
         {
             Content = model.Content,
             ConversationRole = model.Role,
-            UserDocumentId = model.UserDocumentId
+            UserTranslateId = model.UserTranslateId
         });
     }
 }

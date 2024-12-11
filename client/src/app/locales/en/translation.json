@@ -1,13 +1,13 @@
 {
   "add": "Add",
   "title": "Title",
-  "documentContent": "Document Content",
+  "translateContent": "Translate Content",
   "enterYourText": "Write your text...",
   "correctedText": "Corrected text",
   "yourTranslation": "Your translation",
   "askAI": "Ask AI",
   "send": "Send",
-  "addingDocumentStatus": "Adding document...",
+  "addingTranslateStatus": "Adding translate...",
   "translationSuccessMessage": "Great! Your translation is correct.",
   "startAgain": "Start again",
   "sending": "Sending...",
@@ -42,10 +42,10 @@
   "registrationSuccessful": "Registration was successful! Check your email.",
   "somethingWentWrong": "Something went wrong. Please try again.",
   "invalidFields": "Invalid fields!",
-  "confirmDelete": "Are you sure you want to delete this document?",
+  "confirmDelete": "Are you sure you want to delete this translate?",
   "delete": "Delete",
   "cancel": "Cancel",
-  "deleteDocument": "Delete document",
+  "deleteTranslate": "Delete translate",
   "studyTopics": {
     "All": "All",
     "Work": "Work",
@@ -99,6 +99,6 @@
   "adminPanel": "Admin panel",
   "completedLabel": "Completed",
   "maxCharactersAllowed": "This field must not exceed {{count}} characters.",
-  "completedDocuments": "Completed Translates",
+  "completedTranslates": "Completed Translates",
   "translate": "Translates"
 }

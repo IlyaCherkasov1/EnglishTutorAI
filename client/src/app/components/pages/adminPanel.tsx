@@ -1,7 +1,7 @@
 import {useForm, FormProvider, Controller} from "react-hook-form";
 import {useTranslation} from "react-i18next";
 import {Textarea} from "@/app/components/ui/textarea.tsx";
-import {addDocument} from "@/app/api/documentApi.ts";
+import {addTranslate} from "@/app/api/translateApi.ts";
 import {Button} from "@/app/components/ui/button.tsx";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Input} from "@/app/components/ui/input.tsx";
@@ -23,7 +23,7 @@ export const AdminPanel = () => {
     const { register, handleSubmit, control, reset, formState: { errors, isSubmitting } } = methods;
 
     const onSubmit = async (values: TAdminPanelSchema) => {
-        await addDocument({
+        await addTranslate({
             title: values.title,
             content: values.content,
             studyTopic: values.studyTopic,
@@ -45,7 +45,7 @@ export const AdminPanel = () => {
                     disabled={isSubmitting}
                 />
                 <FormMessage>{errors.title?.message}</FormMessage>
-                <div className="mb-2 text-lg font-medium">{t('documentContent')}</div>
+                <div className="mb-2 text-lg font-medium">{t('translateContent')}</div>
                 <Textarea {...register("content")} className="h-32" disabled={isSubmitting} />
                 <FormMessage>{errors.content?.message}</FormMessage>
                 <div className="mb-2 text-lg font-medium">{t('category')}</div>

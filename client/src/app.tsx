@@ -5,7 +5,7 @@ import Register from "@/app/components/auth/register.tsx";
 import {MainLayout} from "@/app/components/layout/mainLayout.tsx";
 import {AdminPanel} from "@/app/components/pages/adminPanel.tsx";
 import Home from "@/app/components/pages/home.tsx";
-import DocumentDetails from "@/app/components/document/documentDetails.tsx";
+import TranslateDetails from "@/app/components/translate/translateDetails.tsx";
 import {NotificationContainer} from "@/app/components/toast/notificationContainer";
 import {userRoles} from "@/app/infrastructure/constants/userRoles.ts";
 import {RequireRole} from "@/app/components/auth/requireRole.tsx";
@@ -14,7 +14,7 @@ import {MistakeHistory} from "@/app/components/pages/mistakeHistory.tsx";
 import {routes} from "@/app/components/layout/routes/routeLink.ts";
 import {ScrollToTopOnRouteChange} from "@/app/components/scrollToTopOnRouteChange.ts";
 import {UserProfile} from "@/app/components/profile/userProfile.tsx";
-import {CompletedDocuments} from "@/app/components/pages/completedDocuments.tsx";
+import {CompletedTranslates} from "@/app/components/pages/completedTranslates.tsx";
 
 function App() {
     return (
@@ -28,10 +28,10 @@ function App() {
                         <Route index element={<Home />} />
                         <Route path={routes.adminPanel}
                                element={<RequireRole role={userRoles.admin}><AdminPanel /> </RequireRole>} />
-                        <Route path={routes.document.documentDetails} element={<DocumentDetails />} />
+                        <Route path={routes.translate.translateDetails} element={<TranslateDetails />} />
                         <Route path={routes.accessDenied} element={<AccessDenied />} />
                         <Route path={routes.history} element={<MistakeHistory />} />
-                        <Route path={routes.completedDocuments} element={<CompletedDocuments />} />
+                        <Route path={routes.completedTranslates} element={<CompletedTranslates />} />
                         <Route path={routes.profile} element={<UserProfile />} />
                     </Route>
                 </Routes>

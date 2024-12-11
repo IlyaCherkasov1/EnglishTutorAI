@@ -165,58 +165,14 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UserDocumentId")
+                    b.Property<Guid>("UserTranslateId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserDocumentId");
+                    b.HasIndex("UserTranslateId");
 
                     b.ToTable("DialogMessages");
-                });
-
-            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.Document", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("StudyTopic")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Documents");
-                });
-
-            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.DocumentSentence", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("DocumentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Position")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DocumentId");
-
-                    b.ToTable("DocumentSentence");
                 });
 
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.LinguaFixMessage", b =>
@@ -239,12 +195,12 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("UserDocumentId")
+                    b.Property<Guid>("UserTranslateId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserDocumentId");
+                    b.HasIndex("UserTranslateId");
 
                     b.ToTable("LinguaFixMessages");
                 });
@@ -288,6 +244,50 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
+                });
+
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.Translate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("StudyTopic")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Translates");
+                });
+
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.TranslateSentence", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("TranslateId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TranslateId");
+
+                    b.ToTable("TranslateSentence");
                 });
 
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.User", b =>
@@ -389,65 +389,6 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.ToTable("UserAchievements");
                 });
 
-            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserDocument", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CompletedOn")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("CurrentLine")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("DocumentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("SessionId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ThreadId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DocumentId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserDocument");
-                });
-
-            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserDocumentCompletion", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UserDocumentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserDocumentCompletions");
-                });
-
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserSession", b =>
                 {
                     b.Property<Guid>("Id")
@@ -495,6 +436,65 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("UserStatistics");
+                });
+
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserTranslate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CompletedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("CurrentLine")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("SessionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ThreadId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("TranslateId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TranslateId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserTranslate");
+                });
+
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserTranslateCompletion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserTranslateId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserTranslateCompletions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -613,33 +613,33 @@ namespace EnglishTutorAI.Infrastructure.Migrations
 
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.DialogMessage", b =>
                 {
-                    b.HasOne("EnglishTutorAI.Domain.Entities.UserDocument", "UserDocument")
+                    b.HasOne("EnglishTutorAI.Domain.Entities.UserTranslate", "UserTranslate")
                         .WithMany()
-                        .HasForeignKey("UserDocumentId")
+                        .HasForeignKey("UserTranslateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UserDocument");
-                });
-
-            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.DocumentSentence", b =>
-                {
-                    b.HasOne("EnglishTutorAI.Domain.Entities.Document", null)
-                        .WithMany("Sentences")
-                        .HasForeignKey("DocumentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("UserTranslate");
                 });
 
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.LinguaFixMessage", b =>
                 {
-                    b.HasOne("EnglishTutorAI.Domain.Entities.UserDocument", "UserDocument")
+                    b.HasOne("EnglishTutorAI.Domain.Entities.UserTranslate", "UserTranslate")
                         .WithMany("LinguaFixMessages")
-                        .HasForeignKey("UserDocumentId")
+                        .HasForeignKey("UserTranslateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UserDocument");
+                    b.Navigation("UserTranslate");
+                });
+
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.TranslateSentence", b =>
+                {
+                    b.HasOne("EnglishTutorAI.Domain.Entities.Translate", null)
+                        .WithMany("Sentences")
+                        .HasForeignKey("TranslateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserAchievement", b =>
@@ -661,36 +661,6 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserDocument", b =>
-                {
-                    b.HasOne("EnglishTutorAI.Domain.Entities.Document", "Document")
-                        .WithMany("UserDocuments")
-                        .HasForeignKey("DocumentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EnglishTutorAI.Domain.Entities.User", "User")
-                        .WithMany("UserDocuments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Document");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserDocumentCompletion", b =>
-                {
-                    b.HasOne("EnglishTutorAI.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserSession", b =>
                 {
                     b.HasOne("EnglishTutorAI.Domain.Entities.User", "User")
@@ -707,6 +677,36 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.HasOne("EnglishTutorAI.Domain.Entities.User", "User")
                         .WithOne("UserStatistics")
                         .HasForeignKey("EnglishTutorAI.Domain.Entities.UserStatistics", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserTranslate", b =>
+                {
+                    b.HasOne("EnglishTutorAI.Domain.Entities.Translate", "Translate")
+                        .WithMany("UserTranslates")
+                        .HasForeignKey("TranslateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EnglishTutorAI.Domain.Entities.User", "User")
+                        .WithMany("UserTranslates")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Translate");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserTranslateCompletion", b =>
+                {
+                    b.HasOne("EnglishTutorAI.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -769,22 +769,22 @@ namespace EnglishTutorAI.Infrastructure.Migrations
                     b.Navigation("AchievementLevels");
                 });
 
-            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.Document", b =>
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.Translate", b =>
                 {
                     b.Navigation("Sentences");
 
-                    b.Navigation("UserDocuments");
+                    b.Navigation("UserTranslates");
                 });
 
             modelBuilder.Entity("EnglishTutorAI.Domain.Entities.User", b =>
                 {
-                    b.Navigation("UserDocuments");
-
                     b.Navigation("UserStatistics")
                         .IsRequired();
+
+                    b.Navigation("UserTranslates");
                 });
 
-            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserDocument", b =>
+            modelBuilder.Entity("EnglishTutorAI.Domain.Entities.UserTranslate", b =>
                 {
                     b.Navigation("LinguaFixMessages");
                 });
