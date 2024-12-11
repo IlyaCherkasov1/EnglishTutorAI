@@ -1,6 +1,6 @@
 ﻿using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models.Common;
-using EnglishTutorAI.Application.Models.Documents;
+using EnglishTutorAI.Application.Models.Translates;
 using MediatR;
 
 namespace EnglishTutorAI.Application.Handlers.GetMistakeItem;

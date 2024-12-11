@@ -8,5 +8,5 @@ public class User : IdentityUser<Guid>
 
     public UserStatistics UserStatistics { get; init; } = null!;
 
-    public ICollection<UserDocument> UserDocuments { get; init; } = null!;
+    public ICollection<UserTranslate> UserTranslates { get; init; } = null!;
 }

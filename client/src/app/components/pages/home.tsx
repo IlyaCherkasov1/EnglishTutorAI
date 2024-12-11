@@ -1,16 +1,16 @@
 import {useCallback, useState} from "react";
-import {deleteDocument, getDocuments, getNextDocument} from "@/app/api/documentApi.ts";
-import {DocumentsList} from "@/app/components/document/documentsList.tsx";
+import {deleteTranslate, getTranslates, getNextTranslate} from "@/app/api/translateApi.ts";
+import {TranslatesList} from "@/app/components/translate/translatesList.tsx";
 import {Constants} from "@/app/infrastructure/constants/constants.ts";
 import {Pageable} from "@/app/dataModels/common/pageable.ts";
-import {DocumentListItem} from "@/app/dataModels/document/documentListItem.ts";
+import {TranslateListItem} from "@/app/dataModels/translate/translateListItem.ts";
 import {ContentLoaderSpinner} from "@/app/components/ui/contentLoaderSpinner.tsx";
 import {InfiniteScroll} from "@/app/components/pagination/InfiniteScroll.tsx";
 import {StudyTopic} from "@/app/dataModels/enums/studyTopic.ts";
 import {CategorySelector} from "@/app/components/categorySelector.tsx";
 
 const Home = () => {
-    const [documentListItem, setDocumentListItem] = useState<DocumentListItem[]>([]);
+    const [translateListItem, setTranslateListItem] = useState<TranslateListItem[]>([]);
     const [page, setPage] = useState(1);
     const [totalCount, setTotalCount] = useState<number | null>(null);
     const [hasMore, setHasMore] = useState(true);
@@ -19,11 +19,11 @@ const Home = () => {
 
     const paging: Pageable = {
         pageNumber: page,
-        pageSize: Constants.documentsPageSize,
+        pageSize: Constants.translatesPageSize,
     };
 
     const loadMoreItems = async () => {
-        const response = await getDocuments({
+        const response = await getTranslates({
             studyTopic: selectedCategory,
             ...paging
         });
@@ -36,9 +36,9 @@ const Home = () => {
             setTotalCount(response.totalCount);
         }
 
-        setDocumentListItem((prev) => [...prev, ...response.items]);
+        setTranslateListItem((prev) => [...prev, ...response.items]);
 
-        const totalLoaded = documentListItem.length + response.items.length;
+        const totalLoaded = translateListItem.length + response.items.length;
         setHasMore(totalLoaded < (response.totalCount || 0));
 
         if (totalLoaded < (response.totalCount || 0)) {
@@ -52,14 +52,14 @@ const Home = () => {
         setTotalCount(null);
         setIsInitialLoad(true);
 
-        const response = await getDocuments({
+        const response = await getTranslates({
             studyTopic: category,
-            pageSize: Constants.documentsPageSize,
+            pageSize: Constants.translatesPageSize,
             pageNumber: 1,
         });
 
         setTotalCount(response.totalCount);
-        setDocumentListItem(response.items);
+        setTranslateListItem(response.items);
 
         const hasMore =response.items.length < (response.totalCount || 0);
         setHasMore(hasMore);
@@ -69,33 +69,33 @@ const Home = () => {
         }
     };
 
-    const fetchNewDocument = useCallback(async () => {
-        const lastDocumentCreatedAt = documentListItem[documentListItem.length - 1].createdAt;
+    const fetchNewTranslate = useCallback(async () => {
+        const lastTranslateCreatedAt = translateListItem[translateListItem.length - 1].createdAt;
 
-        const document = await getNextDocument({
+        const translate = await getNextTranslate({
             studyTopic: selectedCategory,
-            createdAt: lastDocumentCreatedAt
+            createdAt: lastTranslateCreatedAt
         });
 
-        if (document) {
-            setDocumentListItem((prev) => [...prev, document]);
+        if (translate) {
+            setTranslateListItem((prev) => [...prev, translate]);
         }
-    }, [setDocumentListItem, selectedCategory, documentListItem])
+    }, [setTranslateListItem, selectedCategory, translateListItem])
 
 
-    const handleDeleteDocument = useCallback(async (documentId: string) => {
-        await deleteDocument(documentId);
-        setDocumentListItem((prevDocuments) =>
-            prevDocuments.filter((document) => document.id !== documentId)
+    const handleDeleteTranslate = useCallback(async (translateId: string) => {
+        await deleteTranslate(translateId);
+        setTranslateListItem((prevTranslates) =>
+            prevTranslates.filter((translate) => translate.id !== translateId)
         );
 
         setTotalCount((prevState) => (prevState !== null ? prevState - 1 : prevState));
 
-        if (documentListItem.length !== totalCount) {
-            await fetchNewDocument();
+        if (translateListItem.length !== totalCount) {
+            await fetchNewTranslate();
         }
 
-    }, [fetchNewDocument, setTotalCount, documentListItem, totalCount]);
+    }, [fetchNewTranslate, setTotalCount, translateListItem, totalCount]);
 
     return (
         <div className="pb-5">
@@ -106,7 +106,7 @@ const Home = () => {
                     hasMore={hasMore}
                     loader={<ContentLoaderSpinner />}
                     isInitialLoad={isInitialLoad}>
-                    <DocumentsList allDocuments={documentListItem} onDelete={handleDeleteDocument} />
+                    <TranslatesList allTranslates={translateListItem} onDelete={handleDeleteTranslate} />
                 </InfiniteScroll>
             </div>
         </div>

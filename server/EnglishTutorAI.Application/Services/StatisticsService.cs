@@ -10,16 +10,16 @@ namespace EnglishTutorAI.Application.Services;
 public class StatisticsService : IStatisticsService
 {
     private readonly IRepository<LinguaFixMessage> _linguaFixMessageRepository;
-    private readonly IRepository<UserDocument> _userDocumentRepository;
+    private readonly IRepository<UserTranslate> _userTranslateRepository;
     private readonly IUserStatisticsService _userStatisticsService;
 
     public StatisticsService(
         IRepository<LinguaFixMessage> linguaFixMessageRepository,
-        IRepository<UserDocument> userDocumentRepository,
+        IRepository<UserTranslate> userTranslateRepository,
         IUserStatisticsService userStatisticsService)
     {
         _linguaFixMessageRepository = linguaFixMessageRepository;
-        _userDocumentRepository = userDocumentRepository;
+        _userTranslateRepository = userTranslateRepository;
         _userStatisticsService = userStatisticsService;
     }
 
@@ -27,13 +27,13 @@ public class StatisticsService : IStatisticsService
     public async Task SaveStatisticsAndMessage(SaveStatisticsAndMessageModel model)
     {
         await _userStatisticsService.UpdateStatisticsAndSaveMessage(model.TranslatedText, model.CorrectedText);
-        var sessionId = await _userDocumentRepository.Single(new SessionIdByUserDocumentSpecification(model.UserDocumentId));
+        var sessionId = await _userTranslateRepository.Single(new SessionIdByUserTranslateSpecification(model.UserTranslateId));
 
         await _linguaFixMessageRepository.Add(new LinguaFixMessage
         {
             TranslatedText = model.TranslatedText,
             CorrectedText = model.CorrectedText,
-            UserDocumentId = model.UserDocumentId,
+            UserTranslateId = model.UserTranslateId,
             SessionId = sessionId,
         });
     }

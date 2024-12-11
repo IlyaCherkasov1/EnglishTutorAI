@@ -9,9 +9,9 @@ export const routes = {
         forbidden: "/errors/forbidden",
         notFound: "/errors/not-found",
     },
-    document: {
-        documentDetails: "/documents/:documentId"
+    translate: {
+        translateDetails: "/translates/:translateId"
     },
     profile: "/profile",
-    completedDocuments: "/completedTranslates",
+    completedTranslates: "/completedTranslates",
 };

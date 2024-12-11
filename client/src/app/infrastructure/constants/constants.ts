@@ -1,5 +1,5 @@
 export const Constants = {
-    documentsPageSize: 9,
+    translatesPageSize: 9,
     mistakeHistoryPageSize: 10,
-    completedDocumentsPageSize: 10,
+    completedTranslatesPageSize: 10,
 }

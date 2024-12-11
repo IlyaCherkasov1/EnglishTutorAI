@@ -13,7 +13,7 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>
     {
     }
 
-    public DbSet<Document> Documents { get; init; }
+    public DbSet<Translate> Translates { get; init; }
 
     public DbSet<DialogMessage> DialogMessages { get; init; }
 
@@ -29,7 +29,7 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>
 
     public DbSet<UserStatistics> UserStatistics { get; init; }
 
-    public DbSet<UserDocumentCompletion> UserDocumentCompletions { get; init; }
+    public DbSet<UserTranslateCompletion> UserTranslateCompletions { get; init; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

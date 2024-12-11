@@ -2,4 +2,4 @@
 
 namespace EnglishTutorAI.Application.Models;
 
-public record AddMessageToDialogRepositoryModel(Guid UserDocumentId, string Content, ConversationRole Role);
+public record AddMessageToDialogRepositoryModel(Guid UserTranslateId, string Content, ConversationRole Role);

@@ -48,7 +48,7 @@ public class TextCorrectionService : ITextCorrectionService
         if (isCorrected)
         {
             await _statisticsService.SaveStatisticsAndMessage(new SaveStatisticsAndMessageModel(
-                request.TranslatedText, correctedText, request.UserDocumentId));
+                request.TranslatedText, correctedText, request.UserTranslateId));
         }
         else
         {

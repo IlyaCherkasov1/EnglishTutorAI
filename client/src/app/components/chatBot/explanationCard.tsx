@@ -11,7 +11,7 @@ interface Props {
     threadId: string;
     currentLine: number;
     isCorrected: boolean;
-    userDocumentId: string;
+    userTranslateId: string;
 }
 
 export const ExplanationCard = (props: Props) => {
@@ -24,7 +24,7 @@ export const ExplanationCard = (props: Props) => {
 
     useAsyncEffect(async () => {
         await connection.start();
-        await connection.invoke('JoinExplanationChat', props.threadId, props.userDocumentId);
+        await connection.invoke('JoinExplanationChat', props.threadId, props.userTranslateId);
 
         connection.on('ReceiveMessage', (message: string) => {
             setAssistantTypingMessage(prev => prev + message);
@@ -61,8 +61,8 @@ export const ExplanationCard = (props: Props) => {
             const response = await sendMessage({
                 message: "explain mistakes of the last message",
                 threadId: props.threadId,
-                groupId: `${props.userDocumentId}-${props.threadId}-Explanation`,
-                userDocumentId: props.userDocumentId
+                groupId: `${props.userTranslateId}-${props.threadId}-Explanation`,
+                userTranslateId: props.userTranslateId
             });
 
             clearOldCache(props.threadId);

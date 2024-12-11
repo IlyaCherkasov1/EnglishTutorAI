@@ -10,5 +10,5 @@ public class SendMessageRequest
 
     public required string GroupId { get; set; }
 
-    public Guid UserDocumentId {get; set;}
+    public Guid UserTranslateId {get; set;}
 }

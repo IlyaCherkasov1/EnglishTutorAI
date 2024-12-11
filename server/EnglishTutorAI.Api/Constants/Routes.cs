@@ -4,34 +4,34 @@ public static class Routes
 {
     public const string Api = "/api";
 
-    public static class Document
+    public static class Translate
     {
-        public const string AddDocument = "add-document";
+        public const string AddTranslate = "add-translate";
 
-        public const string GetDocument = "get-documents";
+        public const string GetTranslate = "get-translates";
 
-        public const string GetDocumentDetails = "get-document-details/{id}";
+        public const string GetTranslateDetails = "get-translate-details/{id}";
 
         public const string SaveCurrentLine = "save-current-line";
 
         public const string GetConversationThread = "get-conversation-thread/{threadId}";
 
-        public const string DeleteDocument = "delete-document/{documentId}";
+        public const string DeleteTranslate = "delete-translate/{translateId}";
 
-        public const string HandleDocumentCompletion = "handle-document-completion/{userDocumentId}";
+        public const string HandleTranslateCompletion = "handle-translate-completion/{userTranslateId}";
 
-        public const string HandleDocumentStart = "handle-document-start/{userDocumentId}";
+        public const string HandleTranslateStart = "handle-translate-start/{userTranslateId}";
 
-        public const string GetNextDocument = "get-next-document";
+        public const string GetNextTranslate = "get-next-translate";
 
-        public const string GetCompletedDocuments = "get-completed-documents";
+        public const string GetCompletedTranslates = "get-completed-translates";
     }
 
-    public static class DocumentHistory
+    public static class TranslateHistory
     {
         public const string GetMistakesHistory = "get-mistake-history-items";
 
-        public const string GetDocumentSessionMistakesHistory = "get-session-mistake-history/{userDocumentId}";
+        public const string GetTranslateSessionMistakesHistory = "get-session-mistake-history/{userTranslateId}";
     }
 
     public static class Assistant

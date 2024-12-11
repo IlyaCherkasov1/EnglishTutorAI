@@ -13,7 +13,7 @@ public class LinguaFixMessage : Entity, IHasCreatedAt
 
     public required Guid SessionId { get; set; }
 
-    public required Guid UserDocumentId { get; set; }
+    public required Guid UserTranslateId { get; set; }
 
-    public UserDocument UserDocument { get; init; } = null!;
+    public UserTranslate UserTranslate { get; init; } = null!;
 }

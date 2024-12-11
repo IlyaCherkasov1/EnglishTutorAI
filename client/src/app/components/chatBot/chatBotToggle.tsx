@@ -8,7 +8,7 @@ import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
 export interface Props {
     threadId: string;
     chatMessageResponse: ChatMessageResponse[];
-    userDocumentId: string;
+    userTranslateId: string;
 }
 
 const ChatBotToggle = (props: Props) => {
@@ -24,7 +24,7 @@ const ChatBotToggle = (props: Props) => {
             {isChatBotVisible && <ChatBot
                 chatMessageResponse={props.chatMessageResponse}
                 threadId={props.threadId}
-                userDocumentId={props.userDocumentId}
+                userTranslateId={props.userTranslateId}
             />}
             <footer className="fixed p-4 bottom-0 left-0 right-0 bg-white border shadow">
                 <Button className="rounded-full px-4 py-2" onClick={handleButtonClick} variant="secondary">

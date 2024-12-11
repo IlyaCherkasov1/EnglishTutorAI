@@ -2,7 +2,7 @@ import {useTranslation} from "react-i18next";
 import {ContentLoaderSpinner} from "@/app/components/ui/contentLoaderSpinner.tsx";
 import {Constants} from "@/app/infrastructure/constants/constants.ts";
 import {InfiniteScroll} from "@/app/components/pagination/InfiniteScroll.tsx";
-import {getMistakeHistoryItems} from "@/app/api/documentHisoryApi.ts";
+import {getMistakeHistoryItems} from "@/app/api/translateHistoryApi.ts";
 import {MistakeCard} from "@/app/components/mistakeCard.tsx";
 import {useInfiniteScroll} from "@/hooks/useInfiniteScroll.ts";
 
@@ -35,7 +35,7 @@ export const MistakeHistory = () => {
                             translatedText={item.translatedText}
                             correctedText={item.correctedText}
                             createdAt={item.createdAt}
-                            documentId={item.documentId}>
+                            translateId={item.translateId}>
                         </MistakeCard>
                     ))}
                 </div>

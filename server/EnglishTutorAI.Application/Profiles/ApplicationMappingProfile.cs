@@ -10,15 +10,15 @@ public class ApplicationMappingProfile : Profile
 {
     public ApplicationMappingProfile()
     {
-        CreateMap<UserDocument, DocumentDetailsModel>()
-            .ForMember(d => d.Title, o => o.MapFrom(s => s.Document.Title))
-            .ForMember(d => d.Sentences, o => o.MapFrom<UserDocumentSentencesToDocumentResponseResolver>())
-            .ForMember(d => d.CreatedAt, o => o.MapFrom(s => s.Document.CreatedAt))
+        CreateMap<UserTranslate, TranslateDetailsModel>()
+            .ForMember(d => d.Title, o => o.MapFrom(s => s.Translate.Title))
+            .ForMember(d => d.Sentences, o => o.MapFrom<UserTranslateSentencesToTranslatetResponseResolver>())
+            .ForMember(d => d.CreatedAt, o => o.MapFrom(s => s.Translate.CreatedAt))
             .ForMember(d => d.CurrentLine, o => o.MapFrom(s => s.CurrentLine))
-            .ForMember(d => d.UserDocumentId, o => o.MapFrom(s => s.Id))
-            .ForMember(d => d.IsDocumentFinished, o => o.MapFrom(s => s.IsCompleted));
+            .ForMember(d => d.UserTranslateId, o => o.MapFrom(s => s.Id))
+            .ForMember(d => d.IsTranslateFinished, o => o.MapFrom(s => s.IsCompleted));
 
-        CreateMap<Document, DocumentListItem>()
+        CreateMap<Translate, TranslateListItem>()
             .ForMember(d => d.StudyTopic, o => o.MapFrom(s => s.StudyTopic.ToString()));
 
         CreateMap<DialogMessage, ChatMessageResponse>();

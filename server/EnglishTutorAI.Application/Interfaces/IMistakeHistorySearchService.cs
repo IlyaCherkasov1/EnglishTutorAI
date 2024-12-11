@@ -1,6 +1,6 @@
 ﻿using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Models.Common;
-using EnglishTutorAI.Application.Models.Documents;
+using EnglishTutorAI.Application.Models.Translates;
 
 namespace EnglishTutorAI.Application.Interfaces;
 
