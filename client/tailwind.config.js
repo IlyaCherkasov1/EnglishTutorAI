@@ -81,6 +81,9 @@ module.exports = {
             boxShadow: {
                 softGlow: "0 0 20px 20px hsla(30, 50%, 97%, 0.95)",
             },
+            strokeWidth: {
+                '5': '5px',
+            }
         }
     },
     plugins: [
