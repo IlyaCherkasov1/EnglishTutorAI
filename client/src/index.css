@@ -19,6 +19,11 @@
   background: #555;
 }
 
+.scrollbar-opacity {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05);
+}
+
 @layer base {
     :root {
         --background: 0 0% 100%;

@@ -20,18 +20,23 @@ const ChatBotToggle = (props: Props) => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col">
-            {isChatBotVisible && <ChatBot
-                chatMessageResponse={props.chatMessageResponse}
-                threadId={props.threadId}
-                userTranslateId={props.userTranslateId}
-            />}
-            <footer className="fixed p-4 bottom-0 left-0 right-0 bg-white border shadow">
-                <Button className="rounded-full px-4 py-2" onClick={handleButtonClick} variant="secondary">
+        <div>
+            {isChatBotVisible ? (
+                <div className="fixed bottom-0 right-4 w-full sm:w-96 z-50 bg-white h-[90vh] mb-3">
+                    <ChatBot
+                        chatMessageResponse={props.chatMessageResponse}
+                        threadId={props.threadId}
+                        userTranslateId={props.userTranslateId}
+                        closeChat={() => setIsChatBotVisible(false)}
+                    />
+                </div>
+            ) : (
+                <Button className="fixed bottom-4 right-4 p-4 rounded-full px-4 py-2" onClick={handleButtonClick}
+                        variant="secondary">
                     <MessageCircle className="mr-2 h-5 w-5" />
                     {t('askAI')}
                 </Button>
-            </footer>
+            )}
         </div>
     )
 };
