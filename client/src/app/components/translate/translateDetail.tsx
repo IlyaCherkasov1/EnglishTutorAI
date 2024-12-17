@@ -1,8 +1,7 @@
 import {TranslateDetailsModel} from "@/app/dataModels/translate/translateDetailsModel.ts";
-import React, {useState} from "react";
+import {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {
-    getConversationThread,
     handleTranslateCompletion,
     handleTranslateStart,
     saveCurrentLine
@@ -19,10 +18,9 @@ import {
     TranslateDetailsSchema,
     TypeTranslateDetailsSchema
 } from "@/app/infrastructure/validationSchemas/translateDetailsSchema.ts";
-import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
-import useAsyncEffect from "use-async-effect";
 import {TranslateResult} from "@/app/components/translate/translateResult.tsx";
 import {SubmitSpinner} from "@/app/components/ui/submitSpinner.svg.tsx";
+import {useEnterSubmit} from "@/hooks/useEnterSubmit.ts";
 
 interface Props {
     translateDetails: TranslateDetailsModel;
@@ -32,16 +30,9 @@ export const TranslateDetail = (props: Props) => {
     const [currentLine, setCurrentLine] = useState(props.translateDetails.currentLine);
     const [correctedText, setCorrectedText] = useState('');
     const [translatedText, setTranslatedText] = useState('');
-    const [chatMessageResponse, setChatMessageResponse] = useState<ChatMessageResponse[]>([]);
     const [isCorrected, setIsCorrected] = useState(false);
     const [isTranslateFinished, setIsTranslateFinished] = useState(props.translateDetails.isTranslateFinished);
-
     const { t } = useTranslation();
-
-    useAsyncEffect(async () => {
-        const response = await getConversationThread(props.translateDetails.threadId);
-        setChatMessageResponse(response);
-    }, [props.translateDetails.threadId]);
 
     const methods = useForm<TypeTranslateDetailsSchema>({ resolver: zodResolver(TranslateDetailsSchema) });
     const { register, handleSubmit, reset, setFocus, formState: { errors, isSubmitting } } = methods;
@@ -91,12 +82,7 @@ export const TranslateDetail = (props: Props) => {
         setTranslatedText('');
     }
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault();
-            handleSubmit(onSubmit)();
-        }
-    };
+    const handleKeyDown = useEnterSubmit(handleSubmit(onSubmit));
 
     return (
         <div>
@@ -152,7 +138,6 @@ export const TranslateDetail = (props: Props) => {
                     </>
                 )}
                 <ChatBotToggle
-                    chatMessageResponse={chatMessageResponse}
                     threadId={props.translateDetails.threadId}
                     userTranslateId={props.translateDetails.userTranslateId} />
             </div>

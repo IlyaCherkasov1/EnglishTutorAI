@@ -100,5 +100,6 @@
   "completedLabel": "Completed",
   "maxCharactersAllowed": "This field must not exceed {{count}} characters.",
   "completedTranslates": "Completed Translates",
-  "translate": "Translates"
+  "translate": "Translates",
+  "welcomeChatMessage": "How can I help with your translation?"
 }

@@ -1,5 +1,5 @@
 export const routes = {
-    home: "/",
+    translates: "/",
     history: "/history",
     accessDenied: "/access-denied",
     adminPanel: "/adminPanel",

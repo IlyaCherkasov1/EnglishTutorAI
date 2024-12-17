@@ -28,7 +28,7 @@ const Login = () => {
 
     useEffect(() => {
         if (contextStore.isAuthenticated) {
-            navigate(routes.home, { replace: true })
+            navigate(routes.translates, { replace: true })
         }
     }, [navigate]);
 
@@ -39,7 +39,7 @@ const Login = () => {
 
         if (result.isSuccess) {
             await applyNewIdentity(result.data);
-            navigate(routes.home, { replace: true });
+            navigate(routes.translates, { replace: true });
         } else {
             setError(result.error);
         }

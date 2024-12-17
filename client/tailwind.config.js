@@ -75,8 +75,8 @@ module.exports = {
                 'accordion-up': 'accordion-up 0.2s ease-out'
             },
             screens: {
-                'grid-md': '40rem',
-                'grid-lg': '60rem',
+                'grid-md': '65rem',
+                'grid-lg': '76rem',
             },
             boxShadow: {
                 softGlow: "0 0 20px 20px hsla(30, 50%, 97%, 0.95)",
