@@ -8,7 +8,7 @@ export const Navbar = () => {
     const location = useLocation();
 
     const navLinks = [
-        { to: routes.home, label: t("translate") },
+        { to: routes.translates, label: t("translate") },
         { to: routes.history, label: t("history") },
         { to: routes.completedTranslates, label: t("completed") },
         { to: routes.profile, label: t("profile") },

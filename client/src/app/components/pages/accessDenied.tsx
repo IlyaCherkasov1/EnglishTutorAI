@@ -13,7 +13,7 @@ export const AccessDenied = () => {
             <p className="text-lg text-gray-700 mb-8">
                 {t('youDoNotHavePermission')}
             </p>
-            <Link to={routes.home} className="text-blue-500 underline">
+            <Link to={routes.translates} className="text-blue-500 underline">
                 {t('goBackHome')}
             </Link>
         </div>

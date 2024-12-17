@@ -139,7 +139,7 @@ const handleRedirect = (status: number) => {
             redirectToPage = routes.login;
             break;
         case responseHandlingStatuses.notFound:
-            redirectToPage = routes.home;
+            redirectToPage = routes.translates;
             break;
     }
 

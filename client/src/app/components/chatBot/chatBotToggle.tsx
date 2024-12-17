@@ -3,11 +3,9 @@ import {useState} from "react";
 import {Button} from "@/app/components/ui/button.tsx";
 import {MessageCircle} from "lucide-react";
 import {ChatBot} from "@/app/components/chatBot/chatBot.tsx";
-import {ChatMessageResponse} from "@/app/dataModels/chatMessageResponse.ts";
 
 export interface Props {
     threadId: string;
-    chatMessageResponse: ChatMessageResponse[];
     userTranslateId: string;
 }
 
@@ -24,7 +22,6 @@ const ChatBotToggle = (props: Props) => {
             {isChatBotVisible ? (
                 <div className="fixed bottom-0 right-4 w-full sm:w-96 z-50 bg-white h-[90vh] mb-3">
                     <ChatBot
-                        chatMessageResponse={props.chatMessageResponse}
                         threadId={props.threadId}
                         userTranslateId={props.userTranslateId}
                         closeChat={() => setIsChatBotVisible(false)}

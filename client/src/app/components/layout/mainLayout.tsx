@@ -4,7 +4,7 @@ import {routes} from "@/app/components/layout/routes/routeLink.ts";
 
 export const MainLayout = () => {
     const location = useLocation();
-    const isHomeOrProfilePage = location.pathname === routes.home || location.pathname === routes.profile;
+    const isHomeOrProfilePage = location.pathname === routes.translates || location.pathname === routes.profile;
 
     const marginBottom = isHomeOrProfilePage
         ? "mb-20"

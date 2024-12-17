@@ -4,7 +4,7 @@ import Login from "@/app/components/auth/login.tsx";
 import Register from "@/app/components/auth/register.tsx";
 import {MainLayout} from "@/app/components/layout/mainLayout.tsx";
 import {AdminPanel} from "@/app/components/pages/adminPanel.tsx";
-import Home from "@/app/components/pages/home.tsx";
+import Translates from "@/app/components/pages/translates.tsx";
 import TranslateDetails from "@/app/components/translate/translateDetails.tsx";
 import {NotificationContainer} from "@/app/components/toast/notificationContainer";
 import {userRoles} from "@/app/infrastructure/constants/userRoles.ts";
@@ -24,8 +24,8 @@ function App() {
                 <Routes>
                     <Route path={routes.login} element={<Login />} />
                     <Route path={routes.register} element={<Register />} />
-                    <Route path={routes.home} element={<MainLayout />}>
-                        <Route index element={<Home />} />
+                    <Route path={routes.translates} element={<MainLayout />}>
+                        <Route index element={<Translates />} />
                         <Route path={routes.adminPanel}
                                element={<RequireRole role={userRoles.admin}><AdminPanel /> </RequireRole>} />
                         <Route path={routes.translate.translateDetails} element={<TranslateDetails />} />

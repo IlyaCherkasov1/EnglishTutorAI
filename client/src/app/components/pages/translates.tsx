@@ -9,7 +9,7 @@ import {InfiniteScroll} from "@/app/components/pagination/InfiniteScroll.tsx";
 import {StudyTopic} from "@/app/dataModels/enums/studyTopic.ts";
 import {CategorySelector} from "@/app/components/categorySelector.tsx";
 
-const Home = () => {
+const Translates = () => {
     const [translateListItem, setTranslateListItem] = useState<TranslateListItem[]>([]);
     const [page, setPage] = useState(1);
     const [totalCount, setTotalCount] = useState<number | null>(null);
@@ -113,4 +113,4 @@ const Home = () => {
     )
 };
 
-export default Home;
+export default Translates;
