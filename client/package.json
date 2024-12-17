@@ -46,7 +46,6 @@
     "@eslint/js": "^9.8.0",
     "@hookform/resolvers": "^3.6.0",
     "@types/diff": "^5.2.1",
-    "@types/lodash": "^4.17.13",
     "@types/node": "^20.11.30",
     "@types/qs": "^6.9.16",
     "@types/react": "^18.3.3",
