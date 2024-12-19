@@ -9,4 +9,6 @@ public class ContextResponse
     public string? Email { get; init; }
 
     public IList<string> RoleName { get; init; } = new List<string>();
+
+    public string? Language { get; init; }
 }

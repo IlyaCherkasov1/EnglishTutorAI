@@ -21,11 +21,7 @@ export const apiRootUrl = import.meta.env.VITE_APP_API_URL;
 const getContentTypeHeader = <T>(options?: RequestOptions<T>): { "Content-Type": string } | EmptyObject =>
     options === null || options === undefined
         ? { "Content-Type": contentTypes.plainText }
-        : options.body instanceof FormData
-            ? {}
-            : {
-                "Content-Type": typeof options.body === "object" ? contentTypes.json : contentTypes.plainText,
-            };
+        : { "Content-Type": contentTypes.json };
 
 const performRequest = async <TRequest, TResult>(
     method: HttpRequestMethod,
@@ -55,7 +51,7 @@ const performRequest = async <TRequest, TResult>(
 };
 
 const getBody = <T>(options: RequestOptions<T>) => {
-    if (!options || !options.body) {
+    if (!options || options.body === null || options.body === undefined) {
         return undefined;
     }
 

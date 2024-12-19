@@ -1,8 +1,8 @@
 import {httpGet} from "@/app/infrastructure/requestApi.ts";
-import {AchievementsResponse} from "@/app/dataModels/achievementsResponse.ts";
+import {UserAchievementResponse} from "@/app/dataModels/userAchievementResponse.ts";
 
 const achievementsResource = "achievements";
 
-export const getAchievements = async () : Promise<Array<AchievementsResponse>> => {
+export const getAchievements = async () : Promise<Array<UserAchievementResponse>> => {
     return httpGet({ url: `${achievementsResource}/get-achievements` });
 }

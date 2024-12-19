@@ -9,6 +9,7 @@ public class UserAchievementByUserIdSpecification : DataTransformSpecification<U
     public UserAchievementByUserIdSpecification(Guid userId) : base(
         ua => new UserAchievementResponse
         {
+            AchievementId = ua.Achievement.Id,
             Name = ua.Achievement.Name,
             Description = ua.Achievement.Description,
             LevelGoals = ua.Achievement.AchievementLevels.Select(g => g.Goal).ToList(),

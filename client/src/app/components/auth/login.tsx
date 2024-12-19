@@ -14,11 +14,12 @@ import {FacebookSignInButton} from "@/app/components/auth/facebookSignInButton.t
 import {contextStore} from "@/app/infrastructure/stores/contextStore.ts";
 import {useTranslation} from "react-i18next";
 import {LoginSchema, TLoginSchema} from "@/app/infrastructure/validationSchemas/loginSchema.ts";
+import {languageMap} from "@/app/dataModels/languageMap.ts";
 
 const Login = () => {
     const [error, setError] = useState<string | undefined>("");
     const navigate = useNavigate();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const methods = useForm<TLoginSchema>({
         resolver: zodResolver(LoginSchema),
@@ -39,6 +40,7 @@ const Login = () => {
 
         if (result.isSuccess) {
             await applyNewIdentity(result.data);
+            await i18n.changeLanguage(languageMap[contextStore.language]);
             navigate(routes.translates, { replace: true });
         } else {
             setError(result.error);

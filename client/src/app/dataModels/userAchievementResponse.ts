@@ -1,5 +1,5 @@
-export interface AchievementsResponse {
-    id: string;
+export interface UserAchievementResponse {
+    achievementId: string;
     name: string;
     description: string;
     progress: number;

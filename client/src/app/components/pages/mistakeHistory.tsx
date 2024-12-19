@@ -19,7 +19,7 @@ export const MistakeHistory = () => {
 
     return (
         <div className="flex flex-col pb-5">
-            <h1 className="text-4xl font-semibold">{t('history')}</h1>
+            <h1 className="text-3xl font-semibold">{t('history')}</h1>
             <InfiniteScroll
                 loadMore={loadMoreItems}
                 hasMore={hasMore}
@@ -27,7 +27,7 @@ export const MistakeHistory = () => {
                 isInitialLoad={isInitialLoad}>
                 <div className="items-center mt-7">
                     {mistakeHistoryItems.length === 0 && !hasMore && (
-                        <p className="text-gray-500 mt-4">{t('noRecords')}</p>
+                        <p className="text-gray-500">{t('historyNoRecordMessage')}</p>
                     )}
                     {mistakeHistoryItems?.map(item => (
                         <MistakeCard

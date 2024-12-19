@@ -2,6 +2,7 @@ import {useState, useRef, useEffect} from "react";
 import {getEnumValues} from "@/app/infrastructure/utils/enumUtils.ts";
 import {StudyTopic} from "@/app/dataModels/enums/studyTopic.ts";
 import {ChevronLeft, ChevronRight} from "lucide-react";
+import {useTranslation} from "react-i18next";
 
 interface Props {
     selectedCategory: string;
@@ -15,6 +16,7 @@ export const CategorySelector = ({ selectedCategory, onCategoryChange }: Props) 
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(true);
+    const { t } = useTranslation();
 
     const categories = getEnumValues(StudyTopic);
 
@@ -82,7 +84,7 @@ export const CategorySelector = ({ selectedCategory, onCategoryChange }: Props) 
                                  alt={`${category} icon`}
                                  className="w-6 h-6 object-contain" />
                         </span>
-                        <span>{category}</span>
+                        <span>{t(`studyTopics.${category}`)}</span>
                     </button>
                 ))}
             </div>

@@ -1,8 +1,8 @@
 import {useTranslation} from "react-i18next";
-import {AchievementsResponse} from "@/app/dataModels/achievementsResponse.ts";
+import {UserAchievementResponse} from "@/app/dataModels/userAchievementResponse.ts";
 
 interface Props {
-    achievements: Array<AchievementsResponse>;
+    achievements: Array<UserAchievementResponse>;
 }
 
 export const UserAchievement = (props: Props) => {
@@ -19,7 +19,7 @@ export const UserAchievement = (props: Props) => {
                     );
 
                     return (
-                        <li className="py-4 flex items-center" key={achievement.id}>
+                        <li className="py-4 flex items-center" key={achievement.achievementId}>
                             <div className="relative flex-shrink-0 flex flex-col items-center w-24">
                                 <div
                                     className="w-20 h-20 flex items-center justify-center rounded-full

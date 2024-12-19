@@ -59,7 +59,7 @@ export const ExplanationCard = (props: Props) => {
             setIsLoading(true);
 
             const response = await sendMessage({
-                message: "explain mistakes of the last message",
+                message: t('explanationCardCommand'),
                 threadId: props.threadId,
                 groupId: `${props.userTranslateId}-${props.threadId}-Explanation`,
                 userTranslateId: props.userTranslateId

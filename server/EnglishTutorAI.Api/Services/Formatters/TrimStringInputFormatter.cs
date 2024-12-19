@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace EnglishTutorAI.Api.Services.Formatters;
 
-public class TrimStringInputFormatter : TextInputFormatter
+public partial class TrimStringInputFormatter : TextInputFormatter
 {
     public TrimStringInputFormatter()
     {
@@ -27,14 +27,38 @@ public class TrimStringInputFormatter : TextInputFormatter
             leaveOpen: true);
 
         var json = await reader.ReadToEndAsync();
-        var jsonObject = JObject.Parse(json);
 
-        foreach (var prop in jsonObject.Properties().Where(p => p.Value.Type == JTokenType.String))
+        try
         {
-            jsonObject[prop.Name] = Regex.Replace(prop.Value.ToString().Trim(), @"\s+", " ");
-        }
+            if (json.Trim().StartsWith('{'))
+            {
+                var jsonObject = JObject.Parse(json);
 
-        var deserialized = JsonConvert.DeserializeObject(jsonObject.ToString(), context.ModelType);
-        return await InputFormatterResult.SuccessAsync(deserialized);
+                foreach (var prop in jsonObject.Properties().Where(p => p.Value.Type == JTokenType.String))
+                {
+                    jsonObject[prop.Name] = SpaceRegex().Replace(prop.Value.ToString().Trim(), " ");
+                }
+
+                var deserializedObject = JsonConvert.DeserializeObject(jsonObject.ToString(), context.ModelType);
+                return await InputFormatterResult.SuccessAsync(deserializedObject);
+            }
+
+            if (json.Trim().StartsWith("\"") && json.Trim().EndsWith("\""))
+            {
+                var trimmedString = SpaceRegex().Replace(json.Trim('"').Trim(), " ");
+                return await InputFormatterResult.SuccessAsync(trimmedString);
+            }
+
+            var deserializedPrimitive = JsonConvert.DeserializeObject(json, context.ModelType);
+            return await InputFormatterResult.SuccessAsync(deserializedPrimitive);
+        }
+        catch (JsonReaderException ex)
+        {
+            context.ModelState.AddModelError(context.ModelName, "Invalid JSON: " + ex.Message);
+            return await InputFormatterResult.FailureAsync();
+        }
     }
+
+    [GeneratedRegex(@"\s+")]
+    private static partial Regex SpaceRegex();
 }
