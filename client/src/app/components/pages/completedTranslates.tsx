@@ -22,7 +22,7 @@ export const CompletedTranslates = () => {
 
     return (
         <div className="flex flex-col pb-5">
-            <h1 className="text-2xl font-semibold">{t('completedTranslates')}
+            <h1 className="text-3xl font-semibold">{t('completedTranslates')}
                 {completedTranslatesItems.length !== 0 && (
                     <span className="ml-2 text-gray-600">({totalCount})</span>
                 )}
@@ -34,7 +34,7 @@ export const CompletedTranslates = () => {
                 isInitialLoad={isInitialLoad}>
                 <div className="items-center mt-7">
                     {completedTranslatesItems.length === 0 && !hasMore && (
-                        <p className="text-gray-500 mt-4">{t('noRecords')}</p>
+                        <p className="text-gray-500">{t('completedTranslationsNoRecords')}</p>
                     )}
                     {completedTranslatesItems?.map(item => (
                         <Card className="w-full mb-4 hover:shadow-lg transition-shadow" key={item.translateId}>

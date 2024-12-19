@@ -69,10 +69,10 @@
   "accessDenied": "Access Denied",
   "youDoNotHavePermission": "You do not have permission to view this page.",
   "goBackHome": "Go back to Home",
-  "history": "History",
+  "history": "Mistake History",
   "noRecords": "There are no records yet.",
   "home": "Home",
-  "completed": "Completed",
+  "completed": "My Translates",
   "results": "Results",
   "achievementsLabel": "Achievements",
   "achievements": {
@@ -101,5 +101,9 @@
   "maxCharactersAllowed": "This field must not exceed {{count}} characters.",
   "completedTranslates": "Completed Translates",
   "translate": "Translates",
-  "welcomeChatMessage": "How can I help with your translation?"
+  "welcomeChatMessage": "How can I help with your translation?",
+  "historyNoRecordMessage": "Here you can see the history of your mistakes.",
+  "completedTranslationsNoRecords": "Here you can see your completed translations.",
+  "explanationCardCommand": "explain mistakes of the last message",
+  "appLanguage": "App language"
 }

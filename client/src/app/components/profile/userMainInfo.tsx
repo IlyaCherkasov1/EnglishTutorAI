@@ -3,7 +3,7 @@ import {contextStore} from "@/app/infrastructure/stores/contextStore.ts";
 export const UserMainInfo = () => {
     return (
         <div>
-            <div className="flex items-center mb-20">
+            <div className="flex items-center">
                 <div
                     className="w-16 h-16 rounded-full bg-blue-100 flex items-center
                     justify-center text-2xl font-semibold text-blue-600">

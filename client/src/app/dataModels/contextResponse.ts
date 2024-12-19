@@ -3,4 +3,5 @@ export interface ContextResponse {
     firstName?: string;
     roleName: Array<string>;
     email?: string;
+    language: string;
 }

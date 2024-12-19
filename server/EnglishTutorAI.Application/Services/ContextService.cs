@@ -37,6 +37,7 @@ public class ContextService : IContextService
             IsAuthenticated = userPrincipal.Identity!.IsAuthenticated,
             RoleName = roles,
             Email = user.Email,
+            Language = user.PreferredLanguage.ToString()
         };
     }
 }

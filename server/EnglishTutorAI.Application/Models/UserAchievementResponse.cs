@@ -2,6 +2,8 @@
 
 public class UserAchievementResponse
 {
+    public Guid AchievementId { get; set; }
+
     public int Progress { get; set; }
 
     public int CurrentLevel { get; set; }

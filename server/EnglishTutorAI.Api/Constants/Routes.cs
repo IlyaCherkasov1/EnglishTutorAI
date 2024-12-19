@@ -75,4 +75,9 @@ public static class Routes
     {
         public const string GetStatistics = "get-statistics";
     }
+
+    public static class User
+    {
+        public const string ChangeLanguage = "change-language";
+    }
 }
