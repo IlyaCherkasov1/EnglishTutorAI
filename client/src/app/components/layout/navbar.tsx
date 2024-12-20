@@ -26,8 +26,8 @@ export const Navbar = () => {
                     to={link.to}
                     className={`block py-2 ${
                         location.pathname === link.to
-                            ? "text-black font-bold border-b-2 border-black"
-                            : "text-gray-500 hover:text-black hover:font-bold"
+                            ? "text-black font-medium border-b-2 border-black"
+                            : "text-gray-500 hover:text-black hover:font-medium"
                     }`}>
                     {link.label}
                 </Link>

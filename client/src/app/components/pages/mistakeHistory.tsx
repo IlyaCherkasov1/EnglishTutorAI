@@ -19,7 +19,7 @@ export const MistakeHistory = () => {
 
     return (
         <div className="flex flex-col pb-5">
-            <h1 className="text-3xl font-semibold">{t('history')}</h1>
+            <h1 className="text-3xl font-medium">{t('history')}</h1>
             <InfiniteScroll
                 loadMore={loadMoreItems}
                 hasMore={hasMore}

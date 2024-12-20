@@ -31,7 +31,6 @@
   "name": "Name",
   "alreadyHaveAccount": "Already have an account?",
   "writeYourMessage": "Write your message...",
-  "welcome": "Welcome",
   "createAnAccount": "Create an account",
   "signUpOrLogInToContinue": "Sign up or log in to continue",
   "minCharactersRequired": "Minimum {{count}} characters required",
@@ -105,5 +104,7 @@
   "historyNoRecordMessage": "Here you can see the history of your mistakes.",
   "completedTranslationsNoRecords": "Here you can see your completed translations.",
   "explanationCardCommand": "explain mistakes of the last message",
-  "appLanguage": "App language"
+  "appLanguage": "App language",
+  "login": "Login",
+  "authentication": "Authentication"
 }

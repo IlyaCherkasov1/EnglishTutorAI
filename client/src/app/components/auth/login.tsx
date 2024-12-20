@@ -1,7 +1,7 @@
 import {FormProvider, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useEffect, useState} from "react";
-import {FormControl, FormDescription, FormItem, FormLabel, FormMessage} from "@/app/components/ui/form.tsx";
+import {FormControl, FormDescription, FormItem, FormMessage} from "@/app/components/ui/form.tsx";
 import {Input} from "@/app/components/ui/input.tsx";
 import {FormError} from "@/app/components/formStates/form-error.tsx";
 import {SignInButton} from "@/app/components/buttons/signInButton.tsx";
@@ -48,57 +48,57 @@ const Login = () => {
     }
 
     return (
-        <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-md space-y-6 py-12">
-                <div className="space-y-2 text-center">
-                    <h1 className="text-3xl font-bold">{t('welcome')}</h1>
-                    <FormDescription>{t('signUpOrLogInToContinue')}</FormDescription>
-                </div>
-                <div className="space-y-4">
-                    <div className="space-y-2">
-                        <FormItem>
-                            <FormLabel>{t('email')}</FormLabel>
-                            <FormControl>
-                                <Input
-                                    {...register("email")}
-                                    name="email"
-                                    disabled={isSubmitting}
-                                    placeholder="john.doe@example.com"
-                                    type="email" />
-                            </FormControl>
-                            <FormMessage>{errors.email?.message}</FormMessage>
-                        </FormItem>
+        <div className="flex items-center justify-center min-h-screen">
+            <FormProvider {...methods}>
+                <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
+                    <div className="space-y-6">
+                        <div className="space-y-2 text-center">
+                            <h1 className="text-3xl font-bold">{t('authentication')}</h1>
+                            <FormDescription>{t('signUpOrLogInToContinue')}</FormDescription>
+                        </div>
+                        <div className="space-y-4">
+                            <FormItem>
+                                <FormControl>
+                                    <Input
+                                        {...register("email")}
+                                        name="email"
+                                        disabled={isSubmitting}
+                                        placeholder={t('email')}
+                                        type="email" />
+                                </FormControl>
+                                <FormMessage>{errors.email?.message}</FormMessage>
+                            </FormItem>
+                            <FormItem>
+                                <FormControl>
+                                    <Input
+                                        {...register("password")}
+                                        name="password"
+                                        disabled={isSubmitting}
+                                        placeholder={t('password')}
+                                        type="password" />
+                                </FormControl>
+                                <FormMessage>{errors.password?.message}</FormMessage>
+                            </FormItem>
+                            <FormError message={error} />
+                            <div className="space-y-4">
+                                <SignInButton isSubmitting={isSubmitting} />
+                                <div className="flex items-center justify-center space-x-6">
+                                    <GoogleSignInButton />
+                                    <FacebookSignInButton />
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="space-y-2">
-                        <FormItem>
-                            <FormLabel>{t('password')}</FormLabel>
-                            <FormControl>
-                                <Input
-                                    {...register("password")}
-                                    name="password"
-                                    disabled={isSubmitting}
-                                    placeholder="*******"
-                                    type="password" />
-                            </FormControl>
-                            <FormMessage>{errors.password?.message}</FormMessage>
-                        </FormItem>
-                    </div>
-                    <FormError message={error} />
-                    <div className="grid gap-4">
-                        <SignInButton isSubmitting={isSubmitting} />
-                        <GoogleSignInButton />
-                        <FacebookSignInButton />
-                    </div>
-                </div>
-                <p className="mt-2 text-center text-sm text-gray-500">
-                    {t('doNotHaveAccount')}
-                    <span className="mr-1"></span>
-                    <Link to={routes.register} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                        Register
-                    </Link>
-                </p>
-            </form>
-        </FormProvider>
+                    <p className="mt-16 text-center text-sm text-gray-500">
+                        {t('doNotHaveAccount')}
+                        <Link to={routes.register}
+                              className="font-semibold text-black ml-2">
+                            {t('register')}
+                        </Link>
+                    </p>
+                </form>
+            </FormProvider>
+        </div>
     );
 }
 

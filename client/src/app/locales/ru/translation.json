@@ -34,7 +34,7 @@
   "welcome": "Добро пожаловать",
   "createAnAccount": "Создайте аккаунт",
   "signUpOrLogInToContinue": "Зарегистрируйтесь или войдите, чтобы продолжить",
-  "minCharactersRequired": "Требуется минимум {{count}} символов",
+  "minCharactersRequired": "Минимальное количество символов: {{count}}",
   "fieldRequired": "Это поле обязательно для заполнения",
   "translatedTextRequired": "Требуется переведенный текст",
   "invalidEmailAddress": "Неверный адрес электронной почты",
@@ -98,12 +98,14 @@
   "profile": "Профиль",
   "adminPanel": "Админ-панель",
   "completedLabel": "Завершенные",
-  "maxCharactersAllowed": "Поле не должно превышать {{count}} символов.",
+  "maxCharactersAllowed": "Максимальное количество символов: {{count}}.",
   "completedTranslates": "Завершенные переводы",
   "translate": "Транслейты",
   "welcomeChatMessage": "Как я могу помочь с вашим переводом?",
   "historyNoRecordMessage": "Здесь будет отображаться история ваших ошибок.",
   "completedTranslationsNoRecords": "Здесь будут отображаться ваши завершенные переводы.",
   "explanationCardCommand": "объясни ошибки последнего сообщения",
-  "appLanguage": "Язык интерфейса"
+  "appLanguage": "Язык интерфейса",
+  "login": "Войти",
+  "authentication": "Авторизация"
 }
