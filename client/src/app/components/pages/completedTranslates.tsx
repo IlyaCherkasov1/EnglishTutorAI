@@ -22,7 +22,7 @@ export const CompletedTranslates = () => {
 
     return (
         <div className="flex flex-col pb-5">
-            <h1 className="text-3xl font-semibold">{t('completedTranslates')}
+            <h1 className="text-3xl font-medium">{t('completedTranslates')}
                 {completedTranslatesItems.length !== 0 && (
                     <span className="ml-2 text-gray-600">({totalCount})</span>
                 )}
