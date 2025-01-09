@@ -23,7 +23,7 @@ export const ChatBot = (props: Props) => {
     const [isProcessingResponse, setIsProcessingResponse] = useState<boolean>(false);
     const scrollRef = useRef<HTMLDivElement>(null);
     const connection = new HubConnectionBuilder()
-        .withUrl('https://localhost:7008/assistantHub')
+        .withUrl(import.meta.env.VITE_APP_ASSISTANT_HUB)
         .build();
 
     useAsyncEffect(async () => {

@@ -22,7 +22,7 @@ export const Header = () => {
         <header className="border-b h-16 bg-softBeige fixed top-0 z-50 w-full">
             <div className="flex items-center justify-between max-w-7xl mx-auto mt-3 space-x-4 px-4">
                 <Link to={routes.translates} className="flex space-x-4">
-                    <img src="/public/logo.png" alt="Company Logo" className="h-8 w-8 " />
+                    <img src="/logo.png" alt="Company Logo" className="h-8 w-8 " />
                     <p className="font-serif text-2xl font-bold">{t("header.title")}</p>
                 </Link>
                 <div className="flex justify-center space-x-4">

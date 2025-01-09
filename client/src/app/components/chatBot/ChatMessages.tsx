@@ -21,7 +21,7 @@ export const ChatMessages = (props: Props) => {
                         message.sender === ConversationRole.Assistant
                             ? 'ml-3' : 'self-end bg-gray-100 rounded-3xl'}`}>
                     {message.sender === ConversationRole.Assistant && (
-                        <img src="/public/chatgpt.png"
+                        <img src="/chatgpt.png"
                              className="absolute -left-6 top-4 h-5 w-5 text-gray-500"
                              alt="bot" />
                     )}
@@ -31,7 +31,7 @@ export const ChatMessages = (props: Props) => {
             {(props.isProcessingResponse || props.assistantTyping) && (
                 <div className="relative p-4 flex items-start ml-3">
                     <img
-                        src="/public/chatgpt.png"
+                        src="/chatgpt.png"
                         className="absolute -left-6 top-4 h-5 w-5 text-gray-500"
                         alt="bot" />
                     {props.assistantTyping ? (

@@ -19,7 +19,7 @@ export const ExplanationCard = (props: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { t } = useTranslation();
     const connection = new HubConnectionBuilder()
-        .withUrl('https://localhost:7008/assistantHub')
+        .withUrl(import.meta.env.VITE_APP_ASSISTANT_HUB)
         .build();
 
     useAsyncEffect(async () => {

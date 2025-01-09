@@ -80,7 +80,7 @@ export const CategorySelector = ({ selectedCategory, onCategoryChange }: Props) 
                         }`}
                         onClick={() => handleCategoryClick(category)}>
                         <span className="flex items-center justify-center w-10 h-10 rounded-full bg-white shadow">
-                            <img src={`/public/topics/${category.toLowerCase()}.png`}
+                            <img src={`/topics/${category.toLowerCase()}.png`}
                                  alt={`${category} icon`}
                                  className="w-6 h-6 object-contain" />
                         </span>
