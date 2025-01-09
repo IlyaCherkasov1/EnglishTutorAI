@@ -21,7 +21,10 @@ public class ExternalAuthController : ControllerBase
     [HttpGet(Routes.ExternalAuth.ExternalLogin)]
     public async Task<IActionResult> ExternalLogin(string provider, string returnUrl)
     {
-        var redirectUrl = $"{Routes.Urls.ExternalAuthCallbackUrl}?returnUrl={returnUrl}";
+        var request = HttpContext.Request;
+        var baseUrl = $"{request.Scheme}://{request.Host}";
+
+        var redirectUrl = $"{baseUrl}/api/externalAuth/external-auth-callback?returnUrl={returnUrl}";
         var properties = await _mediator.Send(new ExternalLoginCommand(provider, redirectUrl));
 
         return Challenge(properties, provider);

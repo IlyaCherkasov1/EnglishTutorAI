@@ -31,7 +31,7 @@ export const TranslateListItemComponent = React.memo(({ translate, onDelete, ind
                 <div className="flex items-center gap-3">
                     <div className="flex items-center justify-center w-9 h-9 rounded-full bg-white shadow">
                         <img
-                            src={`/public/topics/${translate.studyTopic.toLowerCase()}.png`}
+                            src={`/topics/${translate.studyTopic.toLowerCase()}.png`}
                             alt={`${translate.studyTopic} icon`}
                             className="w-5 h-5 object-contain"
                         />

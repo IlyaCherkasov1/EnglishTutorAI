@@ -3,8 +3,7 @@ node_modules/
 .vite
 
 # Environment variables files
-.env
-*.local
+*.env*
 
 # SSL certificates and private keys
 *.pem
@@ -21,3 +20,5 @@ bin/
 *.sln.DotSettings.user
 
 *.tsbuildinfo
+
+dist/

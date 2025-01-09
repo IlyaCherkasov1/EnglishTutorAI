@@ -1,5 +1,4 @@
 ﻿using System.ClientModel;
-using System.ClientModel.Primitives;
 using EnglishTutorAI.Application.Attributes;
 using EnglishTutorAI.Application.Configurations;
 using EnglishTutorAI.Application.Hubs;
@@ -9,7 +8,6 @@ using EnglishTutorAI.Domain.Entities;
 using EnglishTutorAI.Domain.Enums;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
-using OpenAI;
 using OpenAI.Assistants;
 
 namespace EnglishTutorAI.Application.Services;
@@ -22,20 +20,13 @@ public class AssistantClientService : IAssistantClientService
     private readonly IHubContext<AssistantHub> _assistantHubContext;
 
     public AssistantClientService(
-        IOptionsMonitor<OpenAiConfig> openAiConfig,
-        IHttpClientFactory httpClientFactory,
+        IOptions<OpenAiConfig> openAiConfig,
         IHubContext<AssistantHub> assistantHubContext,
         IRepository<DialogMessage> dialogMessageRepository)
     {
         _assistantHubContext = assistantHubContext;
         _dialogMessageRepository = dialogMessageRepository;
-        var customHttpClient = httpClientFactory.CreateClient();
-        var options = new OpenAIClientOptions
-        {
-            Transport = new HttpClientPipelineTransport(customHttpClient)
-        };
-
-        _assistantClient = new AssistantClient(new ApiKeyCredential(openAiConfig.CurrentValue.Key!), options);
+        _assistantClient = new AssistantClient(new ApiKeyCredential(openAiConfig.Value.Key!));
     }
 
     public async Task<AssistantThread> CreateThread()

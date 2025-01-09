@@ -13,14 +13,6 @@ public class EmailSenderInstaller : IServiceInstaller
 {
     public void InstallServices(IServiceCollection services, IConfiguration configuration)
     {
-        var serviceProvider = services.BuildServiceProvider();
-        var awsSettings = serviceProvider.GetRequiredService<IOptions<AwsSettings>>().Value;
-
-        var awsOptions = configuration.GetAWSOptions();
-        awsOptions.Credentials = new BasicAWSCredentials(awsSettings.AccessKey, awsSettings.SecretKey);
-
-        services.AddDefaultAWSOptions(awsOptions);
-        services.AddAWSService<IAmazonSimpleEmailServiceV2>();
         services.AddTransient<IEmailService, EmailService>();
     }
 }

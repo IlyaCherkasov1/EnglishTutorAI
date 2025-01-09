@@ -17,12 +17,12 @@ public class SendAssistantMessageService : ISendAssistantMessageService
 
     public SendAssistantMessageService(
         IAssistantClientService assistantClientService,
-        IOptionsMonitor<OpenAiConfig> openAiConfig,
+        IOptions<OpenAiConfig> openAiConfig,
         IRepository<DialogMessage> dialogMessageRepository)
     {
         _assistantClientService = assistantClientService;
         _dialogMessageRepository = dialogMessageRepository;
-        _assistantId = openAiConfig.CurrentValue.EnglishTutorAssistantId!;
+        _assistantId = openAiConfig.Value.EnglishTutorAssistantId!;
     }
 
     public Task<string> SendMessage(SendMessageRequest request) =>
