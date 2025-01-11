@@ -1,8 +1,11 @@
 import {EmptyObject} from "react-hook-form";
-import {clearAccessToken, getAccessToken} from "./services/auth/accessTokenService.ts";
-import {renewAccessTokenHandler} from "./services/auth/identityService.ts";
-import {routeLinks} from "../components/layout/routes/routeLink.ts";
-import {isAccessTokenValid} from "@/app/infrastructure/utils/tokenUtils.ts";
+import {clearAccessToken, getAccessToken} from "@/app/infrastructure/services/auth/accessTokenService.ts";
+import {isAccessTokenExpired, renewAccessTokenHandler} from "@/app/infrastructure/services/auth/identityService.ts";
+import {routes} from "@/app/components/layout/routes/routeLink.ts";
+import {notifications} from "@/app/components/toast/toast.tsx";
+import {contentTypes} from "@/app/infrastructure/constants/contentTypes.ts";
+import {headerNames} from "@/app/infrastructure/constants/headerNames.ts";
+import {responseHandlingStatuses} from "@/app/infrastructure/constants/responseHandlingStatuses.ts";
 
 export type HttpRequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -13,40 +16,12 @@ export interface RequestOptions<T> {
     isAnonymous?: boolean;
 }
 
-export const responseHandlingStatuses = {
-    unhandled: 0,
-    unauthenticated: 1,
-    refreshTokenWasFailed: 2,
-    refreshTokenWasCompleted: 3,
-    unauthorized: 4,
-};
-
 export const apiRootUrl = import.meta.env.VITE_APP_API_URL;
-
-const headerNames = {
-    authenticate: "www-authenticate",
-};
-
-const contentTypes = {
-    plainText: "text/plain",
-    json: "application/json",
-};
-
-const getBody = <T>(options: RequestOptions<T>) =>
-    !options || !options.body
-        ? undefined
-        : options.body instanceof FormData
-            ? options.body
-            : JSON.stringify(options.body);
 
 const getContentTypeHeader = <T>(options?: RequestOptions<T>): { "Content-Type": string } | EmptyObject =>
     options === null || options === undefined
         ? { "Content-Type": contentTypes.plainText }
-        : options.body instanceof FormData
-            ? {}
-            : {
-                "Content-Type": typeof options.body === "object" ? contentTypes.json : contentTypes.plainText,
-            };
+        : { "Content-Type": contentTypes.json };
 
 const performRequest = async <TRequest, TResult>(
     method: HttpRequestMethod,
@@ -75,6 +50,14 @@ const performRequest = async <TRequest, TResult>(
     }
 };
 
+const getBody = <T>(options: RequestOptions<T>) => {
+    if (!options || options.body === null || options.body === undefined) {
+        return undefined;
+    }
+
+    return JSON.stringify(options.body);
+}
+
 const handleSucceededResponse = async <TResult>(response: Response): Promise<TResult> => {
     const responseText = await response.text();
     return responseText ? JSON.parse(responseText) : ({} as TResult);
@@ -82,6 +65,10 @@ const handleSucceededResponse = async <TResult>(response: Response): Promise<TRe
 
 const handleFailedResponse = async <TResult>(response: Response): Promise<TResult> => {
     const handleHeaderStatus = await handleHeaders(response);
+
+    if (handleHeaderStatus === responseHandlingStatuses.unhandled) {
+        notifications.defaultError(response.headers.get(headerNames.exceptionTraceId));
+    }
 
     if (handleHeaderStatus === responseHandlingStatuses.unauthorized) {
         clearAccessToken();
@@ -102,6 +89,9 @@ const handleHeaders = async (response: Response): Promise<number> => {
     switch (response.status) {
         case 401:
             handleHeaderStatus = await handleUnauthorized(response);
+            break;
+        case 404:
+            handleHeaderStatus = responseHandlingStatuses.notFound;
             break;
     }
 
@@ -126,8 +116,8 @@ const getAuthorizationHeader = <T>(options: RequestOptions<T>): Promise<{
 const getAccessTokenAuthorizationHeader = async (): Promise<{ Authorization: string } | EmptyObject> => {
     let token = getAccessToken();
 
-    if (!isAccessTokenValid()) {
-        const refreshTokenResponseStatus  = await renewAccessTokenHandler();
+    if (token && isAccessTokenExpired(token)) {
+        const refreshTokenResponseStatus = await renewAccessTokenHandler();
 
         handleRedirect(refreshTokenResponseStatus);
         token = getAccessToken();
@@ -142,7 +132,10 @@ const handleRedirect = (status: number) => {
     switch (status) {
         case responseHandlingStatuses.unauthorized:
         case responseHandlingStatuses.unauthenticated:
-            redirectToPage = routeLinks.login;
+            redirectToPage = routes.login;
+            break;
+        case responseHandlingStatuses.notFound:
+            redirectToPage = routes.translates;
             break;
     }
 

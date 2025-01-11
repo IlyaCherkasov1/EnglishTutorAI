@@ -5,14 +5,16 @@ using EnglishTutorAI.Application.Interfaces;
 namespace EnglishTutorAI.Application.Services;
 
 [ScopedDependency]
-public class SentenceSplitterService : ISentenceSplitterService
+public partial class SentenceSplitterService : ISentenceSplitterService
 {
-    public Task<List<string>> Split(string text)
-    {
-        var pattern = @"(?<=[.!?])\s+(?=[A-ZА-ЯЁ])";
-        var matches = Regex.Split(text, pattern);
-        var sentences = matches.Select(match => match.Trim()).ToList();
+    [GeneratedRegex(@"(?<=[.!?])\s+(?=[A-ZА-ЯЁ])")]
+    private static partial Regex MyRegex();
 
-        return Task.FromResult(sentences);
+    public IEnumerable<string> Split(string text)
+    {
+        var matches = MyRegex().Split(text);
+        var sentences = matches.Select(match => match.Trim());
+
+        return sentences;
     }
 }

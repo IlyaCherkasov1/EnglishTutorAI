@@ -2,6 +2,7 @@
 using EnglishTutorAI.Api.Controllers.Attributes;
 using EnglishTutorAI.Application.Handlers.GenerateSentences;
 using EnglishTutorAI.Application.Handlers.SendMessageToAssistant;
+using EnglishTutorAI.Application.Handlers.SendMessageToAssistantWithSave;
 using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Models.TextGeneration;
 using MediatR;
@@ -23,16 +24,20 @@ public class LanguageModelController : ControllerBase
     }
 
     [HttpPost(Routes.Assistant.GenerateChatCompletion)]
-    public async Task<IActionResult> CorrectText(TextGenerationRequest request)
+    public async Task<TextCorrectionResult> CorrectText(TextGenerationRequest request)
     {
-        var (isCorrected, correctedText) = await _mediator.Send(new TextCorrectionCommand(request));
-
-        return Ok(new { IsCorrected = isCorrected, CorrectedText = correctedText });
+        return await _mediator.Send(new TextCorrectionCommand(request));
     }
 
     [HttpPost(Routes.Assistant.SendMessage)]
     public async Task<string> SendMessage(SendMessageRequest request)
     {
         return await _mediator.Send(new SendMessageToAssistantCommand(request));
+    }
+
+    [HttpPost(Routes.Assistant.SendMessageWithSave)]
+    public async Task<string> SendMessageWithSave(SendMessageRequest request)
+    {
+        return await _mediator.Send(new SendMessageToAssistantWithSaveCommand(request));
     }
 }

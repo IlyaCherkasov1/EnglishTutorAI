@@ -12,7 +12,6 @@ internal class CommonInstaller : IServiceInstaller
         services.AddOptions();
         services.AddEndpointsApiExplorer();
         services.AddApplicationDependencies();
-        services.AddHttpContextAccessor();
 
         services.AddHsts(options =>
         {

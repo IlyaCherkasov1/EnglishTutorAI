@@ -1,5 +1,5 @@
-import {LoginSchema, TLoginSchema} from "../../schemas";
-import {loginUser} from "../../../api/identity/identityApi.ts";
+import {loginUser} from "@/app/api/identityApi.ts";
+import {LoginSchema, TLoginSchema} from "@/app/infrastructure/validationSchemas/loginSchema.ts";
 
 type LoginResult =
     | { isSuccess: true; data: string }

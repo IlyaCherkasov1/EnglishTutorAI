@@ -1,13 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
-using EnglishTutorAI.Domain.Interfaces;
+﻿using EnglishTutorAI.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 
 namespace EnglishTutorAI.Domain.Entities;
 
-public class User : IdentityUser<Guid>, IUserWithFirstName
+public class User : IdentityUser<Guid>
 {
-    [EmailAddress]
-    public override required string Email { get; set; }
-    public override required string UserName { get; set; }
     public required string FirstName { get; init; }
+
+    public UserStatistics UserStatistics { get; init; } = null!;
+
+    public ICollection<UserTranslate> UserTranslates { get; init; } = null!;
+
+    public Language PreferredLanguage { get; set; } = Language.Russian;
 }

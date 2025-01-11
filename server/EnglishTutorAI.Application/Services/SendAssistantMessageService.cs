@@ -5,58 +5,57 @@ using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Domain.Entities;
 using EnglishTutorAI.Domain.Enums;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
-using OpenAI.Threads;
 
 namespace EnglishTutorAI.Application.Services;
 
 [ScopedDependency]
 public class SendAssistantMessageService : ISendAssistantMessageService
 {
-    private readonly IAssistantClient _assistantClient;
+    private readonly IAssistantClientService _assistantClientService;
     private readonly string _assistantId;
-    private readonly IMessageGenerationService _messageGenerationService;
-    private readonly IChatMessageAddService _chatMessageAddService;
-    private const string ErrorMessage = "Something went wrong...";
-    private const string TemplateKey = "englishAssistantTemplate";
-    private const string MessagePlaceholder = "{Message}";
+    private readonly IRepository<DialogMessage> _dialogMessageRepository;
 
     public SendAssistantMessageService(
-        IAssistantClient assistantClient,
-        IOptionsMonitor<OpenAiConfig> openAiConfig,
-        IMessageGenerationService messageGenerationService,
-        IChatMessageAddService chatMessageAddService)
+        IAssistantClientService assistantClientService,
+        IOptions<OpenAiConfig> openAiConfig,
+        IRepository<DialogMessage> dialogMessageRepository)
     {
-        _assistantClient = assistantClient;
-        _messageGenerationService = messageGenerationService;
-        _chatMessageAddService = chatMessageAddService;
-        _assistantId = openAiConfig.CurrentValue.EnglishTutorAssistantId!;
+        _assistantClientService = assistantClientService;
+        _dialogMessageRepository = dialogMessageRepository;
+        _assistantId = openAiConfig.Value.EnglishTutorAssistantId!;
     }
 
-    public async Task<string> SendMessageAndRun(SendMessageRequest request)
+    public Task<string> SendMessage(SendMessageRequest request) =>
+        SendMessageInternal(request);
+
+    public Task<string> SendMessageAndSaveToTheRepository(SendMessageRequest request) =>
+        SendMessageInternal(request, saveToRepository: true);
+
+    private async Task<string> SendMessageInternal(SendMessageRequest request, bool saveToRepository = false)
     {
-        await SendMessage(request);
-        var runResponse = await _assistantClient.CreateRunRequest(_assistantId,  request.ThreadId);
+        await _assistantClientService.AddMessageToThread(request.ThreadId, request.Message);
+        await _assistantClientService.CreateRunRequestWithStreaming(_assistantId, request.ThreadId, request.GroupId);
+        var lastMessage = await _assistantClientService.GetLastMessage(request.ThreadId);
 
-        if (runResponse.Status == RunStatus.Completed)
+        if (saveToRepository)
         {
-            var response = await _assistantClient.GenerateLastMessage(
-                new GenerateLastMessageModel(runResponse, request.ThreadId, ChatType.Dialog));
-            await _chatMessageAddService.Add(
-                new AddChatMessageModel(request.ThreadId, response, ChatType.Dialog, ConversationRole.Assistant));
+            await AddMessageToDialogRepository(new AddMessageToDialogRepositoryModel(
+                request.UserTranslateId, request.Message, ConversationRole.User));
 
-            return response;
+            await AddMessageToDialogRepository(new AddMessageToDialogRepositoryModel(
+                request.UserTranslateId, lastMessage, ConversationRole.Assistant));
         }
 
-        return ErrorMessage;
+        return lastMessage;
     }
 
-    private async Task SendMessage(SendMessageRequest request)
+    private async Task AddMessageToDialogRepository(AddMessageToDialogRepositoryModel model)
     {
-        var placeholderValues = new Dictionary<string, string> {{ MessagePlaceholder, request.Message }};
-        var message = await _messageGenerationService.Generate(placeholderValues, TemplateKey);
-        await _assistantClient.AddMessageToThread(request.ThreadId, message);
-        await _chatMessageAddService.Add(
-            new AddChatMessageModel(request.ThreadId, request.Message, ChatType.Dialog, ConversationRole.User));
+        await _dialogMessageRepository.Add(new DialogMessage
+        {
+            Content = model.Content,
+            ConversationRole = model.Role,
+            UserTranslateId = model.UserTranslateId
+        });
     }
 }

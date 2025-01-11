@@ -1,17 +1,28 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using EnglishTutorAI.Api.Constants;
 using EnglishTutorAI.Api.Extensions;
+using EnglishTutorAI.Api.Health;
+using EnglishTutorAI.Api.Middlewares;
+using EnglishTutorAI.Application.Hubs;
 using EnglishTutorAI.Domain.Entities;
 using EnglishTutorAI.Infrastructure;
 using EnglishTutorAI.Infrastructure.DependencyInjection;
 using EnglishTutorAI.Infrastructure.Identity;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
 
-services.AddIdentity<User, IdentityRole<Guid>>(options =>
+if (builder.Environment.IsProduction())
+{
+    services.ConfigureAwsServices(configuration);
+}
+
+services.AddIdentity<User, Role>(options =>
     {
         options.User.RequireUniqueEmail = true;
         options.SignIn.RequireConfirmedEmail = false;
@@ -29,9 +40,12 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 });
 
 services.InstallServicesInAssembly(builder.Configuration);
-configuration.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
-
 services.AddAuthorizationBuilder();
+services.AddSignalR();
+services.AddMemoryCache();
+services.AddHealthChecks()
+    .AddCheck<DatabaseConnectivityHealthCheck>("DatabaseConnectivity")
+    .AddCheck<DatabaseDataHealthCheck>("DatabaseData");
 
 var allowedOrigins = configuration.GetSection("AllowedOrigins").Get<string[]>()!;
 services.AddCors(options =>
@@ -41,24 +55,36 @@ services.AddCors(options =>
         policyBuilder.WithOrigins(allowedOrigins)
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .AllowCredentials();
+            .AllowCredentials()
+            .WithExposedHeaders(CustomHeaders.ExceptionTraceId);
     });
 });
 
 var app = builder.Build();
-
-app.UseCors();
-app.UseRouting();
-app.MapControllers();
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
-app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+await app.ApplyMigrationsAndSeedAsync();
+
+app.UseCors();
+app.UseRouting();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.MapControllers();
+app.UseHttpsRedirection();
+
+app.MapHealthChecks("/_health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapHub<AssistantHub>("/assistantHub");
 
 app.Run();

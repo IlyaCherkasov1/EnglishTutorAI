@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>EnglishTutorAI.Api</RootNamespace>
       <UserSecretsId>a96c868a-dd9d-4a92-af74-254a80c3b62b</UserSecretsId>
+      <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
     <ItemGroup>
@@ -14,6 +15,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Amazon.Extensions.Configuration.SystemsManager" Version="6.2.2" />
+      <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
+      <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="9.0.0" />
+      <PackageReference Include="AWSSDK.SimpleSystemsManagement" Version="3.7.403.18" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="8.0.8" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.8" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
@@ -25,9 +32,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="OpenAI-DotNet">
-        <HintPath>..\EnglishTutorAI.Application\libs\OpenAI-DotNet.dll</HintPath>
-      </Reference>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
-
 </Project>

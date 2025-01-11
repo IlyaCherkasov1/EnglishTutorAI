@@ -8,23 +8,23 @@ using MediatR;
 namespace EnglishTutorAI.Application.Handlers.GetConversationThread;
 
 public class GetConversationThreadCommandHandler
-    : IRequestHandler<GetConversationThreadCommand, IReadOnlyList<ChatMessageResponse>>
+    : IRequestHandler<GetConversationThreadCommand, IEnumerable<ChatMessageResponse>>
 {
-    private readonly IAssistantClient _assistantClient;
+    private readonly IAssistantClientService _assistantClientService;
     private readonly IMapper _mapper;
 
-    public GetConversationThreadCommandHandler(IAssistantClient assistantClient, IMapper mapper)
+    public GetConversationThreadCommandHandler(IAssistantClientService assistantClientService, IMapper mapper)
     {
-        _assistantClient = assistantClient;
+        _assistantClientService = assistantClientService;
         _mapper = mapper;
     }
 
-    public async Task<IReadOnlyList<ChatMessageResponse>> Handle(
+    public async Task<IEnumerable<ChatMessageResponse>> Handle(
         GetConversationThreadCommand request,
         CancellationToken cancellationToken)
     {
-        var result = await _assistantClient.GetAllMessages(request.ThreadId, ChatType.Dialog);
+        var result = await _assistantClientService.GetAllMessages(request.ThreadId);
 
-        return _mapper.Map<IReadOnlyList<ChatMessageResponse>>(result);
+        return _mapper.Map<IEnumerable<ChatMessageResponse>>(result);
     }
 }

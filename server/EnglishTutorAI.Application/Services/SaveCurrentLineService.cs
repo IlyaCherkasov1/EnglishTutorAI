@@ -8,16 +8,16 @@ namespace EnglishTutorAI.Application.Services;
 [ScopedDependency]
 public class SaveCurrentLineService : ISaveCurrentLineService
 {
-    private readonly IRepository<Document> _documentRepository;
+    private readonly IRepository<UserTranslate> _userTranslateRepository;
 
-    public SaveCurrentLineService(IRepository<Document> documentRepository)
+    public SaveCurrentLineService(IRepository<UserTranslate> userTranslateRepository)
     {
-        _documentRepository = documentRepository;
+        _userTranslateRepository = userTranslateRepository;
     }
 
     public async Task SaveCurrentLine(SaveCurrentLineRequest request)
     {
-        var document = await _documentRepository.GetById(request.DocumentId);
-        document.CurrentLine = request.CurrentLine;
+        var userTranslate = await _userTranslateRepository.GetById(request.UserTranslateId);
+        userTranslate.CurrentLine = request.CurrentLine;
     }
 }

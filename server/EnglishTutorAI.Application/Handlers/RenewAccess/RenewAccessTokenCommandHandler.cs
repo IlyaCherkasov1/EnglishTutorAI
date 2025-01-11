@@ -6,18 +6,19 @@ namespace EnglishTutorAI.Application.Handlers.RenewAccess;
 
 public class RenewAccessTokenCommandHandler : IRequestHandler<RenewAccessTokenCommand, Result<string>>
 {
-    private readonly ITokenService _tokenService;
+    private readonly IJwtAuthService _jwtAuthService;
     private readonly IUnitOfWork _unitOfWork;
 
-    public RenewAccessTokenCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService)
+    public RenewAccessTokenCommandHandler(IUnitOfWork unitOfWork, IJwtAuthService jwtAuthService)
     {
         _unitOfWork = unitOfWork;
-        _tokenService = tokenService;
+        _jwtAuthService = jwtAuthService;
     }
 
     public async Task<Result<string>> Handle(RenewAccessTokenCommand request, CancellationToken cancellationToken)
     {
-        var result = await _tokenService.RenewAccessToken();
+        var result = await _jwtAuthService.RenewAccessToken();
+
         await _unitOfWork.Commit();
 
         return result;

@@ -1,4 +1,6 @@
-﻿using EnglishTutorAI.Application.Attributes;
+﻿using System.Text;
+using System.Text.RegularExpressions;
+using EnglishTutorAI.Application.Attributes;
 using EnglishTutorAI.Application.Interfaces;
 
 namespace EnglishTutorAI.Application.Services;
@@ -6,18 +8,24 @@ namespace EnglishTutorAI.Application.Services;
 [ScopedDependency]
 public class TextComparisonService : ITextComparisonService
 {
-    private static readonly char[] Separator = [' ', '.', ',', ';', ':', '!', '?'];
+    private readonly ITextSplitterService _textSplitterService;
+
+    public TextComparisonService(ITextSplitterService textSplitterService)
+    {
+        _textSplitterService = textSplitterService;
+    }
 
     public bool HasTextChanged(string originalText, string correctedText)
     {
-        var originalWords = originalText.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
-        var correctedWords = correctedText.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
+        var originalWords = _textSplitterService.SplitText(originalText);
+        var correctedWords = _textSplitterService.SplitText(correctedText);
 
-        if (originalWords.Length != correctedWords.Length)
+        if (originalWords.Count != correctedWords.Count)
         {
             return true;
         }
 
-        return originalWords.Where((t, i) => !t.Equals(correctedWords[i], StringComparison.OrdinalIgnoreCase)).Any();
+        return originalWords.Where((t, i) =>
+            !t.Equals(correctedWords[i], StringComparison.OrdinalIgnoreCase)).Any();
     }
 }

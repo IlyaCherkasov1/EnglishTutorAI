@@ -1,11 +1,17 @@
-export const originRouteParamName = "origin_url";
-
-export const routeLinks = {
-    home: "/",
+export const routes = {
+    translates: "/",
+    history: "/history",
+    accessDenied: "/access-denied",
+    adminPanel: "/adminPanel",
     login: "/auth/login",
     register: "/auth/register",
     errors: {
         forbidden: "/errors/forbidden",
         notFound: "/errors/not-found",
     },
+    translate: {
+        translateDetails: "/translates/:translateId"
+    },
+    profile: "/profile",
+    completedTranslates: "/completedTranslates",
 };

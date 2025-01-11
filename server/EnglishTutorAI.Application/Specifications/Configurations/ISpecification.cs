@@ -12,4 +12,10 @@ public interface ISpecification<T>
     List<Expression<Func<T, object>>> Includes { get; }
 
     List<(Expression<Func<T, object>> KeySelector, bool IsDescending)> OrderByExpressions { get; }
+
+    int Take { get; }
+
+    int Skip { get; }
+
+    bool IsPagingEnabled { get; }
 }

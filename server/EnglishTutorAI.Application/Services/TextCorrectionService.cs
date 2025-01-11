@@ -1,83 +1,85 @@
 ﻿using EnglishTutorAI.Application.Attributes;
 using EnglishTutorAI.Application.Configurations;
+using EnglishTutorAI.Application.Constants;
 using EnglishTutorAI.Application.Interfaces;
 using EnglishTutorAI.Application.Models;
 using EnglishTutorAI.Application.Models.TextGeneration;
-using EnglishTutorAI.Domain.Enums;
 using Microsoft.Extensions.Options;
-using OpenAI.Threads;
 
-namespace EnglishTutorAI.Application.Services
+namespace EnglishTutorAI.Application.Services;
+
+[ScopedDependency]
+public class TextCorrectionService : ITextCorrectionService
 {
-    [ScopedDependency]
-    public class TextCorrectionService : ITextCorrectionService
+    private readonly string _assistantId;
+    private readonly IAssistantClientService _assistantClientService;
+    private readonly ISingleEntryCache _singleEntryCache;
+    private readonly ITextProcessingService _textProcessingService;
+    private readonly IUserAchievementService _userAchievementService;
+    private readonly IAssistantMessageService _assistantMessageService;
+    private readonly IStatisticsService _statisticsService;
+    private readonly IUserContextService _userContextService;
+
+    public TextCorrectionService(
+        IAssistantClientService assistantClientService,
+        IOptionsMonitor<OpenAiConfig> openAiConfig,
+        ISingleEntryCache singleEntryCache,
+        ITextProcessingService textProcessingService,
+        IUserAchievementService userAchievementService,
+        IAssistantMessageService assistantMessageService,
+        IStatisticsService statisticsService,
+        IUserContextService userContextService)
     {
-        private readonly string _assistantId;
-        private readonly IAssistantClient _assistantClient;
-        private readonly ITextComparisonService _textComparisonService;
-        private readonly ITextExtractionService _textExtractionService;
-        private readonly IChatMessageAddService _chatMessageAddService;
-        private readonly ITextCorrectionMessageGenerationService _messageGenerationService;
+        _assistantClientService = assistantClientService;
+        _singleEntryCache = singleEntryCache;
+        _textProcessingService = textProcessingService;
+        _userAchievementService = userAchievementService;
+        _assistantMessageService = assistantMessageService;
+        _statisticsService = statisticsService;
+        _userContextService = userContextService;
+        _assistantId = openAiConfig.CurrentValue.EnglishFixerAssistantId!;
+    }
 
-        public TextCorrectionService(
-            IAssistantClient assistantClient,
-            IOptionsMonitor<OpenAiConfig> openAiConfig,
-            ITextComparisonService textComparisonService,
-            ITextExtractionService textExtractionService,
-             IChatMessageAddService chatMessageAddService,
-            ITextCorrectionMessageGenerationService messageGenerationService)
+    public async Task<TextCorrectionResult> Correct(TextGenerationRequest request)
+    {
+        var correctedText = await GetOrGenerateCorrectedText(request, request.ThreadId);
+        var isCorrected = _textProcessingService.HasTextChanged(request.TranslatedText, correctedText);
+
+        if (isCorrected)
         {
-            _assistantClient = assistantClient;
-            _textComparisonService = textComparisonService;
-            _textExtractionService = textExtractionService;
-            _chatMessageAddService = chatMessageAddService;
-            _messageGenerationService = messageGenerationService;
-            _assistantId = openAiConfig.CurrentValue.EnglishTutorAssistantId!;
+            await _statisticsService.SaveStatisticsAndMessage(new SaveStatisticsAndMessageModel(
+                request.TranslatedText, correctedText, request.UserTranslateId));
+        }
+        else
+        {
+            await _userAchievementService.UpdateProgress(_userContextService.UserId, AchievementIds.NoviceTranslatorId);
         }
 
-        public async Task<(bool IsCorrected, string CorrectedText)> Correct(TextGenerationRequest request)
-        {
-            await GenerateAndAddUserMessageAsync(request);
-            var runResponse = await CreateAndValidateRunRequestAsync(request.ThreadId);
-            var correctedText = await GenerateCorrectedMessageAsync(runResponse, request.ThreadId, request.TranslatedText);
-            var isCorrected = _textComparisonService.HasTextChanged(request.TranslatedText, correctedText);
+        return new TextCorrectionResult(correctedText, isCorrected);
+    }
 
-            return (isCorrected, correctedText);
+    private async Task<string> GetOrGenerateCorrectedText(TextGenerationRequest request, string threadId)
+    {
+        var cachedText = _singleEntryCache.Get(request.OriginalText);
+
+        if (cachedText != null)
+        {
+            return cachedText;
         }
 
-        private async Task GenerateAndAddUserMessageAsync(TextGenerationRequest request)
+        await _assistantMessageService.GenerateAndAddMessageAsync(request, threadId);
+        await _assistantClientService.CreateRunRequest(_assistantId, threadId);
+        var correctedText = await _assistantMessageService.GetCorrectedMessageAsync(request.OriginalText, threadId);
+
+        var isCorrected = _textProcessingService.HasTextChanged(request.TranslatedText, correctedText);
+
+        if (!isCorrected)
         {
-            var message = await _messageGenerationService.GenerateMessageAsync(request);
-            await _assistantClient.AddMessageToThread(request.ThreadId, message);
-            await _chatMessageAddService.Add(new AddChatMessageModel(
-                request.ThreadId, request.TranslatedText, ChatType.TextCorrection, ConversationRole.User));
+            await _userAchievementService.UpdateProgress(_userContextService.UserId, AchievementIds.FlawlessTranslatorId);
         }
 
-        private async Task<RunResponse> CreateAndValidateRunRequestAsync(string threadId)
-        {
-            var runResponse = await _assistantClient.CreateRunRequest(_assistantId, threadId);
+        _singleEntryCache.Set(request.OriginalText, correctedText);
 
-            if (runResponse.Status != RunStatus.Completed)
-            {
-                throw new InvalidOperationException("The text correction run did not complete successfully.");
-            }
-
-            return runResponse;
-        }
-
-        private async Task<string> GenerateCorrectedMessageAsync(
-            RunResponse runResponse,
-            string threadId,
-            string originalText)
-        {
-            var correctedText = await _assistantClient.GenerateLastMessage(
-                new GenerateLastMessageModel(runResponse, threadId, ChatType.TextCorrection));
-            var cleanCorrectedText = _textExtractionService.ExtractCleanText(correctedText, originalText);
-
-            await _chatMessageAddService.Add(new AddChatMessageModel(
-                threadId, cleanCorrectedText, ChatType.TextCorrection, ConversationRole.Assistant));
-
-            return cleanCorrectedText;
-        }
+        return correctedText;
     }
 }

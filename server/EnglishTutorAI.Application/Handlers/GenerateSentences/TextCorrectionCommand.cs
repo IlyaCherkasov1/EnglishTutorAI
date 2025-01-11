@@ -1,9 +1,10 @@
-﻿using EnglishTutorAI.Application.Models.TextGeneration;
+﻿using EnglishTutorAI.Application.Models;
+using EnglishTutorAI.Application.Models.TextGeneration;
 using MediatR;
 
 namespace EnglishTutorAI.Application.Handlers.GenerateSentences;
 
-public class TextCorrectionCommand : IRequest<(bool IsCorrected, string CorrectedText)>
+public class TextCorrectionCommand : IRequest<TextCorrectionResult>
 {
     public TextCorrectionCommand(TextGenerationRequest request)
     {

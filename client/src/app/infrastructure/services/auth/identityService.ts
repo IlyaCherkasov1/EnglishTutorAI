@@ -1,10 +1,13 @@
-import {clearAccessToken, setAccessToken} from "./accessTokenService.ts";
+import {clearAccessToken, setAccessToken} from "@/app/infrastructure/services/auth/accessTokenService.ts";
 import {jwtDecode} from "jwt-decode";
-import {responseHandlingStatuses} from "../../requestApi.ts";
-import {logout, renewAccessToken} from "../../../api/identity/identityApi.ts";
+import {logout, renewAccessToken} from "@/app/api/identityApi.ts";
+import {routes} from "@/app/components/layout/routes/routeLink.ts";
+import {contextService} from "@/app/infrastructure/services/contextService.ts";
+import {responseHandlingStatuses} from "@/app/infrastructure/constants/responseHandlingStatuses.ts";
 
 export const applyNewIdentity = async (accessToken: string) => {
     setAccessToken(accessToken);
+    await contextService.load();
 }
 
 export const isAccessTokenExpired = (accessToken: string) => {
@@ -32,5 +35,5 @@ export const performLogOut = async (): Promise<void> => {
 
 export const performAfterLogOutActions = () => {
     clearAccessToken();
-    location.reload();
+    window.location.pathname = routes.login;
 }

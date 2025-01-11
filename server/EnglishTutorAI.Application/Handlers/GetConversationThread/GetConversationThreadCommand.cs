@@ -4,7 +4,7 @@ using MediatR;
 
 namespace EnglishTutorAI.Application.Handlers.GetConversationThread;
 
-public class GetConversationThreadCommand : IRequest<IReadOnlyList<ChatMessageResponse>>
+public class GetConversationThreadCommand : IRequest<IEnumerable<ChatMessageResponse>>
 {
     public GetConversationThreadCommand(string threadId)
     {
