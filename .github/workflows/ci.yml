@@ -44,6 +44,6 @@ jobs:
           script: |
               cd EnglishTutorAI/server
               docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-              docker-compose down --volumes --remove-orphans
-              docker-compose pull
-              docker-compose up -d --build
+              docker compose down --volumes --remove-orphans
+              docker compose pull
+              docker compose up -d --build
