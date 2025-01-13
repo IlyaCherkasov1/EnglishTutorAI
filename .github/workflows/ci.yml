@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: CI Pipeline
 
 on:
   push:
@@ -34,3 +34,21 @@ jobs:
       run: |
         docker tag englishtutorai.api:latest ${{ secrets.DOCKER_USERNAME }}/englishtutorai.api:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/englishtutorai.api:latest
+
+      deploy:
+          runs-on: ubuntu-latest
+          needs: build
+
+      steps:
+          - name: SSH to EC2 and deploy
+            uses: appleboy/ssh-action@v1.2.0
+            with:
+              host: ${{ secrets.HOST_DNS }}
+              username: ${{ secrets.USERNAME }}
+              key: ${{ secrets.EC2_SSH_KEY }}
+              port: 22
+              script: |
+                  cd /EnglishTutorAI/server
+                  docker-compose down --volumes --remove-orphans
+                  docker-compose pull
+                  docker-compose up -d --build
