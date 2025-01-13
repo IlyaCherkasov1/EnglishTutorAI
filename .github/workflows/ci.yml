@@ -22,8 +22,8 @@ jobs:
 
     - name: Build and Run Containers
       run: |
-        docker-compose -f server/docker-compose.yml build
-        docker-compose -f server/docker-compose.yml up -d
+        docker compose -f server/docker-compose.yml build
+        docker compose -f server/docker-compose.yml up -d
 
     - name: Push API Image
       run: |
