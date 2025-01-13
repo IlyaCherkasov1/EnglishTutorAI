@@ -1,6 +1,6 @@
 services:
     englishtutorai.api:
-        image: englishtutorai.api
+        image: ilyachercasov336/englishtutorai.api
         container_name: englishtutorai.api
         build:
             context: .
