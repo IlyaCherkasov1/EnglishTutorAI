@@ -47,7 +47,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
-              cd /EnglishTutorAI/server
+              cd EnglishTutorAI/server
               docker-compose down --volumes --remove-orphans
               docker-compose pull
               docker-compose up -d --build
