@@ -13,11 +13,11 @@ services:
         image: postgres:16
         container_name: englishtutorai.database
         environment:
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
             - DB_HOST=${DB_HOST}
             - DB_PORT=${DB_PORT}
             - DB_NAME=${DB_NAME}
             - DB_USER=${DB_USER}
-            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
         ports:
             - "5432:5432"
         volumes:
