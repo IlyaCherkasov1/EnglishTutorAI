@@ -27,7 +27,7 @@ jobs:
 
     - name: Push API Image
       run: |
-        docker tag englishtutorai.api:latest ${{ secrets.DOCKER_USERNAME }}/englishtutorai.api:latest
+        docker tag ${{ secrets.DOCKER_USERNAME }}/englishtutorai.api:latest ${{ secrets.DOCKER_USERNAME }}/englishtutorai.api:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/englishtutorai.api:latest
 
   deploy:
