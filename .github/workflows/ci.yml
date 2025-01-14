@@ -45,5 +45,5 @@ jobs:
               cd EnglishTutorAI/server
               echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
               docker-compose down --volumes --remove-orphans
-              docker-compose pull ilyachercasov336/englishtutorai.api:latest
+              docker-compose pull
               docker-compose up -d --build
