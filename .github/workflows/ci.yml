@@ -27,7 +27,7 @@ jobs:
 
     - name: Push API Image
       run: |
-        docker tag ${{ secrets.DOCKER_USERNAME }}/englishtutorai.api:latest ${{ secrets.DOCKER_USERNAME }}/englishtutorai.api:latest
+        docker tag englishtutorai.api:latest ${{ secrets.DOCKER_USERNAME }}/englishtutorai.api:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/englishtutorai.api:latest
 
   deploy:
@@ -43,6 +43,10 @@ jobs:
           port: 22
           script: |
               cd EnglishTutorAI/server
+              RESPONSE=$(curl -s -u "${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }}" \
+              "https://hub.docker.com/v2/repositories/${{ secrets.DOCKER_USERNAME }}/")
+              echo "Repositories:"
+              echo "$RESPONSE" | jq '.results[].name'
               echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
               docker-compose down --volumes --remove-orphans
               docker-compose pull
