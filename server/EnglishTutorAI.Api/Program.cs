@@ -47,17 +47,16 @@ services.AddHealthChecks()
     .AddCheck<DatabaseConnectivityHealthCheck>("DatabaseConnectivity")
     .AddCheck<DatabaseDataHealthCheck>("DatabaseData");
 
-var allowedOrigins = configuration.GetSection("AllowedOrigins").Get<string>()!;
-Console.WriteLine(allowedOrigins);
+//var allowedOrigins = configuration.GetSection("AllowedOrigins").Get<string>()!;
 
 services.AddCors(options =>
 {
     options.AddDefaultPolicy(policyBuilder =>
     {
-        policyBuilder.WithOrigins(allowedOrigins)
+        policyBuilder.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .AllowCredentials()
+    //        .AllowCredentials()
             .WithExposedHeaders(CustomHeaders.ExceptionTraceId);
     });
 });
