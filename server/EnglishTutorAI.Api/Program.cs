@@ -52,7 +52,7 @@ services.AddCors(options =>
 {
     options.AddDefaultPolicy(policyBuilder =>
     {
-        policyBuilder.WithOrigins(allowedOrigins)
+        policyBuilder
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials()
