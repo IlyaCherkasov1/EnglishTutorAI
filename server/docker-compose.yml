@@ -2,9 +2,6 @@ services:
     englishtutorai.api:
         image: ilyachercasov336/englishtutorai.api:latest
         container_name: englishtutorai.api
-        build:
-            context: .
-            dockerfile: EnglishTutorAI.Api/Dockerfile
         ports:
             - "8080:8080"
         depends_on:
