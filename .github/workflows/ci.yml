@@ -25,7 +25,8 @@ jobs:
       with:
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/englishtutorai.api:latest
-        context: server/EnglishTutorAI.Api
+        file: EnglishTutorAI.Api/
+        context: server/
 
   deploy:
       runs-on: ubuntu-latest
