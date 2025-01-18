@@ -41,7 +41,6 @@ jobs:
           port: 22
           script: |
               docker system prune -af --volumes
-              cd EnglishTutorAI/server
               echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
               docker-compose down --volumes --remove-orphans
               docker-compose pull
