@@ -12,8 +12,6 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
-              with:
-                  path: client/
 
             - name: Set up Node.js
               uses: actions/setup-node@v4
