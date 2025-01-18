@@ -25,6 +25,8 @@ jobs:
 
             - name: Build React app
               working-directory: client/
+              env:
+                  CI: true
               run: |
                   npm run build
 
