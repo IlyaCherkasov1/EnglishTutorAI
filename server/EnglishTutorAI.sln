@@ -13,7 +13,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-compose", "docker-compose", "{6B7E068D-7293-4DCB-8370-B50A2DE2CA93}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
-		docker-variables.env = docker-variables.env
+		.env = .env
 	EndProjectSection
 EndProject
 Global
