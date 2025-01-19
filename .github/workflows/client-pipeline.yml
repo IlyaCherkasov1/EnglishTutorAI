@@ -40,6 +40,10 @@ jobs:
                   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   AWS_REGION: ${{ secrets.AWS_REGION }}
 
+            - name: List S3 files
+              run: |
+                 aws s3 ls s3://${{ secrets.S3_BUCKET }}/ --recursive --region ${{ secrets.AWS_REGION }}
+
             - name: Invalidate CloudFront cache
               run: |
                   aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"

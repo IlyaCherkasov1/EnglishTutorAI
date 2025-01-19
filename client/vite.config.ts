@@ -7,6 +7,7 @@ import checker from "vite-plugin-checker";
 const isCI = process.env.CI === 'true';
 
 export default defineConfig({
+    base: './',
     plugins: [react(), checker({ typescript: true })],
     server: {
         https: !isCI
