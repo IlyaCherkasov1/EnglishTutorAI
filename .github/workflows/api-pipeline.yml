@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: Server CI/CD Pipeline
 
 on:
   push:
@@ -14,6 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
     - name: Login to Docker Hub
       uses: docker/login-action@v3
       with:
@@ -37,7 +38,7 @@ jobs:
         with:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           port: 22
           script: |
               docker system prune -af --volumes
