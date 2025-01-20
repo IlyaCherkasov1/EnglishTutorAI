@@ -99,6 +99,7 @@ const Translates = () => {
 
     return (
         <div className="pb-5">
+            <h1>Test</h1>
             <CategorySelector selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
             <div className="mt-8">
                 <InfiniteScroll
