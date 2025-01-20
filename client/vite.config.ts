@@ -9,13 +9,15 @@ const isCI = process.env.CI === 'true';
 export default defineConfig({
     base: '/',
     plugins: [react(), checker({ typescript: true })],
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: undefined,
+            },
+        },
+    },
     server: {
-        https: !isCI
-            ? {
-                key: fs.readFileSync(path.resolve(__dirname, 'key.pem')),
-                cert: fs.readFileSync(path.resolve(__dirname, 'cert.pem')),
-            }
-            : undefined,
+        https: undefined,
     },
     resolve: {
         alias: {
