@@ -4,20 +4,18 @@ import fs from 'fs';
 import path from 'path';
 import checker from "vite-plugin-checker";
 
-const isCI = process.env.CI === 'true';
+const isProduction = process.env.NODE_ENV === 'production';
 
 export default defineConfig({
     base: '/',
     plugins: [react(), checker({ typescript: true })],
-    build: {
-        rollupOptions: {
-            output: {
-                manualChunks: undefined,
-            },
-        },
-    },
     server: {
-        https: undefined,
+        https: !isProduction
+            ? {
+                key: fs.readFileSync(path.resolve(__dirname, 'key.pem')),
+                cert: fs.readFileSync(path.resolve(__dirname, 'cert.pem')),
+            }
+            : undefined,
     },
     resolve: {
         alias: {
