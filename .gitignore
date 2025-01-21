@@ -16,7 +16,7 @@ obj/
 bin/
 
 # Application settings configuration files
-**/appsettings*.json
+**/appsettings.Development.json
 *.sln.DotSettings.user
 
 *.tsbuildinfo

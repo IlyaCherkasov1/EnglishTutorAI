@@ -47,7 +47,8 @@ services.AddHealthChecks()
     .AddCheck<DatabaseConnectivityHealthCheck>("DatabaseConnectivity")
     .AddCheck<DatabaseDataHealthCheck>("DatabaseData");
 
-var allowedOrigins = configuration.GetSection("AllowedOrigins").Get<string[]>()!;
+var allowedOrigins = configuration.GetSection("AllowedOrigins").Get<string>()!;
+
 services.AddCors(options =>
 {
     options.AddDefaultPolicy(policyBuilder =>
