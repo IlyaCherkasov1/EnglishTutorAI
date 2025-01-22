@@ -37,12 +37,12 @@ export const CompletedTranslates = () => {
                         <p className="text-gray-500">{t('completedTranslationsNoRecords')}</p>
                     )}
                     {completedTranslatesItems?.map(item => (
-                        <Card className="w-full mb-4 hover:shadow-lg transition-shadow" key={item.translateId}>
+                        <Card className="w-full mb-4 hover:shadow-lg transition-shadow border-2 border-gray-300" key={item.translateId}>
                             <CardHeader>
                                 <h3 className="text-xl font-medium mb-1">{item.title}</h3>
                             </CardHeader>
                             <CardContent>
-                                <div className="p-3 bg-gray-100 rounded-md text-gray-800">
+                                <div className="p-3 bg-gray-200 rounded-md text-gray-800">
                                     <p className="line-clamp-2 text-ellipsis">
                                         {item.content}
                                     </p>

@@ -1,17 +1,17 @@
 import { StudyTopic } from "@/app/dataModels/enums/studyTopic.ts";
 
 const baseColors = [
-    "bg-yellow-100",
-    "bg-pink-100",
-    "bg-blue-100",
-    "bg-indigo-100",
-    "bg-green-100",
-    "bg-teal-100",
-    "bg-cyan-100",
-    "bg-purple-100",
-    "bg-orange-100",
-    "bg-red-100",
-    "bg-lime-100",
+    "bg-yellow-150",
+    "bg-pink-150",
+    "bg-blue-150",
+    "bg-indigo-150",
+    "bg-green-150",
+    "bg-teal-150",
+    "bg-cyan-150",
+    "bg-purple-150",
+    "bg-orange-150",
+    "bg-red-150",
+    "bg-lime-150",
 ];
 
 const rotateArray = (arr: string[], times: number): string[] => {
