@@ -76,7 +76,7 @@ export const CategorySelector = ({ selectedCategory, onCategoryChange }: Props) 
                         className={`flex items-center gap-3 px-6 py-3 rounded-full font-medium shadow-sm whitespace-nowrap transition-all ${
                             activeCategory === category
                                 ? "bg-black text-white"
-                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                         }`}
                         onClick={() => handleCategoryClick(category)}>
                         <span className="flex items-center justify-center w-10 h-10 rounded-full bg-white shadow">

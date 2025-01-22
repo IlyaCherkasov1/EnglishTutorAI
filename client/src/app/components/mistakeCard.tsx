@@ -17,15 +17,15 @@ export const MistakeCard = (props: Props) => {
     const { t } = useTranslation();
 
     return (
-        <Card className="w-full mb-4 hover:shadow-lg transition-shadow" key={props.id}>
+        <Card className="w-full mb-4 hover:shadow-lg transition-shadow border-2 border-gray-300" key={props.id}>
             <CardHeader>
-                <div className="p-3 bg-gray-100 rounded-md">
+                <div className="p-3 bg-gray-200 rounded-md">
                     <h3 className="text-sm font-medium text-gray-900 mb-1">{t('translatedText')}</h3>
                     {props.translatedText}
                 </div>
             </CardHeader>
             <CardContent>
-                <div className="p-3 bg-gray-100 rounded-md">
+                <div className="p-3 bg-gray-200 rounded-md">
                     <h3 className="text-sm font-medium text-gray-900 mb-1">{t('correctedText')}</h3>
                     <DiffComponent
                         translatedText={props.translatedText}

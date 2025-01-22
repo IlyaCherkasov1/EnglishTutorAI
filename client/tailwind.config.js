@@ -51,6 +51,39 @@ module.exports = {
                     '5': 'hsl(var(--chart-5))'
                 },
                 softBeige: 'hsl(var(--soft-beige))',
+                yellow: {
+                    150: '#fff4c2',
+                },
+                pink: {
+                    150: '#ffdde0',
+                },
+                blue: {
+                    150: '#d6e8ff',
+                },
+                indigo: {
+                    150: '#e2dfff',
+                },
+                green: {
+                    150: '#d8f5d2',
+                },
+                teal: {
+                    150: '#d9f6f0',
+                },
+                cyan: {
+                    150: '#d7f4fb',
+                },
+                purple: {
+                    150: '#e8d7fa',
+                },
+                orange: {
+                    150: '#ffe7cb',
+                },
+                red: {
+                    150: '#ffd6d6',
+                },
+                lime: {
+                    150: '#e4f8d8',
+                },
             },
             keyframes: {
                 'accordion-down': {
